@@ -1,4 +1,4 @@
-<footer class="site-footer" id="contact">
+<footer class="site-footer">
   <div class="container">
     <div class="site-footer__grid">
       <div class="site-footer__brand-block">
@@ -46,7 +46,7 @@
         <h4>Get in Touch</h4>
         <ul class="site-footer__links">
           <li>San Francisco Bay Area, California</li>
-          <li><a href="#contact">Request a Consultation</a></li>
+          <li><a href="#contact">Schedule a Consultation</a></li>
         </ul>
         <p class="site-footer__note">Licensed, Bonded &amp; Insured.</p>
       </div>

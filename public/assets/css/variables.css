@@ -79,25 +79,28 @@
      letter-spacing) wherever a condensed face isn't installed. */
   --font-condensed: "Arial Narrow", "Roboto Condensed", var(--font-sans);
 
-  --fs-eyebrow: 0.8125rem;
+  /* Reduced, calmer type scale. Desktop H1 tops out at 64px (was
+     72px); section headings top out at 44px (was 48px fixed). Card
+     and subheadings sit between 20-24px rather than 30px+. */
+  --fs-eyebrow: 0.75rem;
   --fs-body: 1rem;
-  --fs-body-lg: 1.1875rem;
+  --fs-body-lg: 1.125rem;
   --fs-h6: 1.125rem;
-  --fs-h5: 1.375rem;
-  --fs-h4: 1.875rem;
-  --fs-h3: 2.5rem;
-  --fs-h2: 3rem;
-  --fs-h1: clamp(2.5rem, 5vw, 4.5rem);
+  --fs-h5: 1.25rem;
+  --fs-h4: 1.375rem;
+  --fs-h3: 1.5rem;
+  --fs-h2: clamp(2.25rem, 3.5vw, 2.75rem);
+  --fs-h1: clamp(3.25rem, 5vw, 4rem);
 
-  --lh-tight: 1.08;
-  --lh-heading: 1.15;
+  --lh-tight: 1.12;
+  --lh-heading: 1.2;
   --lh-body: 1.65;
 
-  --ls-eyebrow: 0.16em;
-  --ls-tight: -0.02em;
-  --ls-display: -0.03em;
+  --ls-eyebrow: 0.14em;
+  --ls-tight: -0.01em;
+  --ls-display: -0.02em;
 
-  --fw-display: 800;
+  --fw-display: 700;
   --fw-semibold: 600;
   --fw-medium: 500;
 
@@ -107,10 +110,19 @@
   --space-xs: 0.75rem;
   --space-sm: 1rem;
   --space-md: 1.5rem;
-  --space-lg: 2.5rem;
-  --space-xl: 4rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
   --space-2xl: 6rem;
-  --space-3xl: 9rem;
+  --space-3xl: 7rem;
+
+  /* Dedicated section-padding rhythm (kept separate from the generic
+     scale above so it can hit the 88-112px / 56-72px targets exactly
+     without distorting other spacing uses). */
+  --space-section: 96px;
+  --space-section-mobile: 64px;
+
+  /* Comfortable reading measure for body copy */
+  --measure: 640px;
 
   /* Layout */
   --container-max: 1280px;
@@ -133,13 +145,8 @@
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --duration-fast: 180ms;
-  --duration-standard: 350ms;
-  --duration-slow: 650ms;
-  --duration-marquee: 38s;
-
-  /* Blueprint / architectural grid texture */
-  --blueprint-line: rgba(247, 244, 239, 0.07);
-  --blueprint-line-strong: rgba(247, 244, 239, 0.14);
+  --duration-standard: 300ms;
+  --duration-slow: 450ms;
 
   /* Restrained image hover scale (never more than this) */
   --hover-scale: 1.03;

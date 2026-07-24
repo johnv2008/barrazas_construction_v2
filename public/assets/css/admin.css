@@ -77,7 +77,7 @@
 }
 
 .admin-nav a[aria-current="page"] {
-  color: var(--color-charcoal-deep);
+  color: var(--pure-white);
   background: var(--color-gold);
   font-weight: 600;
 }

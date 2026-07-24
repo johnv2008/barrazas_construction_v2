@@ -14,7 +14,7 @@ final class HomeController extends Controller
         $this->view('frontend/home', array_merge(
             [
                 'title' => "Barraza's Construction | Bay Area Residential Remodeling & Renovation",
-                'metaDescription' => 'Barraza\'s Construction delivers residential remodeling, additions, and complete home improvements throughout the San Francisco Bay Area — kitchens, bathrooms, whole-home renovations, and ADUs.',
+                'metaDescription' => 'Barraza\'s Construction delivers residential remodeling, additions, and complete home renovations throughout the San Francisco Bay Area — kitchens, bathrooms, whole-home renovations, and ADUs.',
             ],
             $this->homeData()
         ), 'layouts/frontend');
@@ -37,10 +37,10 @@ final class HomeController extends Controller
     /**
      * Homepage content, structured to mirror the tables it will be
      * sourced from once the CMS modules exist:
-     *   hero/manifesto/trustManifesto/planningGuide -> page_sections (page slug "home")
-     *   services                                    -> services
-     *   transformation/contactSheet/narrative        -> projects + project_images
-     *   capabilities/blueprintSteps                  -> site_settings / page_sections
+     *   hero/intro/whyChoose/process/planningGuide -> page_sections (page slug "home")
+     *   services                                   -> services
+     *   featuredProject/selectedProjects            -> projects + project_images
+     *   trustStrip                                  -> site_settings
      * Swapping this method's body for real queries is the only change
      * a future phase needs to make.
      *
@@ -48,337 +48,161 @@ final class HomeController extends Controller
      */
     private function homeData(): array
     {
-        return array_merge(
-            $this->heroAndCapabilities(),
-            $this->transformationAndManifesto(),
-            $this->servicesAndContactSheet(),
-            $this->narrativeAndTrust(),
-            $this->processAndPlanning(),
-            $this->projectFormOptions()
-        );
-    }
-
-    private function heroAndCapabilities(): array
-    {
         return [
             'hero' => [
                 'eyebrow' => "Barraza's Construction Inc.",
-                'headingLines' => ['Building Better', 'Places to Live.'],
-                'lead' => 'Residential remodeling, additions, and complete home improvements delivered with '
-                    . 'experienced craftsmanship throughout the San Francisco Bay Area.',
-                'primaryCta' => ['label' => 'Start Your Project', 'href' => '#start-your-project'],
-                'secondaryCta' => ['label' => 'View Transformations', 'href' => '#projects'],
-                'primaryImage' => asset('images/projects/hero-exterior.jpg'),
-                'primaryAlt' => "Bay Area home exterior, a Barraza's Construction project",
-                'insetImage' => asset('images/projects/hero-inset.jpg'),
-                'insetAlt' => 'Marble walk-in shower detail from a completed remodel',
-                'tag' => 'Residential Remodeling · Bay Area',
+                'heading' => 'Bay Area remodeling, built with care.',
+                'lead' => 'Kitchens, bathrooms, additions, and complete home renovations delivered with '
+                    . 'experienced craftsmanship and clear communication.',
+                'primaryCta' => ['label' => 'Schedule a Consultation', 'href' => '#contact'],
+                'secondaryCta' => ['label' => 'View Our Work', 'href' => '#projects'],
                 'trust' => [
                     'Serving Bay Area homeowners since 2006',
-                    'Licensed, bonded and insured',
-                    'Residential remodeling specialists',
+                    'Licensed, bonded, and insured',
                 ],
+                'primaryImage' => asset('images/projects/hero-full.jpg'),
+                'primaryAlt' => 'Custom Bay Area home exterior at dusk',
             ],
-            'capabilities' => [
-                'Serving the Bay Area Since 2006',
-                'Kitchen Remodeling',
-                'Bathroom Remodeling',
-                'Whole-Home Renovations',
-                'Additions',
-                'ADUs',
-                'Interior Improvements',
-                'Exterior Improvements',
-            ],
-        ];
-    }
 
-    private function transformationAndManifesto(): array
-    {
-        return [
-            'transformation' => [
-                'progressImage' => asset('images/projects/transformation-progress.jpg'),
-                'progressAlt' => 'Kitchen renovation in progress: original cabinetry still in place over newly installed flooring',
-                'completeImage' => asset('images/projects/transformation-complete.jpg'),
-                'completeAlt' => 'Completed kitchen remodel with white cabinetry, subway tile, and black hardware',
-                'category' => 'Kitchen Remodeling',
-                'title' => 'From Renovation to Reveal',
-                'city' => 'San Francisco Bay Area',
-                'summary' => 'New cabinetry, tile, and finishes over a rebuilt layout.',
-                'href' => '#start-your-project',
-                'note' => "These photos document Barraza's construction process and finished craftsmanship — not "
-                    . 'a single continuous transformation of one room.',
+            'trustStrip' => [
+                'Serving homeowners since 2006',
+                'Licensed, bonded, and insured',
+                'Residential remodeling specialists',
             ],
-            'manifesto' => [
-                'line1' => "We don't just remodel homes.",
-                'line2' => 'We rebuild how they feel.',
-            ],
-        ];
-    }
 
-    private function servicesAndContactSheet(): array
-    {
-        return [
+            'intro' => [
+                'heading' => 'Thoughtful remodeling for better everyday living.',
+                'body' => "Barraza's Construction helps Bay Area homeowners improve their homes through "
+                    . 'carefully planned remodeling, additions, and residential construction. Every project is '
+                    . 'approached with attention to communication, coordination, and final detail.',
+                'image' => asset('images/projects/service-kitchen.jpg'),
+                'imageAlt' => 'Renovated kitchen with white shaker cabinetry and marble backsplash',
+            ],
+
             'services' => [
                 [
                     'title' => 'Kitchen Remodeling',
-                    'description' => 'Thoughtful layouts, durable materials, and finishes built for the way your '
-                        . 'family actually cooks and gathers.',
-                    'scope' => ['Cabinetry', 'Countertops', 'Layout Changes', 'Lighting'],
-                    'primaryImage' => asset('images/projects/service-kitchen.jpg'),
-                    'primaryAlt' => 'Renovated kitchen with white shaker cabinetry and marble backsplash',
-                    'detailImage' => asset('images/projects/project-supporting-1.jpg'),
-                    'detailAlt' => 'Kitchen sink and countertop detail',
-                    'tag' => 'Kitchens',
-                    'serviceHref' => '#projects',
-                    'consultHref' => '#start-your-project',
+                    'description' => 'Layouts, cabinetry, and finishes built for the way your family cooks and gathers.',
+                    'image' => asset('images/projects/service-kitchen.jpg'),
+                    'imageAlt' => 'Renovated kitchen with white shaker cabinetry and marble backsplash',
+                    'href' => '#contact',
                 ],
                 [
                     'title' => 'Bathroom Remodeling',
                     'description' => 'Spa-inspired bathrooms designed for comfort, durability, and everyday function.',
-                    'scope' => ['Showers & Tubs', 'Tile Work', 'Vanities', 'Fixtures'],
-                    'primaryImage' => asset('images/projects/service-bathroom.jpg'),
-                    'primaryAlt' => 'Marble bathroom with black rainfall shower fixture',
-                    'detailImage' => asset('images/projects/intro-detail.jpg'),
-                    'detailAlt' => 'Glass-enclosed tub and shower with marble surround',
-                    'tag' => 'Bathrooms',
-                    'serviceHref' => '#projects',
-                    'consultHref' => '#start-your-project',
+                    'image' => asset('images/projects/service-bathroom.jpg'),
+                    'imageAlt' => 'Marble bathroom with black rainfall shower fixture',
+                    'href' => '#contact',
                 ],
                 [
                     'title' => 'Whole-Home Renovations',
-                    'description' => "Comprehensive renovations that update a home's structure, systems, and style "
-                        . 'together.',
-                    'scope' => ['Flooring', 'Interior Layouts', 'Fixtures', 'Finishes'],
-                    'primaryImage' => asset('images/projects/service-wholehome-primary.jpg'),
-                    'primaryAlt' => 'Renovated living room with refaced brick fireplace and new flooring',
-                    'detailImage' => asset('images/projects/service-wholehome-detail.jpg'),
-                    'detailAlt' => 'Kitchen and hallway with new stainless appliances and flooring',
-                    'tag' => 'Whole-Home',
-                    'serviceHref' => '#projects',
-                    'consultHref' => '#start-your-project',
+                    'description' => "Coordinated updates to a home's structure, systems, and style together.",
+                    'image' => asset('images/projects/service-wholehome-primary.jpg'),
+                    'imageAlt' => 'Renovated living room with refaced brick fireplace and new flooring',
+                    'href' => '#contact',
                 ],
                 [
                     'title' => 'Additions & ADUs',
-                    'description' => 'Thoughtfully designed additions and accessory dwelling units that expand how '
-                        . 'you live.',
-                    'scope' => ['Room Additions', 'ADUs', 'Entryways', 'Roofing'],
-                    'primaryImage' => asset('images/projects/service-additions.jpg'),
-                    'primaryAlt' => 'New entry door installation on a covered porch',
-                    'detailImage' => asset('images/projects/service-additions-detail.jpg'),
-                    'detailAlt' => 'Roof replacement in progress',
-                    'tag' => 'Additions',
-                    'serviceHref' => '#projects',
-                    'consultHref' => '#start-your-project',
+                    'description' => 'Thoughtfully designed additions and accessory dwelling units that expand how you live.',
+                    'image' => asset('images/projects/service-additions.jpg'),
+                    'imageAlt' => 'New entry door installation on a covered porch',
+                    'href' => '#contact',
                 ],
             ],
 
-            'contactSheet' => [
-                [
-                    'size' => 'landscape',
-                    'image' => asset('images/projects/contact-sheet-kitchen.jpg'),
-                    'alt' => 'Kitchen remodel with gray cabinetry and marble backsplash',
-                    'title' => 'Kitchen Remodel',
-                    'category' => 'Kitchens',
-                    'city' => 'San Francisco Bay Area',
-                    'scope' => 'Custom cabinetry and marble tile backsplash',
+            'featuredProject' => [
+                'eyebrow' => 'Featured Project',
+                'heading' => 'A hillside home, ready for the Bay Area elements',
+                'category' => 'Additions & Exteriors',
+                'city' => 'San Francisco Bay Area',
+                'summary' => 'A full roof replacement and deck refresh, coordinated from tear-off through final '
+                    . 'walkthrough — renewed for Bay Area weather while opening up the surrounding hillside view.',
+                'mainImage' => asset('images/projects/narrative-result.jpg'),
+                'mainAlt' => 'Hillside home deck with a view of the surrounding hills after exterior work',
+                'thumbs' => [
+                    [
+                        'image' => asset('images/projects/narrative-progress.jpg'),
+                        'alt' => 'Roof replacement in progress on the same hillside home',
+                    ],
                 ],
+                'href' => '#contact',
+            ],
+
+            'selectedProjects' => [
                 [
-                    'size' => 'portrait',
                     'image' => asset('images/projects/project-featured.jpg'),
-                    'alt' => 'Primary bathroom remodel with marble tile tub and shower surround',
+                    'imageAlt' => 'Primary bathroom remodel with marble tile tub and shower surround',
                     'title' => 'Primary Bathroom Remodel',
                     'category' => 'Bathrooms',
                     'city' => 'San Francisco Bay Area',
-                    'scope' => 'Marble tile, glass enclosure, redesigned layout',
+                    'href' => '#contact',
                 ],
                 [
-                    'size' => 'landscape',
+                    'image' => asset('images/projects/contact-sheet-kitchen.jpg'),
+                    'imageAlt' => 'Kitchen remodel with gray cabinetry and marble backsplash',
+                    'title' => 'Kitchen Remodel',
+                    'category' => 'Kitchens',
+                    'city' => 'San Francisco Bay Area',
+                    'href' => '#contact',
+                ],
+                [
                     'image' => asset('images/projects/project-supporting-2.jpg'),
-                    'alt' => 'Primary suite bathroom remodel with granite vanity and a large window',
+                    'imageAlt' => 'Primary suite bathroom remodel with granite vanity and a large window',
                     'title' => 'Primary Suite Remodel',
                     'category' => 'Primary Suite',
                     'city' => 'San Francisco Bay Area',
-                    'scope' => 'Dark granite vanity with a picture window',
+                    'href' => '#contact',
                 ],
                 [
-                    'size' => 'square',
-                    'image' => asset('images/projects/hero-inset.jpg'),
-                    'alt' => 'Marble walk-in shower with bench and hand shower',
-                    'title' => 'Walk-In Shower Remodel',
-                    'category' => 'Bathrooms',
-                    'city' => 'San Francisco Bay Area',
-                    'scope' => 'Full marble walk-in shower with bench',
-                ],
-                [
-                    'size' => 'portrait',
-                    'image' => asset('images/projects/contact-sheet-bath-tub.jpg'),
-                    'alt' => 'Finished bathroom with tub, shower, and toilet',
-                    'title' => 'Bathroom Renovation',
-                    'category' => 'Bathrooms',
-                    'city' => 'San Francisco Bay Area',
-                    'scope' => 'Full fixture and finish replacement',
-                ],
-                [
-                    'size' => 'square',
                     'image' => asset('images/projects/contact-sheet-bath-vanity.jpg'),
-                    'alt' => 'Bathroom vanity with framed mirror and new lighting',
+                    'imageAlt' => 'Bathroom vanity with framed mirror and new lighting',
                     'title' => 'Vanity & Lighting Refresh',
                     'category' => 'Bathrooms',
                     'city' => 'San Francisco Bay Area',
-                    'scope' => 'New vanity, mirror, and light fixture',
-                ],
-                [
-                    'size' => 'detail',
-                    'image' => asset('images/projects/contact-sheet-hillside-deck.jpg'),
-                    'alt' => 'Hillside home deck with mountain view after exterior work',
-                    'title' => 'Hillside Deck & Exterior',
-                    'category' => 'Exteriors',
-                    'city' => 'San Francisco Bay Area',
-                    'scope' => 'Roof and deck renewal with a hillside view',
+                    'href' => '#contact',
                 ],
             ],
-        ];
-    }
 
-    private function narrativeAndTrust(): array
-    {
-        return [
-            'narrative' => [
-                'eyebrow' => 'Featured Project',
-                'heading' => 'A Hillside Home, Ready for the Bay Area Elements',
-                'goal' => "Renew a hillside home's roof and outdoor living space to hold up to Bay Area weather "
-                    . 'while opening up the surrounding views.',
-                'workCompleted' => 'Full roof replacement, deck detailing, and exterior refresh, coordinated from '
-                    . 'tear-off through final walkthrough.',
-                'result' => 'A weather-ready roofline and a deck built for taking in the hillside view.',
-                'resultImage' => asset('images/projects/narrative-result.jpg'),
-                'resultAlt' => 'Hillside home deck with a view of the surrounding hills after exterior work',
-                'progressImage' => asset('images/projects/narrative-progress.jpg'),
-                'progressAlt' => 'Roof replacement in progress on the same hillside home',
-                'relatedLabel' => 'Related: Additions & ADUs',
-                'relatedHref' => '#services',
-            ],
-
-            'trustManifesto' => [
-                'headline1' => 'Experienced Hands.',
-                'headline2' => 'Clear Communication.',
-                'headline3' => 'Work That Endures.',
+            'whyChoose' => [
+                'heading' => 'Experience you can build on.',
                 'items' => [
-                    'Serving Bay Area homeowners since 2006',
-                    'Licensed, bonded and insured',
-                    'Residential remodeling experience across kitchens, bathrooms, and whole-home projects',
-                    'Coordinated project planning from consultation through completion',
-                    'Attention to final details before every handoff',
+                    ['title' => 'Since 2006', 'body' => 'Serving Bay Area homeowners for nearly two decades.'],
+                    ['title' => 'Licensed & Insured', 'body' => 'Licensed, bonded, and insured for residential work.'],
+                    ['title' => 'Clear Communication', 'body' => 'Coordinated project planning from consultation through completion.'],
+                    ['title' => 'Final Details', 'body' => 'Careful attention to the finishing touches before handoff.'],
                 ],
             ],
-        ];
-    }
 
-    private function processAndPlanning(): array
-    {
-        return [
-            'blueprintSteps' => [
-                [
-                    'title' => 'Initial Conversation',
-                    'description' => 'We learn about the property, your goals, priorities, and expectations for the project.',
-                ],
-                [
-                    'title' => 'Property Visit',
-                    'description' => 'We walk the space in person to understand existing conditions before anything is planned on paper.',
-                ],
-                [
-                    'title' => 'Scope & Estimate',
-                    'description' => 'We define the scope of work and provide an estimate so you know what to expect before moving forward.',
-                ],
-                [
-                    'title' => 'Planning & Permits',
-                    'description' => 'We finalize plans and coordinate any required permits before construction begins.',
-                    'detailImage' => asset('images/projects/process-detail.jpg'),
-                    'detailAlt' => 'Bathroom mid-renovation with new tile flooring and rough-in plumbing',
-                ],
-                [
-                    'title' => 'Construction',
-                    'description' => 'Our team completes the work with careful coordination, communication, and attention to detail.',
-                ],
-                [
-                    'title' => 'Final Walkthrough',
-                    'description' => 'We review the completed work together and address final details before handoff.',
-                ],
+            'process' => [
+                ['title' => 'Consultation', 'description' => 'We learn about your goals and priorities for the project.'],
+                ['title' => 'Site Visit', 'description' => 'We walk the property to understand existing conditions.'],
+                ['title' => 'Scope & Proposal', 'description' => 'We define the scope of work and provide a clear proposal.'],
+                ['title' => 'Construction', 'description' => 'Our team completes the work with careful coordination.'],
+                ['title' => 'Final Walkthrough', 'description' => 'We review the finished work together before handoff.'],
             ],
 
             'planningGuide' => [
-                [
-                    'heading' => 'Project Scope',
-                    'body' => 'Every remodel starts with a clear scope — which rooms or systems are changing, and '
-                        . 'what stays the same. A defined scope keeps a kitchen remodel, bathroom renovation, or '
-                        . 'whole-home project on schedule.',
-                ],
-                [
-                    'heading' => 'Budget Preparation',
-                    'body' => 'Bay Area residential construction costs vary widely by scope, materials, and home '
-                        . 'condition. Having a general investment range in mind before your consultation helps us '
-                        . 'talk through realistic options together.',
-                ],
-                [
-                    'heading' => 'Materials',
-                    'body' => 'From cabinetry to tile to fixtures, material choices affect both budget and timeline. '
-                        . "We'll walk through options that fit your project's style and durability needs.",
-                ],
-                [
-                    'heading' => 'Permits',
-                    'body' => 'Many additions, ADUs, and structural changes require permitting through your local '
-                        . 'Bay Area jurisdiction. We coordinate the permitting process as part of planning your project.',
-                ],
-                [
-                    'heading' => 'Timelines',
-                    'body' => 'Residential remodeling timelines depend on scope, permitting, and material lead '
-                        . "times. We'll set expectations for your project's timeline during planning, before "
-                        . 'construction begins.',
-                ],
-                [
-                    'heading' => 'Preparing for a Consultation',
-                    'body' => "Have photos of your space, a general idea of your goals, and any inspiration in "
-                        . "mind. It helps us understand your project from the very first conversation.",
+                'heading' => 'Planning a residential remodel in the Bay Area',
+                'items' => [
+                    ['heading' => 'Project Scope', 'body' => 'A clear scope — which rooms or systems are changing — keeps any remodel on schedule.'],
+                    ['heading' => 'Budget Preparation', 'body' => 'Costs vary by scope and materials; a general range in mind helps guide the conversation.'],
+                    ['heading' => 'Permits', 'body' => 'Additions, ADUs, and structural changes often require permitting, which we help coordinate.'],
+                    ['heading' => 'Timelines', 'body' => 'Timelines depend on scope, permitting, and material lead times, set clearly during planning.'],
+                    ['heading' => 'Material Selections', 'body' => "Cabinetry, tile, and fixture choices affect both budget and timeline — we'll help you choose."],
                 ],
             ],
-        ];
-    }
 
-    /**
-     * These option sets are intentionally duplicated in
-     * LeadController's constants (used for server-side validation of
-     * the same form) rather than shared, to keep the two controllers
-     * decoupled — HomeController only ever renders, LeadController
-     * only ever validates/persists. Keep both lists in sync.
-     */
-    private function projectFormOptions(): array
-    {
-        return [
+            'consultation' => [
+                'heading' => "Let's talk about your project.",
+                'body' => "Tell us what you're planning and our team will contact you to discuss the next step.",
+            ],
+
             'projectTypes' => [
                 'kitchen' => 'Kitchen Remodeling',
                 'bathroom' => 'Bathroom Remodeling',
                 'whole-home' => 'Whole-Home Renovation',
                 'addition-adu' => 'Addition / ADU',
                 'other' => 'Other / Not Sure Yet',
-            ],
-            'timeframes' => [
-                'asap' => 'As soon as possible',
-                '1-3-months' => '1–3 months',
-                '3-6-months' => '3–6 months',
-                '6-plus-months' => '6+ months',
-                'exploring' => 'Just exploring',
-            ],
-            'budgets' => [
-                'under-25k' => 'Under $25,000',
-                '25k-75k' => '$25,000 – $75,000',
-                '75k-150k' => '$75,000 – $150,000',
-                '150k-plus' => '$150,000+',
-                'not-sure' => 'Not sure yet',
-            ],
-            'contactMethods' => [
-                'email' => 'Email',
-                'phone' => 'Phone',
-                'either' => 'Either',
             ],
         ];
     }

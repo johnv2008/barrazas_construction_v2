@@ -9,6 +9,9 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
+  /* Keeps anchor-link targets (nav "Services", "Projects", etc.) from
+     landing underneath the fixed header. */
+  scroll-padding-top: 108px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -68,6 +71,14 @@ h6 {
 h1 {
   font-size: var(--fs-h1);
   line-height: var(--lh-tight);
+}
+
+/* Desktop clamp bottoms out at 52px, which reads too large on small
+   phones — cap it explicitly rather than relying on vw scaling alone. */
+@media (max-width: 640px) {
+  h1 {
+    font-size: clamp(2.4rem, 8vw, 2.75rem);
+  }
 }
 
 h2 {
@@ -184,8 +195,7 @@ select {
   background: currentColor;
 }
 
-.section--dark .eyebrow,
-.section--soft-dark .eyebrow {
+.section--dark .eyebrow {
   color: var(--brand-burgundy-light);
 }
 
@@ -212,73 +222,24 @@ select {
   margin-inline: auto;
 }
 
-/* Large faint numeral used as a quiet section marker (e.g. "01").
-   Decorative only — always paired with a real heading, never a
-   substitute for one. */
-.section-number {
-  font-family: var(--font-display);
-  font-weight: var(--fw-display);
-  font-size: clamp(3rem, 8vw, 6rem);
-  line-height: 1;
-  /* Fallback for browsers without text-stroke support: a faint solid
-     numeral rather than invisible text. */
-  color: var(--color-border-on-light);
-}
-
-.section--dark .section-number,
-.section--soft-dark .section-number {
-  color: var(--color-border-on-dark-strong);
-}
-
-@supports (-webkit-text-stroke: 1px black) {
-  .section-number {
-    color: transparent;
-    -webkit-text-stroke: 1px var(--color-border-on-light);
-  }
-
-  .section--dark .section-number,
-  .section--soft-dark .section-number {
-    -webkit-text-stroke: 1px var(--color-border-on-dark-strong);
-  }
-}
-
-/* Subtle architectural grid-line texture. Pure CSS (no image
-   request), extremely low-contrast, purely decorative. */
-.bg-grid {
-  position: relative;
-}
-
-.bg-grid::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image: repeating-linear-gradient(
-    to right,
-    var(--line-on-light) 0,
-    var(--line-on-light) 1px,
-    transparent 1px,
-    transparent 120px
-  );
-}
-
-.section--dark.bg-grid::before,
-.section--soft-dark.bg-grid::before {
-  background-image: repeating-linear-gradient(
-    to right,
-    var(--line-on-dark) 0,
-    var(--line-on-dark) 1px,
-    transparent 1px,
-    transparent 120px
-  );
-}
-
 .section {
-  padding-block: var(--space-2xl);
+  padding-block: var(--space-section);
+}
+
+@media (max-width: 767px) {
+  .section {
+    padding-block: var(--space-section-mobile);
+  }
 }
 
 .section--tight {
-  padding-block: var(--space-xl);
+  padding-block: calc(var(--space-section) * 0.6);
+}
+
+@media (max-width: 767px) {
+  .section--tight {
+    padding-block: calc(var(--space-section-mobile) * 0.6);
+  }
 }
 
 .section--dark {
@@ -286,18 +247,34 @@ select {
   color: var(--color-text-on-dark);
 }
 
-.section--soft-dark {
-  background: var(--color-charcoal-soft);
-  color: var(--color-text-on-dark);
+.section--soft {
+  background: var(--warm-white);
+}
+
+.measure {
+  max-width: var(--measure);
 }
 
 .text-muted {
   color: var(--color-text-on-light-muted);
 }
 
-.section--dark .text-muted,
-.section--soft-dark .text-muted {
+.section--dark .text-muted {
   color: var(--color-text-on-dark-muted);
+}
+
+/* Soft fade-up used for card grids (see app.js [data-reveal-group]).
+   Respects prefers-reduced-motion via --duration-standard resolving
+   to 0ms in that case (see variables.css). */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--duration-standard) var(--ease-out), transform var(--duration-standard) var(--ease-out);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .visually-hidden {

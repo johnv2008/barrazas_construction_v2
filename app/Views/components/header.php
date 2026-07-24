@@ -23,7 +23,7 @@ $navItems = [
     </nav>
 
     <div class="site-header__actions">
-      <a href="#contact" class="btn btn-primary site-header__cta">Request a Consultation</a>
+      <a href="#contact" class="btn btn-primary site-header__cta">Schedule a Consultation</a>
       <button type="button" class="nav-toggle" data-nav-toggle aria-label="Open menu" aria-haspopup="true">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -44,18 +44,15 @@ $navItems = [
   </div>
   <nav aria-label="Mobile">
     <ul class="mobile-nav__list">
-      <?php foreach ($navItems as $index => $item): ?>
+      <?php foreach ($navItems as $item): ?>
         <li>
-          <a href="<?= e($item['href']) ?>">
-            <span class="mobile-nav__index"><?= str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) ?></span>
-            <?= e($item['label']) ?>
-          </a>
+          <a href="<?= e($item['href']) ?>"><?= e($item['label']) ?></a>
         </li>
       <?php endforeach; ?>
     </ul>
   </nav>
   <div class="mobile-nav__footer">
-    <a href="#contact" class="btn btn-primary btn-block">Request a Consultation</a>
+    <a href="#contact" class="btn btn-primary btn-block">Schedule a Consultation</a>
     <p class="mobile-nav__contact">San Francisco Bay Area, CA</p>
   </div>
 </div>

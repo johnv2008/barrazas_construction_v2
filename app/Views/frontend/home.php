@@ -1,234 +1,187 @@
 <?php
 /**
  * @var array $hero
- * @var array $capabilities
- * @var array $transformation
- * @var array $manifesto
+ * @var array $trustStrip
+ * @var array $intro
  * @var array $services
- * @var array $contactSheet
- * @var array $narrative
- * @var array $trustManifesto
- * @var array $blueprintSteps
+ * @var array $featuredProject
+ * @var array $selectedProjects
+ * @var array $whyChoose
+ * @var array $process
  * @var array $planningGuide
+ * @var array $consultation
  * @var array $projectTypes
- * @var array $timeframes
- * @var array $budgets
- * @var array $contactMethods
  */
 ?>
-<!-- ============ 1. Split hero ============ -->
-<section class="hero-split bg-grid">
-  <div class="container hero-split__grid">
-    <div class="hero-split__content">
+<!-- ============ Hero ============ -->
+<section class="hero-full">
+  <div class="hero-full__media">
+    <img src="<?= e($hero['primaryImage']) ?>" alt="<?= e($hero['primaryAlt']) ?>" fetchpriority="high">
+  </div>
+  <div class="hero-full__scrim" aria-hidden="true"></div>
+  <div class="container">
+    <div class="hero-full__content">
       <span class="eyebrow"><?= e($hero['eyebrow']) ?></span>
-      <h1>
-        <?php foreach ($hero['headingLines'] as $i => $line): ?>
-          <?= $i > 0 ? '<br>' : '' ?><?= e($line) ?>
-        <?php endforeach; ?>
-      </h1>
-      <p class="hero-split__lead"><?= e($hero['lead']) ?></p>
-      <div class="hero-split__actions">
+      <h1><?= e($hero['heading']) ?></h1>
+      <p class="hero-full__lead"><?= e($hero['lead']) ?></p>
+      <div class="hero-full__actions">
         <a href="<?= e($hero['primaryCta']['href']) ?>" class="btn btn-primary"><?= e($hero['primaryCta']['label']) ?></a>
         <a href="<?= e($hero['secondaryCta']['href']) ?>" class="btn btn-secondary"><?= e($hero['secondaryCta']['label']) ?></a>
       </div>
-      <ul class="hero-split__trust">
+      <p class="hero-full__trust">
         <?php foreach ($hero['trust'] as $line): ?>
-          <li><?= e($line) ?></li>
+          <span><?= e($line) ?></span>
         <?php endforeach; ?>
-      </ul>
-    </div>
-
-    <div class="hero-split__media">
-      <span class="hero-split__index">01 / Bay Area</span>
-      <div class="hero-split__frame hero-split__frame--primary">
-        <img src="<?= e($hero['primaryImage']) ?>" alt="<?= e($hero['primaryAlt']) ?>" fetchpriority="high">
-        <span class="hero-split__tag"><?= e($hero['tag']) ?></span>
-        <span class="hero-split__accent" aria-hidden="true"></span>
-      </div>
-      <div class="hero-split__frame hero-split__frame--inset">
-        <img src="<?= e($hero['insetImage']) ?>" alt="<?= e($hero['insetAlt']) ?>" loading="lazy" decoding="async">
-      </div>
+      </p>
     </div>
   </div>
 </section>
 
-<!-- ============ 2. Capability strip ============ -->
-<?php \App\Core\View::component('capability-strip', ['items' => $capabilities]); ?>
+<!-- ============ Trust strip ============ -->
+<div class="trust-strip">
+  <ul class="trust-strip__list">
+    <?php foreach ($trustStrip as $item): ?>
+      <li class="trust-strip__item"><?= e($item) ?></li>
+    <?php endforeach; ?>
+  </ul>
+</div>
 
-<!-- ============ 3. Transformation feature ============ -->
-<section class="section section--dark" id="projects">
-  <div class="container">
-    <div class="section-heading section-heading--center">
-      <span class="eyebrow">Progress to Completion</span>
-      <h2>The Result Matters.<br>So Does Everything Behind It.</h2>
+<!-- ============ Company introduction ============ -->
+<section class="section" id="about">
+  <div class="container intro">
+    <div>
+      <h2><?= e($intro['heading']) ?></h2>
+      <span class="accent-line"></span>
+      <p class="intro__body"><?= e($intro['body']) ?></p>
     </div>
-    <?php \App\Core\View::component('before-after', ['item' => $transformation]); ?>
+    <img class="intro__image" src="<?= e($intro['image']) ?>" alt="<?= e($intro['imageAlt']) ?>" loading="lazy" decoding="async">
   </div>
 </section>
 
-<!-- ============ 4. Manifesto moment ============ -->
-<section class="manifesto">
-  <p class="manifesto__text">
-    <?= e($manifesto['line1']) ?><br>
-    <span class="text-accent"><?= e($manifesto['line2']) ?></span>
-  </p>
-</section>
-
-<!-- ============ 5. Sticky services ============ -->
-<section class="section section--tight" id="services" data-sticky-services>
+<!-- ============ Services ============ -->
+<section class="section section--tight section--soft" id="services">
   <div class="container">
     <div class="section-heading">
-      <span class="eyebrow">What We Build</span>
-      <h2>Services, By the Layer</h2>
+      <span class="eyebrow">What We Do</span>
+      <h2>Services</h2>
     </div>
-  </div>
-  <div class="container container--wide">
-    <?php \App\Core\View::component('sticky-services', ['services' => $services]); ?>
+    <div class="card-grid card-grid--4" data-reveal-group>
+      <?php foreach ($services as $service): ?>
+        <div data-reveal>
+          <?php \App\Core\View::component('service-card', ['item' => $service]); ?>
+        </div>
+      <?php endforeach; ?>
+    </div>
   </div>
 </section>
 
-<!-- ============ 6. Project contact sheet ============ -->
-<section class="section section--soft-dark" id="work">
+<!-- ============ Featured project ============ -->
+<section class="section">
+  <div class="container">
+    <div class="section-heading">
+      <span class="eyebrow"><?= e($featuredProject['eyebrow']) ?></span>
+      <h2><?= e($featuredProject['heading']) ?></h2>
+    </div>
+    <div class="featured-project">
+      <div>
+        <img class="featured-project__main" src="<?= e($featuredProject['mainImage']) ?>" alt="<?= e($featuredProject['mainAlt']) ?>" loading="lazy" decoding="async">
+        <?php if (!empty($featuredProject['thumbs'])): ?>
+          <div class="featured-project__thumbs">
+            <?php foreach ($featuredProject['thumbs'] as $thumb): ?>
+              <img src="<?= e($thumb['image']) ?>" alt="<?= e($thumb['alt']) ?>" loading="lazy" decoding="async">
+            <?php endforeach; ?>
+          </div>
+        <?php endif; ?>
+      </div>
+      <div>
+        <p class="featured-project__meta"><?= e($featuredProject['category']) ?> &middot; <?= e($featuredProject['city']) ?></p>
+        <p><?= e($featuredProject['summary']) ?></p>
+        <a href="<?= e($featuredProject['href']) ?>" class="featured-project__link">View project &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Selected projects ============ -->
+<section class="section section--tight section--soft" id="projects">
   <div class="container">
     <div class="section-heading">
       <span class="eyebrow">Recent Work</span>
-      <h2>Project Contact Sheet</h2>
+      <h2>Selected projects</h2>
     </div>
-    <div class="contact-sheet">
-      <?php foreach ($contactSheet as $index => $item): ?>
-        <a href="#start-your-project" class="contact-sheet__item contact-sheet__item--<?= e($item['size']) ?>">
-          <img src="<?= e($item['image']) ?>" alt="<?= e($item['alt']) ?>" loading="lazy" decoding="async">
-          <span class="contact-sheet__overlay">
-            <span class="contact-sheet__number"><?= str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) ?></span>
-            <span class="contact-sheet__title"><?= e($item['title']) ?></span>
-            <span class="contact-sheet__meta-line"><?= e($item['category']) ?> &middot; <?= e($item['city']) ?></span>
-            <span class="contact-sheet__meta-line"><?= e($item['scope']) ?></span>
-          </span>
-        </a>
-      <?php endforeach; ?>
-    </div>
-  </div>
-</section>
-
-<!-- ============ 7. Featured project narrative ============ -->
-<section class="section" id="about">
-  <div class="container">
-    <div class="narrative">
-      <div class="narrative__media">
-        <img class="narrative__result" src="<?= e($narrative['resultImage']) ?>" alt="<?= e($narrative['resultAlt']) ?>" loading="lazy" decoding="async">
-        <div class="narrative__detail-stack narrative__detail-stack--single">
-          <img src="<?= e($narrative['progressImage']) ?>" alt="<?= e($narrative['progressAlt']) ?>" loading="lazy" decoding="async">
+    <div class="card-grid card-grid--2" data-reveal-group>
+      <?php foreach ($selectedProjects as $project): ?>
+        <div data-reveal>
+          <?php \App\Core\View::component('project-card', ['item' => $project]); ?>
         </div>
-        <p class="narrative__caption">Roof replacement in progress on the same hillside property</p>
-      </div>
-      <div class="narrative__copy">
-        <span class="eyebrow"><?= e($narrative['eyebrow']) ?></span>
-        <h2><?= e($narrative['heading']) ?></h2>
-        <dl class="narrative__facts">
-          <div>
-            <dt>Goal</dt>
-            <dd><?= e($narrative['goal']) ?></dd>
-          </div>
-          <div>
-            <dt>Work Completed</dt>
-            <dd><?= e($narrative['workCompleted']) ?></dd>
-          </div>
-          <div>
-            <dt>Result</dt>
-            <dd><?= e($narrative['result']) ?></dd>
-          </div>
-        </dl>
-        <a href="<?= e($narrative['relatedHref']) ?>" class="narrative__link"><?= e($narrative['relatedLabel']) ?> &rarr;</a>
-      </div>
+      <?php endforeach; ?>
     </div>
   </div>
 </section>
 
-<!-- ============ 8. Trust manifesto ============ -->
-<section class="section section--tight">
+<!-- ============ Why choose Barraza's ============ -->
+<section class="section">
   <div class="container">
-    <span class="eyebrow">Why Barraza's</span>
-    <h2 class="trust-manifesto__headline">
-      <?= e($trustManifesto['headline1']) ?><br>
-      <?= e($trustManifesto['headline2']) ?><br>
-      <?= e($trustManifesto['headline3']) ?>
-    </h2>
-    <ul class="trust-manifesto__list">
-      <?php foreach ($trustManifesto['items'] as $item): ?>
-        <li><?= e($item) ?></li>
+    <div class="section-heading">
+      <span class="eyebrow">Why Barraza's</span>
+      <h2><?= e($whyChoose['heading']) ?></h2>
+    </div>
+    <div class="benefits-grid">
+      <?php foreach ($whyChoose['items'] as $item): ?>
+        <div class="benefit">
+          <h3><?= e($item['title']) ?></h3>
+          <p><?= e($item['body']) ?></p>
+        </div>
       <?php endforeach; ?>
-    </ul>
+    </div>
   </div>
 </section>
 
-<!-- ============ 9. Process as blueprint ============ -->
-<section class="section blueprint-process" id="process">
+<!-- ============ Process ============ -->
+<section class="section section--tight section--soft" id="process">
   <div class="container">
-    <div class="section-heading section-heading--center">
+    <div class="section-heading">
       <span class="eyebrow">How We Work</span>
-      <h2>Our Process, Step by Step</h2>
+      <h2>Our process</h2>
     </div>
-  </div>
-  <div class="container container--wide">
-    <div class="blueprint-steps">
-      <?php foreach ($blueprintSteps as $index => $step): ?>
-        <details class="blueprint-step"<?= $index === 0 ? ' open' : '' ?>>
-          <summary>
-            <span>
-              <span class="blueprint-step__number"><?= str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) ?></span>
-              <h3><?= e($step['title']) ?></h3>
-            </span>
-            <span class="blueprint-step__toggle" aria-hidden="true">+</span>
-          </summary>
-          <div class="blueprint-step__body">
-            <p><?= e($step['description']) ?></p>
-            <?php if (isset($step['detailImage'])): ?>
-              <img class="blueprint-step__detail-img" src="<?= e($step['detailImage']) ?>" alt="<?= e($step['detailAlt']) ?>" loading="lazy" decoding="async">
-            <?php endif; ?>
-          </div>
-        </details>
+    <div class="process-compact">
+      <?php foreach ($process as $index => $step): ?>
+        <div class="process-compact__step">
+          <span class="process-compact__number"><?= str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) ?></span>
+          <h3><?= e($step['title']) ?></h3>
+          <p><?= e($step['description']) ?></p>
+        </div>
       <?php endforeach; ?>
     </div>
   </div>
 </section>
 
-<!-- ============ 10. Planning guide (SEO content) ============ -->
+<!-- ============ Planning guidance ============ -->
 <section class="section">
   <div class="container">
     <div class="section-heading">
       <span class="eyebrow">Getting Started</span>
-      <h2>Planning a Residential Remodel in the Bay Area</h2>
-      <p class="text-muted" style="max-width:56ch">
-        A few things worth thinking through before your first consultation for a kitchen remodel,
-        bathroom renovation, whole-home project, or ADU.
-      </p>
+      <h2><?= e($planningGuide['heading']) ?></h2>
     </div>
-    <div class="planning-guide__grid">
-      <?php foreach ($planningGuide as $item): ?>
-        <article class="planning-guide__item">
+    <div class="planning-grid">
+      <?php foreach ($planningGuide['items'] as $item): ?>
+        <div class="planning-grid__item">
           <h3><?= e($item['heading']) ?></h3>
           <p><?= e($item['body']) ?></p>
-        </article>
+        </div>
       <?php endforeach; ?>
     </div>
   </div>
 </section>
 
-<!-- ============ 11. Start your project (guided form) ============ -->
-<section class="section section--dark bg-grid">
-  <div class="container container--narrow">
-    <div class="section-heading section-heading--center">
+<!-- ============ Consultation ============ -->
+<section class="section section--tight section--soft" id="contact">
+  <div class="container consultation">
+    <div>
       <span class="eyebrow">Get Started</span>
-      <h2>Let's Start With Your Vision.</h2>
-      <p class="text-muted">
-        Tell us what you're planning. We'll review the details and contact you to discuss the next step.
-      </p>
+      <h2><?= e($consultation['heading']) ?></h2>
+      <p class="consultation__body"><?= e($consultation['body']) ?></p>
     </div>
-    <?php \App\Core\View::component('project-form', [
-        'projectTypes' => $projectTypes,
-        'timeframes' => $timeframes,
-        'budgets' => $budgets,
-        'contactMethods' => $contactMethods,
-    ]); ?>
+    <?php \App\Core\View::component('project-form', ['projectTypes' => $projectTypes]); ?>
   </div>
 </section>
