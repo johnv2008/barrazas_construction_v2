@@ -1,0 +1,15 @@
+/.env
+/storage/logs/*.log
+/storage/cache/*
+!/storage/cache/.gitkeep
+/storage/sessions/*
+!/storage/sessions/.gitkeep
+/storage/installed.lock
+/public/uploads/**/*
+!/public/uploads/**/.gitkeep
+/vendor/
+/node_modules/
+.DS_Store
+Thumbs.db
+*.swp
+/project_files/

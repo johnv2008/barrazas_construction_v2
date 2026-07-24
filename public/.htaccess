@@ -1,0 +1,48 @@
+# Barraza's Construction — public/ (web root) Apache configuration
+# Compatible with one.com shared hosting (Apache + mod_rewrite).
+
+# ---- Front controller routing ----
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Serve real files/directories (assets, uploads) directly.
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Everything else goes through the front controller.
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# ---- Directory listing / server signature ----
+Options -Indexes -MultiViews
+ServerSignature Off
+
+# ---- Never serve internal/config file types from the web root ----
+<FilesMatch "\.(env|sql|log|ini|md|lock|yml|yaml|htpasswd)$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# ---- Security headers (mirrors public/index.php for static assets
+#      and any response Apache serves without invoking PHP) ----
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>
+
+# ---- Default charset ----
+AddDefaultCharset UTF-8
+
+# Note: 404/403/500 pages are rendered by the application (see
+# App\Core\Router and App\Core\ErrorHandler), since almost every
+# request is routed through index.php above. No ErrorDocument
+# directives are needed for that path. A raw Apache-level error (e.g.
+# a static file Apache itself refuses) will fall back to the host's
+# default error page, which never happens in normal use since assets/
+# and uploads/ are the only static paths and both are world-readable.

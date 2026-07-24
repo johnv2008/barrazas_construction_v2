@@ -1,0 +1,5 @@
+# Defense in depth: this file only matters if a server is ever
+# misconfigured to serve the project root instead of public/. In a
+# correct deployment (see README "Deployment") this directory is
+# never web-accessible at all.
+Require all denied

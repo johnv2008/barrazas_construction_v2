@@ -1,0 +1,160 @@
+/*
+  Barraza's Construction — Design Tokens
+  Brand-led system built around the company's actual identity: deep
+  burgundy, ink black, and warm white/stone neutrals. Replaces the
+  earlier generic gold/charcoal placeholder palette.
+
+  No external font requests: the stacks below lean on strong system
+  sans fallbacks at heavy weights for the display/architectural feel,
+  with a refined serif reserved for occasional short editorial lines.
+  To upgrade later, self-host a woff2 (e.g. in /assets/fonts/) and add
+  an @font-face block above these variables — never point at a
+  third-party font CDN (keeps the CSP simple and avoids leaking
+  visitor requests to a third party).
+*/
+
+:root {
+  /* ---- Brand color system (source of truth) ----
+     --brand-burgundy is sampled directly from the real company logo
+     (project_files/logo.png — the banner and crossed-tools fill are a
+     single solid #800020 throughout, confirmed by pixel sampling).
+     Dark/light variants are derived from that exact hue (HSL 345°)
+     rather than an approximate hex, so on-screen burgundy now matches
+     the printed/embroidered logo precisely. */
+  --brand-burgundy: #800020;
+  --brand-burgundy-dark: #5c0017;
+  --brand-burgundy-light: #b3183f;
+
+  --ink-black: #111214;
+  --graphite: #1b1d20;
+  --charcoal: #26282c;
+
+  --warm-white: #f7f4ef;
+  --stone: #d9d3ca;
+  --soft-gray: #a9a5a0;
+
+  --pure-white: #ffffff;
+
+  /* ---- Legacy token names, aliased onto the brand system above.
+     Kept so admin/auth/error views (out of scope for this redesign)
+     continue to work unchanged and automatically pick up the new
+     brand palette instead of the old gold/charcoal one. ---- */
+  --color-charcoal-deep: var(--ink-black);
+  --color-charcoal-soft: var(--graphite);
+  --color-ivory: var(--warm-white);
+  --color-white: var(--pure-white);
+  --color-gold: var(--brand-burgundy);
+  --color-gold-light: var(--brand-burgundy-light);
+  --color-gold-dark: var(--brand-burgundy-dark);
+  --color-stone: var(--stone);
+
+  /* Color: borders / overlays */
+  --color-border-on-dark: rgba(255, 255, 255, 0.1);
+  --color-border-on-dark-strong: rgba(255, 255, 255, 0.18);
+  --color-border-on-light: rgba(17, 18, 20, 0.12);
+  --color-overlay-dark: rgba(17, 18, 20, 0.6);
+  --line-on-dark: rgba(255, 255, 255, 0.08);
+  --line-on-light: rgba(17, 18, 20, 0.1);
+
+  /* Color: semantic */
+  --color-success: #4b7a52;
+  --color-danger: #a1332a;
+  --color-text-on-dark: var(--warm-white);
+  --color-text-on-dark-muted: var(--soft-gray);
+  --color-text-on-light: var(--ink-black);
+  --color-text-on-light-muted: #5b5751;
+
+  /* ---- Typography ---- */
+  /* Display: bold architectural headings (H1/H2, hero). Weight does
+     most of the work since a true "strong grotesk" isn't guaranteed
+     without a webfont — 800/900 weight + tight tracking on solid
+     system faces already reads as confident and modern. */
+  --font-display: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Arial, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* Refined serif — used sparingly for short editorial statements only,
+     never for primary headings. */
+  --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  /* Condensed — optional, for uppercase labels that want to echo the
+     logo's condensed wordmark. Falls back to --font-sans (with tight
+     letter-spacing) wherever a condensed face isn't installed. */
+  --font-condensed: "Arial Narrow", "Roboto Condensed", var(--font-sans);
+
+  --fs-eyebrow: 0.8125rem;
+  --fs-body: 1rem;
+  --fs-body-lg: 1.1875rem;
+  --fs-h6: 1.125rem;
+  --fs-h5: 1.375rem;
+  --fs-h4: 1.875rem;
+  --fs-h3: 2.5rem;
+  --fs-h2: 3rem;
+  --fs-h1: clamp(2.5rem, 5vw, 4.5rem);
+
+  --lh-tight: 1.08;
+  --lh-heading: 1.15;
+  --lh-body: 1.65;
+
+  --ls-eyebrow: 0.16em;
+  --ls-tight: -0.02em;
+  --ls-display: -0.03em;
+
+  --fw-display: 800;
+  --fw-semibold: 600;
+  --fw-medium: 500;
+
+  /* Spacing scale */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+  --space-3xl: 9rem;
+
+  /* Layout */
+  --container-max: 1280px;
+  --container-wide: 1440px;
+  --container-narrow: 900px;
+  --container-padding: clamp(1.25rem, 4vw, 3rem);
+
+  /* Radii — deliberately restrained (architectural, not "rounded card") */
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 6px;
+  --radius-pill: 999px;
+
+  /* Shadow — used sparingly (modal only) */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 24px 56px rgba(0, 0, 0, 0.4);
+
+  /* Motion */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 180ms;
+  --duration-standard: 350ms;
+  --duration-slow: 650ms;
+  --duration-marquee: 38s;
+
+  /* Blueprint / architectural grid texture */
+  --blueprint-line: rgba(247, 244, 239, 0.07);
+  --blueprint-line-strong: rgba(247, 244, 239, 0.14);
+
+  /* Restrained image hover scale (never more than this) */
+  --hover-scale: 1.03;
+
+  /* Z-index layers */
+  --z-header: 100;
+  --z-overlay: 200;
+  --z-modal: 300;
+  --z-toast: 400;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-standard: 0ms;
+    --duration-slow: 0ms;
+  }
+}
