@@ -7,10 +7,23 @@
   No external font requests: the stacks below lean on strong system
   sans fallbacks at heavy weights for the display/architectural feel,
   with a refined serif reserved for occasional short editorial lines.
-  To upgrade later, self-host a woff2 (e.g. in /assets/fonts/) and add
-  an @font-face block above these variables — never point at a
-  third-party font CDN (keeps the CSP simple and avoids leaking
-  visitor requests to a third party).
+
+  docs/DESIGN_SYSTEM.md §5 specifies General Sans (display), Inter
+  (body), and Fraunces italic (editorial accent) as the target
+  typefaces. None of the three have font files in this repo yet
+  (public/assets/fonts/ does not exist) — per implementation-safety
+  instructions, they have NOT been downloaded or fabricated here.
+  System fallbacks below stay in place until real files are supplied.
+
+  To upgrade later: add self-hosted WOFF2 files under
+  public/assets/fonts/ (General Sans: Regular 400 + Semibold 600 +
+  Bold 700; Inter: Regular 400 + Medium 500; Fraunces: Italic 400
+  only — the doc uses it for short emotive lines exclusively), add
+  @font-face blocks above these variables referencing them with
+  font-display: swap, then update the three --font-* stacks below to
+  list the webfont first with the current stack kept as the fallback.
+  Never point at a third-party font CDN (keeps the CSP simple and
+  avoids leaking visitor requests to a third party).
 */
 
 :root {
@@ -58,11 +71,25 @@
 
   /* Color: semantic */
   --color-success: #4b7a52;
+  --color-warning: #b5792a;
   --color-danger: #a1332a;
   --color-text-on-dark: var(--warm-white);
   --color-text-on-dark-muted: var(--soft-gray);
   --color-text-on-light: var(--ink-black);
   --color-text-on-light-muted: #5b5751;
+
+  /* ---- Semantic aliases (docs/DESIGN_SYSTEM.md naming) ----
+     The names above are what every file in the codebase already
+     consumes — renaming them wholesale would touch dozens of call
+     sites for no visual change. These aliases exist only to satisfy
+     places that want the design-system's documented semantic names
+     directly (e.g. new components written against the doc). Prefer
+     the canonical names above when extending existing files. */
+  --color-text-primary: var(--color-text-on-light);
+  --color-text-secondary: var(--color-text-on-light-muted);
+  --color-surface: var(--warm-white);
+  --color-surface-muted: var(--stone);
+  --color-border: var(--line-on-light);
 
   /* ---- Typography ---- */
   /* Display: bold architectural headings (H1/H2, hero). Weight does
@@ -120,6 +147,7 @@
      without distorting other spacing uses). */
   --space-section: 96px;
   --space-section-mobile: 64px;
+  --space-section-desktop: var(--space-section);
 
   /* Comfortable reading measure for body copy */
   --measure: 640px;
@@ -129,6 +157,15 @@
   --container-wide: 1440px;
   --container-narrow: 900px;
   --container-padding: clamp(1.25rem, 4vw, 3rem);
+
+  /* Minimum touch/click target — buttons, icon buttons, form controls
+     all size against this single value (WCAG 2.5.5 / iOS HIG minimum). */
+  --tap-target-min: 44px;
+
+  /* Focus ring — every :focus-visible rule in the system should read
+     from these two values rather than repeating 2px literals. */
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
 
   /* Radii — deliberately restrained (architectural, not "rounded card") */
   --radius-sm: 2px;

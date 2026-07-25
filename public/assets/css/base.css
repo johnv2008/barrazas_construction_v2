@@ -131,8 +131,8 @@ select {
 /* Consistent, visible keyboard focus everywhere — never remove this
    without providing an equally visible replacement. */
 :focus-visible {
-  outline: 2px solid var(--color-gold);
-  outline-offset: 2px;
+  outline: var(--focus-ring-width) solid var(--color-gold);
+  outline-offset: var(--focus-ring-offset);
 }
 
 ::selection {
@@ -253,6 +253,71 @@ select {
 
 .measure {
   max-width: var(--measure);
+}
+
+/* ---------- Grid utilities ----------
+   Generic reusable grid, distinct from .card-grid (components.css)
+   which is card-specific. Same breakpoints/gaps as the rest of the
+   system for section-level layouts (used by future page sections,
+   not yet wired into the homepage in this phase). */
+.grid {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .grid--2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid--3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .grid--4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ---------- CTA group ----------
+   Shared wrapper for one-or-two-button action rows (hero, CTA
+   bands, form submits). Matches the pattern already used ad hoc in
+   .hero-full__actions — new sections should use this class directly
+   instead of repeating the same three declarations. */
+.cta-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* ---------- Image frame ----------
+   Shared crop/border-radius treatment for any standalone photo that
+   isn't already inside a card component — keeps the architectural,
+   restrained-radius look consistent (see docs/DESIGN_SYSTEM.md §8). */
+.image-frame {
+  display: block;
+  width: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--stone);
+}
+
+.image-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- Required field indicator ----------
+   Visual-only marker (asterisk), paired with the field's own
+   required attribute — never color alone, per accessibility rule. */
+.form-required {
+  color: var(--brand-burgundy);
+  margin-left: 2px;
 }
 
 .text-muted {

@@ -14,15 +14,56 @@
   font-weight: 600;
   letter-spacing: 0.02em;
   cursor: pointer;
-  min-height: 44px;
+  min-height: var(--tap-target-min);
   transition: background-color var(--duration-fast) var(--ease-standard),
     color var(--duration-fast) var(--ease-standard),
     border-color var(--duration-fast) var(--ease-standard),
-    transform var(--duration-fast) var(--ease-standard);
+    transform var(--duration-fast) var(--ease-standard),
+    opacity var(--duration-fast) var(--ease-standard);
 }
 
 .btn:active {
   transform: translateY(1px);
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  background: var(--stone);
+  border-color: var(--stone);
+  color: rgba(27, 29, 32, 0.4);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Loading state — CSS hook only; wiring aria-busy/disabled on submit
+   is a future JS enhancement, no behavior added here. */
+.btn.is-loading {
+  color: transparent;
+  pointer-events: none;
+  position: relative;
+}
+
+.btn.is-loading::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: var(--pure-white);
+  animation: btn-spin 700ms linear infinite;
+}
+
+.btn-secondary.is-loading::after,
+.btn-link.is-loading::after {
+  border-color: rgba(17, 18, 20, 0.25);
+  border-top-color: var(--color-text-on-light);
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .btn-primary {
@@ -34,11 +75,15 @@
 }
 
 .btn-primary:hover {
-  background: var(--color-gold-light);
-  border-color: var(--color-gold-light);
+  /* Deepen on hover, never lighten — lightening a fill reads as a
+     cheaper/generic UI kit; deepening reads as pressed/premium. */
+  background: var(--brand-burgundy-dark);
+  border-color: var(--brand-burgundy-dark);
   color: var(--pure-white);
 }
 
+/* Default .btn-secondary — outline style tuned for dark/photo
+   backgrounds (hero, CTA bands on --section--dark). */
 .btn-secondary {
   background: transparent;
   color: var(--color-text-on-dark);
@@ -48,6 +93,45 @@
 .btn-secondary:hover {
   border-color: var(--color-gold);
   color: var(--color-gold);
+}
+
+/* Light-background variant — for split sections, forms, and any
+   surface with --warm-white/--pure-white/--stone behind the button.
+   Replaces the inline-style override pattern used earlier in this
+   project (e.g. the pre-full-bleed hero secondary CTA). */
+.btn-secondary--on-light {
+  color: var(--color-text-on-light);
+  border-color: var(--color-border-on-light);
+}
+
+.btn-secondary--on-light:hover {
+  border-color: var(--brand-burgundy);
+  color: var(--brand-burgundy);
+}
+
+/* Text link / ghost variant — no fill, no border, underline on
+   interaction only. Lowest-emphasis action in the button system. */
+.btn-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3xs);
+  padding: 0.25rem 0;
+  min-height: auto;
+  background: transparent;
+  border: none;
+  color: var(--brand-burgundy);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+}
+
+.btn-link:hover,
+.btn-link:focus-visible {
+  border-bottom-color: currentColor;
 }
 
 .btn-block {
@@ -112,9 +196,9 @@
   position: relative;
   display: inline-block;
   font-family: var(--font-sans);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: var(--fw-semibold);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   color: var(--color-text-on-light);
   padding-block: var(--space-xs);
 }
@@ -167,8 +251,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: var(--tap-target-min);
+  height: var(--tap-target-min);
   background: transparent;
   border: 1px solid var(--color-border-on-light);
   border-radius: var(--radius-sm);
@@ -218,8 +302,8 @@
 }
 
 .mobile-nav__close {
-  width: 44px;
-  height: 44px;
+  width: var(--tap-target-min);
+  height: var(--tap-target-min);
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border-on-light);
   background: transparent;
@@ -473,17 +557,29 @@
 
 .form-control {
   width: 100%;
-  min-height: 44px;
+  min-height: var(--tap-target-min);
   padding: 0.75rem 1rem;
   background: var(--color-white);
   border: 1px solid var(--color-border-on-light);
   border-radius: var(--radius-sm);
   color: var(--color-text-on-light);
+  font-size: var(--fs-body);
   transition: border-color var(--duration-fast) var(--ease-standard);
 }
 
 .form-control:focus {
   border-color: var(--color-gold);
+}
+
+.form-control:disabled {
+  background: var(--stone);
+  border-color: var(--stone);
+  color: var(--color-text-on-light-muted);
+  cursor: not-allowed;
+}
+
+.form-control.has-error {
+  border-color: var(--color-danger);
 }
 
 textarea.form-control {
@@ -501,6 +597,77 @@ textarea.form-control {
   font-size: 0.8125rem;
   color: var(--color-danger);
   margin-top: var(--space-3xs);
+}
+
+/* ---------- Custom checkbox / radio ----------
+   Wrap a native <input type="checkbox|radio"> + label text in
+   .form-check so the input keeps full native keyboard/AT behavior
+   (nothing is rebuilt or intercepted) while gaining the brand's
+   20x20px, burgundy-on-check appearance. */
+.form-check {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2xs);
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.form-check input[type="checkbox"],
+.form-check input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 0.15em;
+  border: 1px solid var(--color-border-on-light);
+  background: var(--pure-white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-standard), background-color var(--duration-fast) var(--ease-standard);
+}
+
+.form-check input[type="checkbox"] {
+  border-radius: var(--radius-sm);
+}
+
+.form-check input[type="radio"] {
+  border-radius: 50%;
+}
+
+.form-check input[type="checkbox"]:checked,
+.form-check input[type="radio"]:checked {
+  background: var(--brand-burgundy);
+  border-color: var(--brand-burgundy);
+}
+
+.form-check input[type="checkbox"]:checked::after {
+  content: "";
+  width: 5px;
+  height: 9px;
+  border: solid var(--pure-white);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+.form-check input[type="radio"]:checked::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pure-white);
+}
+
+.form-check input:disabled {
+  background: var(--stone);
+  border-color: var(--stone);
+  cursor: not-allowed;
+}
+
+.form-check input:disabled ~ span {
+  color: var(--color-text-on-light-muted);
 }
 
 /* Dark-surface variant (used on the login screen) */
@@ -538,6 +705,12 @@ textarea.form-control {
   color: #8f362d;
 }
 
+.alert-warning {
+  background: rgba(181, 121, 42, 0.12);
+  border-color: rgba(181, 121, 42, 0.4);
+  color: #8a5c1f;
+}
+
 .form--on-dark ~ .alert,
 .section--dark .alert-success {
   color: #a9d3ac;
@@ -545,6 +718,57 @@ textarea.form-control {
 
 .section--dark .alert-error {
   color: #e2a49d;
+}
+
+.section--dark .alert-warning {
+  color: #e0b98a;
+}
+
+/* ---------- Breadcrumbs ----------
+   Not yet used anywhere (no sub-pages exist yet) — defined now so
+   Service/Project sub-pages can consume it directly next phase. */
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3xs);
+  font-size: 0.8125rem;
+  color: var(--color-text-on-light-muted);
+  margin-bottom: var(--space-md);
+}
+
+.breadcrumbs a {
+  color: var(--color-text-on-light-muted);
+}
+
+.breadcrumbs a:hover,
+.breadcrumbs a:focus-visible {
+  color: var(--brand-burgundy);
+}
+
+.breadcrumbs__current {
+  color: var(--color-text-on-light);
+  font-weight: var(--fw-semibold);
+}
+
+.breadcrumbs__sep {
+  color: var(--soft-gray);
+}
+
+/* ---------- Empty state ----------
+   Public-facing equivalent of .admin-empty-state (admin.css) — for
+   e.g. a Projects page with zero published projects. Not yet used. */
+.empty-state {
+  text-align: center;
+  padding: var(--space-2xl) var(--space-md);
+  border: 1px dashed var(--color-border-on-light);
+  border-radius: var(--radius-md);
+  color: var(--color-text-on-light-muted);
+}
+
+.empty-state__title {
+  color: var(--color-text-on-light);
+  margin-bottom: var(--space-2xs);
 }
 
 /* ---------- Modal ---------- */

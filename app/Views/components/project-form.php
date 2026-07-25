@@ -44,7 +44,7 @@ $leadError = $allFlashes['lead_error'][0] ?? null;
       </div>
 
       <div class="form-group">
-        <label class="form-label" for="name">Name</label>
+        <label class="form-label" for="name">Name<span class="form-required" aria-hidden="true">*</span></label>
         <input class="form-control" type="text" id="name" name="name" value="<?= e(old('name')) ?>" required>
       </div>
 
@@ -54,17 +54,17 @@ $leadError = $allFlashes['lead_error'][0] ?? null;
       </div>
 
       <div class="form-group">
-        <label class="form-label" for="email">Email</label>
+        <label class="form-label" for="email">Email<span class="form-required" aria-hidden="true">*</span></label>
         <input class="form-control" type="email" id="email" name="email" value="<?= e(old('email')) ?>" autocomplete="email" required>
       </div>
 
       <div class="form-group">
-        <label class="form-label" for="city">Project city</label>
+        <label class="form-label" for="city">Project city<span class="form-required" aria-hidden="true">*</span></label>
         <input class="form-control" type="text" id="city" name="city" value="<?= e(old('city')) ?>" required>
       </div>
 
       <div class="form-group">
-        <label class="form-label" for="project_type">Project type</label>
+        <label class="form-label" for="project_type">Project type<span class="form-required" aria-hidden="true">*</span></label>
         <select class="form-control" id="project_type" name="project_type" required>
           <option value="">Select one</option>
           <?php foreach ($projectTypes as $value => $label): ?>
@@ -85,8 +85,8 @@ $leadError = $allFlashes['lead_error'][0] ?? null;
       </div>
 
       <div class="form-group">
-        <label style="display:flex;align-items:flex-start;gap:.6em;font-weight:400">
-          <input type="checkbox" name="consent" value="1" style="margin-top:.3em" required>
+        <label class="form-check">
+          <input type="checkbox" name="consent" value="1" required>
           <span>I agree to be contacted by Barraza's Construction about my project.</span>
         </label>
       </div>

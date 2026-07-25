@@ -38,9 +38,9 @@
 <div class="admin-panel">
   <h2 class="admin-panel__title">Quick Actions</h2>
   <div style="display:flex;flex-wrap:wrap;gap:var(--space-sm)">
-    <a class="btn btn-primary" href="<?= e(admin_url('projects')) ?>" style="color:var(--color-charcoal-deep)">Add a Project</a>
-    <a class="btn btn-secondary" style="border-color:var(--color-border-on-light);color:var(--color-text-on-light)" href="<?= e(admin_url('services')) ?>">Edit Services</a>
-    <a class="btn btn-secondary" style="border-color:var(--color-border-on-light);color:var(--color-text-on-light)" href="<?= e(admin_url('settings')) ?>">Site Settings</a>
+    <a class="btn btn-primary" href="<?= e(admin_url('projects')) ?>">Add a Project</a>
+    <a class="btn btn-secondary btn-secondary--on-light" href="<?= e(admin_url('services')) ?>">Edit Services</a>
+    <a class="btn btn-secondary btn-secondary--on-light" href="<?= e(admin_url('settings')) ?>">Site Settings</a>
   </div>
 </div>
 
