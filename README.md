@@ -1,7 +1,7 @@
 # Barraza's Construction — Website & Admin Platform
 
 Custom PHP/MariaDB website and CMS for **Barraza's Construction**, a residential
-construction and remodeling company serving the San Francisco Bay Area.
+construction and remodeling company serving Tuolumne County, California.
 
 This is **Phase 1**: the secure technical foundation — architecture, database,
 authentication, admin shell, and design system — that later phases build on.

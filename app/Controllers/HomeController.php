@@ -13,8 +13,8 @@ final class HomeController extends Controller
     {
         $this->view('frontend/home', array_merge(
             [
-                'title' => "Barraza's Construction | Bay Area Residential Remodeling & Renovation",
-                'metaDescription' => 'Barraza\'s Construction delivers residential remodeling, additions, and complete home renovations throughout the San Francisco Bay Area — kitchens, bathrooms, whole-home renovations, and ADUs.',
+                'title' => "Barraza's Construction | Tuolumne County Residential Remodeling & Renovation",
+                'metaDescription' => 'Barraza\'s Construction delivers residential remodeling, additions, and complete home renovations throughout Tuolumne County — kitchens, bathrooms, whole-home renovations, and ADUs.',
             ],
             $this->homeData()
         ), 'layouts/frontend');
@@ -51,17 +51,17 @@ final class HomeController extends Controller
         return [
             'hero' => [
                 'eyebrow' => "Barraza's Construction Inc.",
-                'heading' => 'Bay Area remodeling, built with care.',
+                'heading' => 'Tuolumne County remodeling, built with care.',
                 'lead' => 'Kitchens, bathrooms, additions, and complete home renovations delivered with '
                     . 'experienced craftsmanship and clear communication.',
                 'primaryCta' => ['label' => 'Schedule a Consultation', 'href' => '#contact'],
                 'secondaryCta' => ['label' => 'View Our Work', 'href' => '#projects'],
                 'trust' => [
-                    'Serving Bay Area homeowners since 2006',
+                    'Serving Tuolumne County homeowners since 2006',
                     'Licensed, bonded, and insured',
                 ],
                 'primaryImage' => asset('images/projects/hero-full.jpg'),
-                'primaryAlt' => 'Custom Bay Area home exterior at dusk',
+                'primaryAlt' => 'Custom Tuolumne County home exterior at dusk',
             ],
 
             'trustStrip' => [
@@ -72,7 +72,7 @@ final class HomeController extends Controller
 
             'intro' => [
                 'heading' => 'Thoughtful remodeling for better everyday living.',
-                'body' => "Barraza's Construction helps Bay Area homeowners improve their homes through "
+                'body' => "Barraza's Construction helps Tuolumne County homeowners improve their homes through "
                     . 'carefully planned remodeling, additions, and residential construction. Every project is '
                     . 'approached with attention to communication, coordination, and final detail.',
                 'image' => asset('images/projects/service-kitchen.jpg'),
@@ -112,11 +112,11 @@ final class HomeController extends Controller
 
             'featuredProject' => [
                 'eyebrow' => 'Featured Project',
-                'heading' => 'A hillside home, ready for the Bay Area elements',
+                'heading' => 'A hillside home, ready for the Tuolumne County elements',
                 'category' => 'Additions & Exteriors',
-                'city' => 'San Francisco Bay Area',
+                'city' => 'Tuolumne County',
                 'summary' => 'A full roof replacement and deck refresh, coordinated from tear-off through final '
-                    . 'walkthrough — renewed for Bay Area weather while opening up the surrounding hillside view.',
+                    . 'walkthrough — renewed for Tuolumne County weather while opening up the surrounding hillside view.',
                 'mainImage' => asset('images/projects/narrative-result.jpg'),
                 'mainAlt' => 'Hillside home deck with a view of the surrounding hills after exterior work',
                 'thumbs' => [
@@ -134,7 +134,7 @@ final class HomeController extends Controller
                     'imageAlt' => 'Primary bathroom remodel with marble tile tub and shower surround',
                     'title' => 'Primary Bathroom Remodel',
                     'category' => 'Bathrooms',
-                    'city' => 'San Francisco Bay Area',
+                    'city' => 'Tuolumne County',
                     'href' => '#contact',
                 ],
                 [
@@ -142,7 +142,7 @@ final class HomeController extends Controller
                     'imageAlt' => 'Kitchen remodel with gray cabinetry and marble backsplash',
                     'title' => 'Kitchen Remodel',
                     'category' => 'Kitchens',
-                    'city' => 'San Francisco Bay Area',
+                    'city' => 'Tuolumne County',
                     'href' => '#contact',
                 ],
                 [
@@ -150,7 +150,7 @@ final class HomeController extends Controller
                     'imageAlt' => 'Primary suite bathroom remodel with granite vanity and a large window',
                     'title' => 'Primary Suite Remodel',
                     'category' => 'Primary Suite',
-                    'city' => 'San Francisco Bay Area',
+                    'city' => 'Tuolumne County',
                     'href' => '#contact',
                 ],
                 [
@@ -158,7 +158,7 @@ final class HomeController extends Controller
                     'imageAlt' => 'Bathroom vanity with framed mirror and new lighting',
                     'title' => 'Vanity & Lighting Refresh',
                     'category' => 'Bathrooms',
-                    'city' => 'San Francisco Bay Area',
+                    'city' => 'Tuolumne County',
                     'href' => '#contact',
                 ],
             ],
@@ -166,7 +166,7 @@ final class HomeController extends Controller
             'whyChoose' => [
                 'heading' => 'Experience you can build on.',
                 'items' => [
-                    ['title' => 'Since 2006', 'body' => 'Serving Bay Area homeowners for nearly two decades.'],
+                    ['title' => 'Since 2006', 'body' => 'Serving Tuolumne County homeowners for nearly two decades.'],
                     ['title' => 'Licensed & Insured', 'body' => 'Licensed, bonded, and insured for residential work.'],
                     ['title' => 'Clear Communication', 'body' => 'Coordinated project planning from consultation through completion.'],
                     ['title' => 'Final Details', 'body' => 'Careful attention to the finishing touches before handoff.'],
@@ -182,7 +182,7 @@ final class HomeController extends Controller
             ],
 
             'planningGuide' => [
-                'heading' => 'Planning a residential remodel in the Bay Area',
+                'heading' => 'Planning a residential remodel in Tuolumne County',
                 'items' => [
                     ['heading' => 'Project Scope', 'body' => 'A clear scope — which rooms or systems are changing — keeps any remodel on schedule.'],
                     ['heading' => 'Budget Preparation', 'body' => 'Costs vary by scope and materials; a general range in mind helps guide the conversation.'],

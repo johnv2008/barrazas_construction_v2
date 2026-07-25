@@ -31,12 +31,18 @@
         'url' => base_url('/'),
         'areaServed' => [
             '@type' => 'AdministrativeArea',
-            'name' => 'San Francisco Bay Area, California',
+            'name' => 'Tuolumne County, California',
         ],
         'address' => [
             '@type' => 'PostalAddress',
+            'streetAddress' => '16561 Jacksonville Rd',
+            'addressLocality' => 'Jamestown',
             'addressRegion' => 'CA',
+            'postalCode' => '95327',
             'addressCountry' => 'US',
+        ],
+        'sameAs' => [
+            'https://share.google/IZSCTK6fzXc9Gi9wm',
         ],
     ];
   ?>

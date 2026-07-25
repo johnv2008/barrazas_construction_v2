@@ -93,7 +93,7 @@ Luxury here is not gold leaf — it is editing. Fewer, better photos. Fewer, bet
 
 **Materials:** honed white oak flooring, matte black steel window frames, book-matched marble veining, limewash plaster walls, reclaimed brick, powder-coated aluminum, brushed brass hardware, unlacquered fixtures that patina over time.
 
-**Architecture:** California craftsman updated with modern restraint; Bay Area hillside modern (large glazing, cantilevers, board-form concrete); quiet minimalism (Napa/Sonoma wine-country residential); nothing baroque, nothing "McMansion."
+**Architecture:** California craftsman updated with modern restraint; Sierra foothill modern (large glazing, timber and stone, board-form concrete); quiet minimalism (Gold Country/wine-country residential); nothing baroque, nothing "McMansion."
 
 **Textures:** linen, raw plaster, honed (not polished) stone, brushed metal, natural fiber rugs, unfinished/raw wood grain, matte ceramic tile.
 
@@ -105,7 +105,7 @@ Luxury here is not gold leaf — it is editing. Fewer, better photos. Fewer, bet
 
 **Construction (process imagery):** framing and structural work photographed with the same care as the finished result — clean job sites, organized tools, visible craftsmanship mid-process (this is an underused trust signal most competitors skip entirely).
 
-**Landscape:** Bay Area hillside and coastal-adjacent greenery, drought-tolerant landscaping, natural stone hardscape.
+**Landscape:** Sierra Nevada foothill oak woodland and golden grassland, seasonal creek corridors, drought-tolerant landscaping, natural stone hardscape.
 
 **Lifestyle:** understated — a family at a kitchen island, hands on a countertop, morning light — never posed/stock "high-five with a hard hat" imagery.
 
@@ -457,7 +457,7 @@ Reusable patterns — every page should feel like it belongs to the same family 
 | **↳ Bathroom Remodeling** | Same template, bathroom-specific content. |
 | **↳ Whole Home Renovation** | Same template. |
 | **↳ Additions** | Same template, addresses permitting/structural specifics unique to additions. |
-| **↳ ADUs** | Same template, addresses ADU-specific regulatory/financing questions Bay Area homeowners commonly have. |
+| **↳ ADUs** | Same template, addresses ADU-specific regulatory/financing questions Tuolumne County homeowners commonly have. |
 | **Projects (hub)** | Editorial grid (§10 Grid/Magazine Layout) of all projects, filterable by category if volume warrants it later. |
 | **↳ Individual Project** | Project Story template (§10) — full case study. |
 | **Process** | Expanded version of the homepage's 5-step timeline, with more detail per step and what the homeowner should expect/prepare. |

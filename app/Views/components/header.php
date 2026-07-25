@@ -53,6 +53,6 @@ $navItems = [
   </nav>
   <div class="mobile-nav__footer">
     <a href="#contact" class="btn btn-primary btn-block">Schedule a Consultation</a>
-    <p class="mobile-nav__contact">San Francisco Bay Area, CA</p>
+    <p class="mobile-nav__contact">16561 Jacksonville Rd, Jamestown, CA 95327</p>
   </div>
 </div>

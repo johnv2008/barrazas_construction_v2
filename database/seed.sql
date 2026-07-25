@@ -14,15 +14,16 @@ SET NAMES utf8mb4;
 -- ---------------------------------------------------------------------
 INSERT INTO site_settings (setting_group, setting_key, setting_value) VALUES
     ('general', 'business_name', "Barraza's Construction"),
-    ('general', 'business_tagline', 'Bay Area Homes, Thoughtfully Transformed.'),
+    ('general', 'business_tagline', 'Tuolumne County Homes, Thoughtfully Transformed.'),
     ('general', 'phone', ''),
     ('general', 'email', ''),
-    ('general', 'address', ''),
+    ('general', 'address', '16561 Jacksonville Rd, Jamestown, CA 95327'),
     ('general', 'license_number', ''),
     ('social', 'instagram_url', ''),
     ('social', 'facebook_url', ''),
-    ('seo', 'default_meta_title', "Barraza's Construction | Bay Area Residential Remodeling"),
-    ('seo', 'default_meta_description', "Barraza's Construction delivers carefully planned remodeling, renovations, and residential improvements across the San Francisco Bay Area.")
+    ('social', 'google_business_url', 'https://share.google/IZSCTK6fzXc9Gi9wm'),
+    ('seo', 'default_meta_title', "Barraza's Construction | Tuolumne County Residential Remodeling"),
+    ('seo', 'default_meta_description', "Barraza's Construction delivers carefully planned remodeling, renovations, and residential improvements across Tuolumne County.")
 ON DUPLICATE KEY UPDATE setting_key = setting_key;
 
 -- ---------------------------------------------------------------------
@@ -33,7 +34,7 @@ INSERT INTO pages (title, slug, status, sort_order) VALUES
 ON DUPLICATE KEY UPDATE title = VALUES(title);
 
 INSERT INTO page_sections (page_id, section_key, heading, content, sort_order, status)
-SELECT p.id, 'hero', 'Bay Area Homes, Thoughtfully Transformed.',
+SELECT p.id, 'hero', 'Tuolumne County Homes, Thoughtfully Transformed.',
        "Barraza's Construction delivers carefully planned remodeling, renovations, and residential improvements with experienced craftsmanship and dependable service.",
        1, 'published'
 FROM pages p
@@ -43,7 +44,7 @@ WHERE p.slug = 'home'
   );
 
 INSERT INTO page_sections (page_id, section_key, heading, content, sort_order, status)
-SELECT p.id, 'intro', 'Design-Build Craftsmanship, Rooted in the Bay Area',
+SELECT p.id, 'intro', 'Design-Build Craftsmanship, Rooted in Tuolumne County',
        'Placeholder introductory copy — to be replaced with final brand messaging in a later phase.',
        2, 'published'
 FROM pages p

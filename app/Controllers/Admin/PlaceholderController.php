@@ -36,7 +36,7 @@ final class PlaceholderController extends Controller
 
     public function serviceAreas(Request $request, array $params): void
     {
-        $this->render('Service Areas', 'Maintain the list of Bay Area cities and neighborhoods served.');
+        $this->render('Service Areas', 'Maintain the list of Tuolumne County cities and neighborhoods served.');
     }
 
     public function leads(Request $request, array $params): void

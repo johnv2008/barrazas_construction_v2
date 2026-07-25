@@ -8,7 +8,7 @@
           class="site-footer__logo"
         >
         <p class="site-footer__desc">
-          Residential construction and remodeling for the San Francisco Bay Area —
+          Residential construction and remodeling for Tuolumne County —
           experienced craftsmanship, clear communication, and attention to detail
           from first consultation to final walkthrough.
         </p>
@@ -18,6 +18,9 @@
           </a>
           <a href="#" aria-label="Barraza's Construction on Facebook">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 9h3V6h-3c-2 0-3.5 1.5-3.5 3.5V11H8v3h2.5v6h3v-6H16l.5-3h-3V9.5c0-.3.2-.5.5-.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="https://share.google/IZSCTK6fzXc9Gi9wm" target="_blank" rel="noopener noreferrer" aria-label="Barraza's Construction on Google">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21c-4.5 0-8-3.5-8-8s3.5-8 8-8c2.1 0 3.9.7 5.2 2l-2.1 2c-.8-.7-1.9-1.2-3.1-1.2-2.7 0-4.8 2.2-4.8 5.2s2.1 5.2 4.8 5.2c2.4 0 4-1.4 4.3-3.3h-4.3v-2.7h7c.1.5.2 1 .2 1.6 0 4.3-2.9 7.2-7.2 7.2z" fill="currentColor"/></svg>
           </a>
         </div>
       </div>
@@ -45,8 +48,9 @@
       <div>
         <h4>Get in Touch</h4>
         <ul class="site-footer__links">
-          <li>San Francisco Bay Area, California</li>
+          <li>16561 Jacksonville Rd<br>Jamestown, CA 95327</li>
           <li><a href="#contact">Schedule a Consultation</a></li>
+          <li><a href="https://share.google/IZSCTK6fzXc9Gi9wm" target="_blank" rel="noopener noreferrer">View Our Google Profile</a></li>
         </ul>
         <p class="site-footer__note">Licensed, Bonded &amp; Insured.</p>
       </div>
