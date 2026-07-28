@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>GREYBOX — Barraza's Homepage v3 — structural prototype</title>
+<link rel="stylesheet" href="greybox.css">
+</head>
+<body data-datum="a" data-ch03="a" data-anno="on" data-photo="gray" data-trust="b">
+
+<!-- ============================================================
+     DATUM — OPTION A (persistent, fixed to outer page edge)
+     ============================================================ -->
+<div class="datum-a" aria-hidden="true">
+  <div class="datum-a__progress" id="datumProgress"></div>
+  <div class="datum-a__ticks" id="datumTicks"></div>
+  <div class="datum-a__marker">
+    <span class="datum-a__tick"></span>
+    <span class="datum-a__num" id="datumNum">01</span>
+    <span class="datum-a__label" id="datumLabel">Arrival</span>
+  </div>
+</div>
+
+<!-- DATUM — MOBILE COLLAPSE (both options share this below 1024px) -->
+<div class="datum-m" aria-hidden="true">
+  <span id="datumMobile">01 · Arrival</span>
+  <span class="datum-m__bar" id="datumMobileBar"></span>
+</div>
+
+
+<!-- ============================================================
+     CH 01 — ARRIVAL
+     Target 80–95vh. Completed work only. No process imagery here.
+     ============================================================ -->
+<section class="chapter" id="ch01" data-chapter="01" data-title="Arrival">
+  <div class="datum-b"><div class="datum-b__head"><span></span><span>01 · Arrival</span></div></div>
+
+  <nav class="nav">
+    <div class="nav__brand">BARRAZA'S CONSTRUCTION</div>
+    <ul class="nav__links">
+      <li>Work</li><li>How we work</li><li>Services</li><li>About</li><li>Contact</li>
+    </ul>
+  </nav>
+
+  <div class="hero">
+    <div class="hero__copy">
+      <p class="t-cap hero__eyebrow">Tuolumne County, California</p>
+      <h1 class="t-display">Remodeling that holds up in the foothills.</h1>
+      <p class="t-lead hero__lead">
+        Kitchens, bathrooms, whole-home renovations, additions and ADUs for
+        homeowners in Jamestown, Sonora, and across Tuolumne County.
+      </p>
+      <div class="hero__actions">
+        <a class="btn" href="#ch08">Start a conversation</a>
+        <a class="btn btn--ghost" href="#ch05">See a project start to finish</a>
+      </div>
+      <p class="anno">CH01 target height 80–95vh. Measured height shown in the control bar. Two actions only, at clearly different weights — resist adding a third.</p>
+    </div>
+
+    <div class="ph hero__media">
+      <img src="/img/projects/service-kitchen.jpg" alt="">
+      <span class="ph__cap">service-kitchen.jpg · 1200×1600 · FINISHED</span>
+    </div>
+  </div>
+
+  <div class="hero__trust">
+    <span class="t-cap">Building here since 2006</span>
+    <span class="t-cap">Licensed, bonded &amp; insured</span>
+    <span class="t-cap">CSLB #&mdash;&mdash;&mdash;&mdash;&mdash;</span>
+    <p class="anno anno--todo">CSLB number unresolved. Three CSLB searches returned no Barraza licence in Tuolumne County. Production must not ship a placeholder here — B&amp;P §7030.5 requires the real number in all advertising.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CH 02 — LISTENING
+     Dark, ~60% empty. Image is a fragment bleeding off the right.
+     ============================================================ -->
+<section class="chapter" id="ch02" data-chapter="02" data-title="Listening">
+  <div class="datum-b"><div class="datum-b__head"><span></span><span>02 · Listening</span></div></div>
+  <p class="chapter__num">02</p>
+
+  <div class="listen">
+    <div>
+      <h2 class="t-display listen__statement">A remodel starts with how you actually live in the house.</h2>
+      <div class="listen__body">
+        <p class="t-body">
+          Before anyone talks about cabinets or tile, we want to understand what
+          isn't working. Where the family actually gathers. Which room you avoid.
+          What you've put up with for years because fixing it seemed like more
+          disruption than it was worth. The plan comes out of that conversation.
+        </p>
+        <p class="anno">Deliberately ~60% empty. This emptiness is the design — it is the held breath after the hero. Resist filling it.</p>
+        <p class="anno anno--todo">Statement and paragraph are provisional, written to test line length and density. Final copy should be Miguel Barraza's own words.</p>
+      </div>
+    </div>
+
+    <div class="ph listen__media">
+      <img src="/img/projects/service-additions.jpg" alt="">
+      <span class="ph__cap">service-additions.jpg · 450×600 · DETAIL</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CH 03 — THE MIDDLE IS THE PROOF  ★ signature chapter
+     Variant A: sticky frame · Variant B: progressive vertical
+     ============================================================ -->
+<section class="chapter" id="ch03" data-chapter="03" data-title="The Middle">
+  <div class="datum-b"><div class="datum-b__head"><span></span><span>03 · The Middle</span></div></div>
+  <p class="chapter__num">03 — The middle is the proof</p>
+
+  <div class="mid__head">
+    <h2 class="t-h2">Anyone can show you the after.</h2>
+    <p class="t-lead" style="margin-top:1rem">
+      The middle is where a remodel is actually won or lost — and it's the part
+      most homeowners never get to see before they sign.
+    </p>
+  </div>
+
+  <!-- ---------- VARIANT A — sticky frame, native scroll retained ---------- -->
+  <div class="midA">
+    <div class="midA__track" id="midTrack">
+      <div class="midA__sticky">
+        <div>
+          <div class="midA__frame" id="midFrame">
+            <div class="ph ph--empty is-active" data-state="0">
+              BEFORE<br>NO ASSET AVAILABLE<br>— see annotation —
+            </div>
+            <div class="ph" data-state="1">
+              <img src="/img/projects/narrative-progress.jpg" alt="">
+              <span class="ph__cap">narrative-progress.jpg · 600×450 · DURING</span>
+            </div>
+            <div class="ph" data-state="2">
+              <img src="/img/projects/narrative-result.jpg" alt="">
+              <span class="ph__cap">narrative-result.jpg · 450×600 · AFTER</span>
+            </div>
+          </div>
+          <div class="midA__ruler" id="midRuler">
+            <span class="is-active">Before &middot; 22%</span>
+            <span>During &middot; 48%</span>
+            <span>After &middot; 30%</span>
+          </div>
+        </div>
+
+        <div class="midA__panel" id="midPanel">
+          <div class="is-active" data-state="0">
+            <p class="t-cap">State 01 — Before</p>
+            <h3 class="t-h3" style="margin-top:.6rem">A foothill house losing the fight with the weather.</h3>
+            <p class="t-body" style="margin-top:.8rem">
+              The starting condition — what the homeowner was living with, and why
+              they called.
+            </p>
+            <p class="anno anno--todo">CRITICAL GAP: there is no "before" photograph for this project, or for any project, anywhere in the library. All 21 unique images are During or After. Chapter 03's three-state structure cannot ship without before photography.</p>
+          </div>
+
+          <div data-state="1">
+            <p class="t-cap">State 02 — During</p>
+            <h3 class="t-h3" style="margin-top:.6rem">Stripped to the sheathing, so what's underneath can be seen.</h3>
+            <p class="t-body" style="margin-top:.8rem">
+              The roof came off down to the bare decking. Material was staged on
+              site before the tear-off started, so the house wasn't left open
+              waiting on a delivery. Anything found underneath gets photographed
+              and priced before it's covered back up — no change order arrives
+              without a picture attached.
+            </p>
+            <p class="anno">This state holds ~48% of the scroll distance. That allocation IS the strategic argument, expressed as timing.</p>
+            <p class="anno anno--todo">"Material staged before tear-off" and "photographed before it's covered" are visible in the image / stated as commitments. Confirm both are accurate policy before publishing.</p>
+          </div>
+
+          <div data-state="2">
+            <p class="t-cap">State 03 — After</p>
+            <h3 class="t-h3" style="margin-top:.6rem">New roof, and a deck that gets used again.</h3>
+            <p class="t-body" style="margin-top:.8rem">
+              The finished result is the part you'll see for the next twenty
+              years. It's also the part that depended entirely on the two weeks
+              in the middle.
+            </p>
+            <p class="anno anno--todo">Project name, location, dates and duration all required. Do not publish invented figures.</p>
+          </div>
+        </div>
+      </div>
+      <div class="midA__spacer"></div>
+      <div class="midA__spacer"></div>
+    </div>
+    <p class="anno anno--dim">VARIANT A: sticky frame. Pin achieved with <code>position: sticky</code> — the browser's own scroll is never intercepted. No scroll-jacking, no wheel listeners, scrollbar stays accurate. Costs ~3 viewports of scroll.</p>
+  </div>
+
+  <!-- ---------- VARIANT B — progressive vertical, no pin ---------- -->
+  <div class="midB">
+    <div class="midB__step">
+      <div class="ph ph--empty midB__media">BEFORE<br>NO ASSET AVAILABLE</div>
+      <div>
+        <p class="t-cap">State 01 — Before</p>
+        <h3 class="t-h3" style="margin-top:.6rem">A foothill house losing the fight with the weather.</h3>
+        <p class="t-body" style="margin-top:.8rem">The starting condition — what the homeowner was living with, and why they called.</p>
+      </div>
+    </div>
+
+    <div class="midB__step midB__step--during">
+      <div class="ph midB__media">
+        <img src="/img/projects/narrative-progress.jpg" alt="">
+        <span class="ph__cap">narrative-progress.jpg · DURING</span>
+      </div>
+      <div>
+        <p class="t-cap">State 02 — During</p>
+        <h3 class="t-h3" style="margin-top:.6rem">Stripped to the sheathing, so what's underneath can be seen.</h3>
+        <p class="t-body" style="margin-top:.8rem">
+          The roof came off down to the bare decking. Material was staged on site
+          before the tear-off started. Anything found underneath gets photographed
+          and priced before it's covered back up.
+        </p>
+        <p class="anno">Variant B gives DURING its weight through composition instead of timing: wider frame, full-bleed tint band, more copy.</p>
+      </div>
+    </div>
+
+    <div class="midB__step">
+      <div class="ph midB__media">
+        <img src="/img/projects/narrative-result.jpg" alt="">
+        <span class="ph__cap">narrative-result.jpg · AFTER</span>
+      </div>
+      <div>
+        <p class="t-cap">State 03 — After</p>
+        <h3 class="t-h3" style="margin-top:.6rem">New roof, and a deck that gets used again.</h3>
+        <p class="t-body" style="margin-top:.8rem">The finished result depended entirely on the two weeks in the middle.</p>
+      </div>
+    </div>
+    <p class="anno anno--dim">VARIANT B: no pin at all. MEASURED at 1920×855, annotations off — B costs 3.13vh vs A's 3.61vh. That is only 13% less, not the "roughly half" assumed before measuring: three stacked states occupy nearly as much room as one pinned state plus its scroll track. Scroll cost is therefore NOT a reason to prefer B.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CH 04 — CRAFT
+     Typographic rows. Deliberately unequal — never four cards.
+     ============================================================ -->
+<section class="chapter" id="ch04" data-chapter="04" data-title="Craft">
+  <div class="datum-b"><div class="datum-b__head"><span></span><span>04 · Craft</span></div></div>
+  <p class="chapter__num">04 — What we build</p>
+
+  <div class="craft">
+    <div class="craft__row">
+      <span class="t-cap">01</span>
+      <div>
+        <h3 class="t-h3">Kitchens</h3>
+        <p class="t-cap" style="margin-top:.4rem;text-transform:none;letter-spacing:0">The room everything else happens around</p>
+      </div>
+      <div>
+        <p class="t-body" style="font-size:.94rem">
+          Layout first, finishes second. Cabinets, counters, backsplash and
+          appliance runs replaced as one coordinated sequence so the kitchen is
+          out of service once, not four times.
+        </p>
+        <div class="craft__evidence">
+          <div class="ph"><img src="/img/projects/transformation-progress.jpg" alt=""><span class="ph__cap">DURING</span></div>
+          <div class="ph"><img src="/img/projects/service-kitchen.jpg" alt=""><span class="ph__cap">AFTER</span></div>
+          <div class="ph"><img src="/img/projects/contact-sheet-kitchen.jpg" alt=""><span class="ph__cap">AFTER</span></div>
+        </div>
+      </div>
+      <span class="t-cap">View &rarr;</span>
+    </div>
+
+    <div class="craft__row craft__row--wide">
+      <span class="t-cap">02</span>
+      <div>
+        <h3 class="t-h3">Bathrooms</h3>
+        <p class="t-cap" style="margin-top:.4rem;text-transform:none;letter-spacing:0">Small rooms, the least forgiving work</p>
+      </div>
+      <div>
+        <p class="t-body" style="font-size:.94rem">
+          Waterproofing, slope and substrate decide whether a bathroom lasts.
+          Tile is what you see; the membrane underneath is what you're paying for.
+        </p>
+        <div class="craft__evidence">
+          <div class="ph"><img src="/img/projects/service-bathroom.jpg" alt=""><span class="ph__cap">AFTER</span></div>
+          <div class="ph"><img src="/img/projects/project-featured.jpg" alt=""><span class="ph__cap">AFTER</span></div>
+        </div>
+      </div>
+      <span class="t-cap">View &rarr;</span>
+    </div>
+
+    <div class="craft__row">
+      <span class="t-cap">03</span>
+      <div>
+        <h3 class="t-h3">Whole-home renovations</h3>
+        <p class="t-cap" style="margin-top:.4rem;text-transform:none;letter-spacing:0">When the house has to change all at once</p>
+      </div>
+      <div>
+        <p class="t-body" style="font-size:.94rem">
+          Flooring, paint, kitchen, baths and systems sequenced together, with a
+          plan for which rooms stay usable and when.
+        </p>
+        <div class="craft__evidence">
+          <div class="ph"><img src="/img/projects/service-wholehome-primary.jpg" alt=""><span class="ph__cap">AFTER</span></div>
+          <div class="ph"><img src="/img/projects/contact-sheet-bath-tub.jpg" alt=""><span class="ph__cap">AFTER</span></div>
+          <div class="ph"><img src="/img/projects/project-supporting-1.jpg" alt=""><span class="ph__cap">AFTER</span></div>
+        </div>
+      </div>
+      <span class="t-cap">View &rarr;</span>
+    </div>
+
+    <div class="craft__row craft__row--wide">
+      <span class="t-cap">04</span>
+      <div>
+        <h3 class="t-h3">Additions &amp; ADUs</h3>
+        <p class="t-cap" style="margin-top:.4rem;text-transform:none;letter-spacing:0">More house, without leaving the county</p>
+      </div>
+      <div>
+        <p class="t-body" style="font-size:.94rem">
+          Added square footage and accessory dwelling units, including the
+          permitting coordination that comes with them.
+        </p>
+        <div class="craft__evidence">
+          <div class="ph"><img src="/img/projects/service-additions.jpg" alt=""><span class="ph__cap">DETAIL</span></div>
+          <div class="ph ph--empty">NO ADU / ADDITION<br>PHOTOGRAPHY EXISTS</div>
+        </div>
+        <p class="anno anno--todo">There is no addition or ADU project photography in the library. This service is currently claimed with no evidence behind it — the weakest row on the page. Either source images or reconsider leading with this service.</p>
+      </div>
+      <span class="t-cap">View &rarr;</span>
+    </div>
+  </div>
+
+  <p class="anno anno--dim">Rows 02 and 04 use a different column ratio and a 2-up evidence strip; rows 01 and 03 use 3-up. The set is deliberately unequal so it never resolves into four matching cards.</p>
+</section>
+
+
+<!-- ============================================================
+     CH 05 — FEATURED HOME
+     Asymmetric editorial spread, unequal images, one overlap.
+     ============================================================ -->
+<section class="chapter" id="ch05" data-chapter="05" data-title="Featured">
+  <div class="datum-b"><div class="datum-b__head"><span></span><span>05 · Featured</span></div></div>
+  <p class="chapter__num">05 — One project, start to finish</p>
+
+  <div class="feat">
+    <div>
+      <div class="ph feat__main">
+        <img src="/img/projects/service-bathroom.jpg" alt="">
+        <span class="ph__cap">service-bathroom.jpg · 1200×1600 · AFTER</span>
+      </div>
+      <div class="ph feat__small">
+        <img src="/img/projects/project-supporting-2.jpg" alt="">
+        <span class="ph__cap">project-supporting-2.jpg · 450×600</span>
+      </div>
+      <p class="t-cap" style="margin-top:1.5rem">Primary suite &middot; Tuolumne County</p>
+    </div>
+
+    <div class="feat__side">
+      <h2 class="t-h2">A primary bath that finally looks at the view it was built for.</h2>
+      <p class="t-body" style="margin-top:1.2rem">
+        Tiled walk-in shower with a bench and a custom niche, a soaking tub set
+        into the window wall, and a cedar ceiling carried across both. The glass
+        accent band runs unbroken from the shower through to the tub surround —
+        one continuous line through a room that was previously two disconnected
+        halves.
+      </p>
+      <p class="t-body" style="margin-top:1rem">
+        The window was the whole reason for the layout. Everything else was
+        arranged around keeping it in view from the tub.
+      </p>
+
+      <dl class="feat__stats">
+        <div><dt>Location</dt><dd>&mdash;&mdash;&mdash;&mdash;&mdash;</dd></div>
+        <div><dt>Scope</dt><dd>Primary suite bathroom, full remodel</dd></div>
+        <div><dt>Duration</dt><dd>&mdash;&mdash;&mdash;&mdash;&mdash;</dd></div>
+        <div><dt>Completed</dt><dd>&mdash;&mdash;&mdash;&mdash;&mdash;</dd></div>
+      </dl>
+
+      <p style="margin-top:2rem"><span class="t-cap">Read the full case study &rarr;</span></p>
+
+      <p class="anno anno--todo">Location, duration and completion date are all unknown. Left blank deliberately — do not fill with estimates. Confirmed: both images are the same room (matching glass accent band and cedar ceiling).</p>
+      <p class="anno">This is the strongest and most place-specific project in the library — high craft, and the reservoir view is unmistakably Sierra foothill. Strongest candidate for the featured slot.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CH 06 — VERIFIABLE TRUST
+     State A: real testimonial · State B: no testimonial
+     ============================================================ -->
+<section class="chapter" id="ch06" data-chapter="06" data-title="Trust">
+  <div class="datum-b"><div class="datum-b__head"><span></span><span>06 · Trust</span></div></div>
+  <p class="chapter__num">06</p>
+
+  <!-- ---------- STATE A ---------- -->
+  <div class="trustA">
+    <div class="trust__quote">
+      <span class="trust__mark">&ldquo;</span>
+      <div>
+        <p class="t-quote">
+          &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+          &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+          &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+        </p>
+        <p class="t-cap" style="margin-top:1.5rem">First name &middot; Town &middot; Project type &middot; Year</p>
+        <p class="anno anno--todo">STATE A requires a real, attributable homeowner quote with written permission to publish. Not written here — fabricated testimonials are unlawful under FTC endorsement rules and would directly contradict the strategy. Target a quote about a PROBLEM HANDLED WELL, not about how nice the finish looks.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------- STATE B ---------- -->
+  <div class="trustB">
+    <h2 class="t-h2">What you can check for yourself.</h2>
+    <p class="t-lead" style="margin-top:1rem;max-width:44ch">
+      Nearly twenty years of work in the same county, and credentials you can
+      verify without taking our word for it.
+    </p>
+
+    <dl class="trust__credentials">
+      <div><dt>Licence</dt><dd>CSLB #&mdash;&mdash;&mdash;&mdash;&mdash; &middot; verify at cslb.ca.gov</dd></div>
+      <div><dt>Bonded</dt><dd>Contractor's bond &mdash; amount to confirm</dd></div>
+      <div><dt>Insured</dt><dd>General liability &middot; workers' compensation</dd></div>
+      <div><dt>Serving</dt><dd>Jamestown, Sonora &amp; Tuolumne County since 2006</dd></div>
+      <div><dt>Based</dt><dd>16561 Jacksonville Rd, Jamestown, CA 95327</dd></div>
+    </dl>
+
+    <div class="trust__team">
+      <div class="ph ph--empty">NO OWNER OR<br>TEAM PHOTO<br>EXISTS</div>
+      <div>
+        <h3 class="t-h3">The person you'll actually be dealing with.</h3>
+        <p class="t-body" style="margin-top:.7rem">
+          A short introduction to the owner — who runs the jobs, who you call,
+          who walks the property with you.
+        </p>
+        <p class="anno anno--todo">No photograph of the owner, crew, or company vehicle exists in the library. This is the single cheapest trust asset to produce and the one most missing. One good portrait would carry this entire chapter in State B.</p>
+      </div>
+    </div>
+
+    <p class="anno">STATE B is the honest fallback and it is not weak — verifiable specifics outperform generic five-star sliders. But it needs the owner photo to feel human rather than administrative.</p>
+    <p class="anno anno--dim">"PENDING" / em-dash placeholders are prototype annotations only. Production must never render them.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CH 07 — THE SCHEDULE
+     Only horizontal moment. Static fit — no pin, no hijack.
+     ============================================================ -->
+<section class="chapter" id="ch07" data-chapter="07" data-title="Schedule">
+  <div class="datum-b"><div class="datum-b__head"><span></span><span>07 · Schedule</span></div></div>
+  <p class="chapter__num">07 — What actually happens to you</p>
+
+  <h2 class="t-h2" style="margin-bottom:.8rem">You'll know what's happening in your house, and when.</h2>
+  <p class="t-lead" style="margin-bottom:2.5rem">
+    Six stages, described from where you're standing rather than from ours.
+  </p>
+
+  <div class="sched">
+    <div class="sched__step">
+      <span class="t-cap">01</span>
+      <h3 class="t-h3">Initial conversation</h3>
+      <p class="t-body" style="font-size:.88rem">
+        A call or a message. We ask what's not working and roughly what you're
+        hoping to spend, so nobody's time gets wasted.
+      </p>
+    </div>
+    <div class="sched__step">
+      <span class="t-cap">02</span>
+      <h3 class="t-h3">Property visit</h3>
+      <p class="t-body" style="font-size:.88rem">
+        We walk the space with you and look at the conditions we'd be working
+        into — access, age, what's behind the walls.
+      </p>
+    </div>
+    <div class="sched__step">
+      <span class="t-cap">03</span>
+      <h3 class="t-h3">Scope &amp; estimate</h3>
+      <p class="t-body" style="font-size:.88rem">
+        A written scope of what's included and what isn't. You'll know the
+        number before you commit to anything.
+      </p>
+    </div>
+    <div class="sched__step">
+      <span class="t-cap">04</span>
+      <h3 class="t-h3">Planning &amp; permits</h3>
+      <p class="t-body" style="font-size:.88rem">
+        Selections confirmed and materials ordered. Where permitting applies,
+        we coordinate it.
+      </p>
+    </div>
+    <div class="sched__step sched__step--emph">
+      <span class="t-cap">05</span>
+      <h3 class="t-h3">Construction</h3>
+      <p class="t-body" style="font-size:.88rem">
+        The longest stage and the one people worry about. You'll know who's
+        coming, which rooms stay usable, and what we found when we opened things
+        up.
+      </p>
+    </div>
+    <div class="sched__step">
+      <span class="t-cap">06</span>
+      <h3 class="t-h3">Final walkthrough</h3>
+      <p class="t-body" style="font-size:.88rem">
+        We go through the finished work together and write down anything still
+        outstanding before we call it done.
+      </p>
+    </div>
+  </div>
+
+  <div class="sched__axis">
+    <span>Week 0</span><span>Week 0–1</span><span>Week 1–2</span>
+    <span>Varies</span><span>Longest stage</span><span>Final</span>
+  </div>
+
+  <p class="anno anno--todo">Week markers are structural placeholders. Real typical durations required, or drop the axis entirely — an invented schedule is worse than none.</p>
+  <p class="anno anno--dim">Fits within ~1 viewport at ≥1280px with no pin and no scroll interception. Stage 05 is tinted rather than animated — emphasis without cost. Below 1024px this becomes a vertical numbered sequence.</p>
+</section>
+
+
+<!-- ============================================================
+     CH 08 — BEGIN
+     Form IS the chapter. Not a card beside text.
+     ============================================================ -->
+<section class="chapter" id="ch08" data-chapter="08" data-title="Begin">
+  <div class="datum-b"><div class="datum-b__head"><span></span><span>08 · Begin</span></div></div>
+  <p class="chapter__num">08</p>
+
+  <div class="begin">
+    <div>
+      <h2 class="t-display">Let's begin with a clear conversation.</h2>
+      <p class="t-body" style="margin-top:1.5rem">
+        Tell us what you're thinking about. No obligation, no pressure, and no
+        sales visit unless you ask for one.
+      </p>
+      <div class="begin__alt">
+        <p class="t-cap">Prefer to call or text</p>
+        <p class="t-body" style="margin-top:.5rem">&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</p>
+        <p class="anno anno--todo">Confirmed phone number and email required.</p>
+      </div>
+    </div>
+
+    <form class="form" onsubmit="event.preventDefault();alert('GREYBOX — not wired to any backend.');">
+      <div class="form__row">
+        <label for="f-name">Your name</label>
+        <input id="f-name" type="text" autocomplete="name">
+      </div>
+      <div class="form__row form__row--split">
+        <div class="form__row">
+          <label for="f-phone">Phone</label>
+          <input id="f-phone" type="tel" autocomplete="tel">
+        </div>
+        <div class="form__row">
+          <label for="f-email">Email</label>
+          <input id="f-email" type="email" autocomplete="email">
+        </div>
+      </div>
+      <div class="form__row form__row--split">
+        <div class="form__row">
+          <label for="f-city">Where's the project?</label>
+          <input id="f-city" type="text" placeholder="Town or area">
+        </div>
+        <div class="form__row">
+          <label for="f-type">What kind of project?</label>
+          <select id="f-type">
+            <option>Select one</option>
+            <option>Kitchen</option>
+            <option>Bathroom</option>
+            <option>Whole-home renovation</option>
+            <option>Addition or ADU</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+      </div>
+      <div class="form__row">
+        <label for="f-desc">What are you thinking about?</label>
+        <textarea id="f-desc" rows="4"></textarea>
+      </div>
+      <div class="form__row">
+        <label for="f-photo">A photo of the space (optional)</label>
+        <input id="f-photo" type="file">
+      </div>
+      <div>
+        <button class="btn" type="submit">Send &rarr;</button>
+        <p class="t-cap" style="margin-top:1rem;text-transform:none;letter-spacing:0">
+          We'll only use this to reply about your project. We don't share it.
+        </p>
+      </div>
+      <p class="anno">Field set matches the existing production form exactly. Production is a restyle and re-label only — field names, CSRF and validation unchanged.</p>
+      <p class="anno anno--dim">GREYBOX: submits nowhere. Not wired to lead storage, mail, or uploads.</p>
+    </form>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     PROTOTYPE CONTROL BAR
+     ============================================================ -->
+<div class="proto-bar">
+  <span class="proto-bar__tag">GREYBOX</span>
+
+  <span class="proto-bar__group">
+    <span>Datum</span>
+    <button data-set="datum" data-val="a" aria-pressed="true">A edge</button>
+    <button data-set="datum" data-val="b" aria-pressed="false">B section</button>
+    <button data-set="datum" data-val="off" aria-pressed="false">off</button>
+  </span>
+
+  <span class="proto-bar__group">
+    <span>Ch03</span>
+    <button data-set="ch03" data-val="a" aria-pressed="true">A sticky</button>
+    <button data-set="ch03" data-val="b" aria-pressed="false">B vertical</button>
+  </span>
+
+  <span class="proto-bar__group">
+    <span>Ch06</span>
+    <button data-set="trust" data-val="a" aria-pressed="false">A quote</button>
+    <button data-set="trust" data-val="b" aria-pressed="true">B verify</button>
+  </span>
+
+  <span class="proto-bar__group">
+    <span>Photos</span>
+    <button data-set="photo" data-val="gray" aria-pressed="true">gray</button>
+    <button data-set="photo" data-val="color" aria-pressed="false">color</button>
+  </span>
+
+  <span class="proto-bar__group">
+    <span>Notes</span>
+    <button data-set="anno" data-val="on" aria-pressed="true">on</button>
+    <button data-set="anno" data-val="off" aria-pressed="false">off</button>
+  </span>
+
+  <span class="proto-readout" id="readout">measuring…</span>
+</div>
+
+<script src="greybox.js"></script>
+</body>
+</html>

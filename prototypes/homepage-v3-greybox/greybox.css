@@ -1,0 +1,982 @@
+/* ============================================================
+   BARRAZA'S CONSTRUCTION — HOMEPAGE V3 GREYBOX
+   Structural / pacing / interaction validation prototype.
+
+   THIS IS NOT DESIGN. Deliberately grayscale, system-font, and
+   unpolished so that composition, proportion, rhythm and scroll
+   length can be judged without visual seduction.
+
+   The ONLY non-gray color permitted is the brand burgundy
+   (#800020), used exclusively to make the Datum legible.
+   ============================================================ */
+
+:root {
+  --g0: #ffffff;
+  --g1: #f5f5f4;
+  --g2: #e8e8e6;
+  --g3: #d4d4d1;
+  --g4: #b0b0ad;
+  --g5: #8a8a87;
+  --g6: #57575a;
+  --g7: #2a2a2c;
+  --g8: #171719;
+
+  --burgundy: #800020;
+
+  --measure: 62ch;
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --datum-x: clamp(1.25rem, 3.5vw, 3.5rem);
+  /* Clearance from the Datum line to the content edge. Must exceed the
+     rendered width of the marker (tick + number + rotated label) or the
+     Datum overlaps copy — see prototype finding D-1. */
+  --datum-clear: 5.5rem;
+
+  --stack-xs: 0.5rem;
+  --stack-sm: 1rem;
+  --stack-md: 2rem;
+  --stack-lg: 4rem;
+  --stack-xl: 7rem;
+
+  /* Placeholder type only — final faces are General Sans / Inter / Fraunces */
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  /* Native scrolling only. No Lenis, no scroll hijacking, in this phase. */
+  scroll-behavior: auto;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--g8);
+  background: var(--g0);
+  /* Guards against any composition causing sideways scroll at any width. */
+  overflow-x: hidden;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+h1, h2, h3, h4, p, ul, ol, figure, blockquote {
+  margin: 0;
+}
+
+/* ------------------------------------------------------------
+   PROTOTYPE CONTROL BAR
+   Intentionally ugly. Never ships.
+   ------------------------------------------------------------ */
+
+.proto-bar {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 9000;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  padding: 0.5rem 0.75rem;
+  background: #101014;
+  color: #e9e9e9;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.2;
+  border-top: 2px solid var(--burgundy);
+}
+
+.proto-bar__tag {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #ff8fa3;
+}
+
+.proto-bar__group {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.proto-bar__group > span { opacity: 0.65; }
+
+.proto-bar button {
+  font: inherit;
+  padding: 0.25rem 0.5rem;
+  background: #26262c;
+  color: #e9e9e9;
+  border: 1px solid #3d3d45;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.proto-bar button[aria-pressed="true"] {
+  background: var(--burgundy);
+  border-color: var(--burgundy);
+  color: #fff;
+}
+
+.proto-readout {
+  margin-left: auto;
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+body { padding-bottom: 3.5rem; }
+
+/* ------------------------------------------------------------
+   ANNOTATIONS — developer notes, toggleable, never customer-facing
+   ------------------------------------------------------------ */
+
+.anno {
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.45;
+  color: #7a2331;
+  background: #fdf2f4;
+  border-left: 2px solid var(--burgundy);
+  padding: 0.4rem 0.6rem;
+  margin-top: var(--stack-sm);
+  max-width: 60ch;
+}
+
+.anno::before {
+  content: "NOTE — ";
+  font-weight: 700;
+}
+
+.anno--todo::before { content: "CONTENT REQUIRED — "; }
+.anno--dim::before  { content: "DIMENSIONS — "; }
+
+body[data-anno="off"] .anno { display: none; }
+
+/* ------------------------------------------------------------
+   THE DATUM
+   Option A: persistent, fixed to the outer page edge
+   Option B: section-contained, re-anchored per chapter
+   ------------------------------------------------------------ */
+
+.datum-a {
+  position: fixed;
+  top: 0;
+  left: var(--datum-x);
+  bottom: 0;
+  width: 1px;
+  background: var(--g3);
+  z-index: 800;
+  pointer-events: none;
+}
+
+/* Progress is expressed as a burgundy segment growing down the line —
+   deliberately a hairline, never a chunky generic progress bar. */
+.datum-a__progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 0;
+  background: var(--burgundy);
+}
+
+.datum-a__marker {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.datum-a__tick {
+  width: 10px;
+  height: 1px;
+  background: var(--burgundy);
+}
+
+.datum-a__label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--g6);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  padding: 0.5rem 0;
+}
+
+.datum-a__num {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--burgundy);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+/* Chapter-boundary ticks, drawn on the fixed line */
+.datum-a__ticks { position: absolute; inset: 0; }
+.datum-a__ticks i {
+  position: absolute;
+  left: 0;
+  width: 5px;
+  height: 1px;
+  background: var(--g4);
+}
+
+body[data-datum="b"] .datum-a { display: none; }
+
+/* Option B — section-contained */
+.datum-b {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--g3);
+}
+
+.datum-b__head {
+  position: sticky;
+  top: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  transform: translateX(-0.5px);
+}
+
+.datum-b__head span:first-child {
+  width: 10px;
+  height: 1px;
+  background: var(--burgundy);
+  flex: none;
+}
+
+.datum-b__head span:last-child {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--g6);
+  background: var(--g0);
+  padding: 0.15rem 0.35rem;
+}
+
+body[data-datum="b"] .datum-b { display: block; }
+body[data-datum="off"] .datum-a,
+body[data-datum="off"] .datum-b { display: none; }
+
+/* Mobile: both options collapse to a top hairline chapter indicator */
+.datum-m {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 800;
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid var(--g2);
+  padding: 0.4rem var(--gutter);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--g6);
+  display: none;
+}
+
+.datum-m__bar {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--burgundy);
+  width: 0;
+}
+
+/* ------------------------------------------------------------
+   CHAPTER SCAFFOLD
+   ------------------------------------------------------------ */
+
+.chapter {
+  position: relative;
+  padding-inline: calc(var(--datum-x) + var(--datum-clear)) var(--gutter);
+  padding-block: var(--stack-xl);
+  border-top: 1px solid var(--g2);
+}
+
+.chapter:first-of-type { border-top: 0; }
+
+.chapter__num {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--g5);
+  margin-bottom: var(--stack-md);
+}
+
+/* Greybox type placeholders — deliberately neutral */
+.t-display {
+  font-size: clamp(2rem, 4.6vw, 3.4rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  max-width: 18ch;
+}
+
+.t-h2 {
+  font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  font-weight: 600;
+  max-width: 22ch;
+}
+
+.t-h3 {
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  line-height: 1.25;
+  font-weight: 600;
+}
+
+.t-body {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--g6);
+  max-width: 58ch;
+}
+
+.t-lead {
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+  line-height: 1.55;
+  color: var(--g6);
+  max-width: 52ch;
+}
+
+.t-cap {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--g5);
+}
+
+.t-quote {
+  font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+  line-height: 1.35;
+  font-style: italic;
+  max-width: 26ch;
+}
+
+.rule { height: 1px; background: var(--g2); border: 0; margin: 0; }
+
+/* Greybox image frames — real photo, grayscale by default */
+.ph {
+  position: relative;
+  background: var(--g2);
+  overflow: hidden;
+}
+
+.ph img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(0.92);
+}
+
+body[data-photo="color"] .ph img { filter: none; }
+
+.ph--empty {
+  display: grid;
+  place-items: center;
+  color: var(--g5);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-align: center;
+  padding: 1rem;
+}
+
+.ph__cap {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.25rem 0.5rem;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--g6);
+}
+
+/* Greybox buttons — shape and mass only, no styling intent */
+.btn {
+  display: inline-block;
+  padding: 0.85rem 1.5rem;
+  background: var(--g8);
+  color: var(--g0);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--g8);
+  padding-inline: 0;
+  border-bottom: 1px solid var(--g4);
+}
+
+/* ============================================================
+   CH 01 — ARRIVAL
+   Target 80–95vh. Type low-left. Not centered.
+   ============================================================ */
+
+#ch01 {
+  padding: 0;
+  min-height: 86vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem calc(var(--datum-x) + var(--datum-clear)) 1.1rem;
+  border-bottom: 1px solid var(--g2);
+}
+
+.nav__brand {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-size: 0.95rem;
+}
+
+.nav__links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  padding: 0;
+  font-size: 0.85rem;
+  color: var(--g6);
+}
+
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  align-items: end;
+  gap: var(--stack-lg);
+  padding: var(--stack-lg) var(--gutter) var(--stack-md) calc(var(--datum-x) + var(--datum-clear));
+}
+
+.hero__copy { padding-bottom: var(--stack-md); }
+.hero__eyebrow { margin-bottom: var(--stack-sm); }
+.hero__lead { margin-top: var(--stack-md); }
+
+.hero__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--stack-md);
+  margin-top: var(--stack-lg);
+  flex-wrap: wrap;
+}
+
+.hero__media { aspect-ratio: 4 / 3; }
+
+.hero__trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2rem;
+  padding: 0.9rem calc(var(--datum-x) + var(--datum-clear));
+  border-top: 1px solid var(--g2);
+}
+
+/* ============================================================
+   CH 02 — LISTENING
+   Dark, quiet, ~60% empty. Image bleeds off right edge.
+   ============================================================ */
+
+#ch02 {
+  background: var(--g8);
+  color: var(--g1);
+  padding-right: 0;
+  overflow: hidden;
+}
+
+#ch02 .chapter__num,
+#ch02 .t-cap { color: var(--g5); }
+
+.listen {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.85fr);
+  gap: var(--stack-lg);
+  align-items: start;
+}
+
+.listen__statement { color: var(--g0); }
+
+.listen__body {
+  margin-top: var(--stack-xl);
+  color: var(--g4);
+  max-width: 46ch;
+}
+
+/* deliberately cropped and bleeding — fragment, not picture */
+.listen__media {
+  aspect-ratio: 3 / 4;
+  margin-right: -12%;
+  align-self: end;
+}
+
+#ch02 .anno { background: #2a1319; color: #e8a9b5; border-color: var(--burgundy); }
+
+/* ============================================================
+   CH 03 — THE MIDDLE IS THE PROOF
+   Variant A: sticky frame (native scroll retained)
+   Variant B: progressive vertical sequence
+   ============================================================ */
+
+#ch03 { background: var(--g1); }
+
+.mid__head { margin-bottom: var(--stack-lg); }
+
+/* ---- Variant A: sticky ---- */
+.midA { display: none; }
+body[data-ch03="a"] .midA { display: block; }
+
+.midA__track { position: relative; }
+
+.midA__sticky {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: var(--stack-lg);
+  align-items: center;
+  padding-block: var(--stack-md);
+}
+
+.midA__frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--g3);
+}
+
+.midA__frame .ph {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 220ms linear;
+}
+
+.midA__frame .ph.is-active { opacity: 1; }
+
+.midA__ruler {
+  display: grid;
+  grid-template-columns: 22% 48% 30%;
+  margin-top: var(--stack-sm);
+  border-top: 1px solid var(--g3);
+}
+
+.midA__ruler span {
+  position: relative;
+  padding-top: 0.5rem;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--g5);
+}
+
+.midA__ruler span::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 1px;
+  height: 6px;
+  background: var(--g4);
+}
+
+.midA__ruler span.is-active { color: var(--burgundy); }
+.midA__ruler span.is-active::before { background: var(--burgundy); height: 10px; }
+
+.midA__panel > div { display: none; }
+.midA__panel > div.is-active { display: block; }
+
+.midA__spacer { height: 100vh; }
+
+/* ---- Variant B: progressive vertical ---- */
+.midB { display: none; }
+body[data-ch03="b"] .midB { display: block; }
+
+.midB__step {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--stack-lg);
+  align-items: center;
+  padding-block: var(--stack-lg);
+  border-top: 1px solid var(--g2);
+}
+
+/* Alternating so the three states do not read as a repeating card set */
+.midB__step:nth-child(even) .midB__media { order: 2; }
+.midB__step--during { background: var(--g2); margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); }
+.midB__media { aspect-ratio: 4 / 3; }
+.midB__step--during .midB__media { aspect-ratio: 3 / 2; }
+
+/* ============================================================
+   CH 04 — CRAFT
+   Typographic rows, not four equal cards.
+   ============================================================ */
+
+.craft { border-top: 1px solid var(--g3); }
+
+.craft__row {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr) minmax(0, 1.1fr) 8rem;
+  gap: var(--stack-md);
+  align-items: baseline;
+  padding-block: var(--stack-md);
+  border-bottom: 1px solid var(--g3);
+}
+
+.craft__row .t-cap { color: var(--g4); }
+
+.craft__evidence {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-top: var(--stack-sm);
+}
+
+.craft__evidence .ph { aspect-ratio: 1 / 1; }
+
+/* Deliberate variance: rows are not identical. Row 2 and 4 carry a
+   wider evidence strip so the set never reads as four equal cards. */
+.craft__row--wide { grid-template-columns: 3.5rem minmax(0, 0.8fr) minmax(0, 1.4fr) 8rem; }
+.craft__row--wide .craft__evidence { grid-template-columns: repeat(2, 1fr); }
+.craft__row--wide .craft__evidence .ph { aspect-ratio: 4 / 3; }
+
+/* ============================================================
+   CH 05 — FEATURED HOME
+   Asymmetric editorial spread. Unequal image sizes, one overlap.
+   ============================================================ */
+
+#ch05 { background: var(--g1); }
+
+.feat {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: var(--stack-lg);
+  align-items: start;
+}
+
+.feat__main { aspect-ratio: 3 / 4; }
+
+.feat__small {
+  aspect-ratio: 1 / 1;
+  width: 58%;
+  margin-top: -18%;
+  margin-left: 22%;
+  position: relative;
+  z-index: 2;
+  border: 6px solid var(--g1);
+}
+
+.feat__side { padding-top: var(--stack-lg); }
+
+.feat__stats {
+  margin-top: var(--stack-lg);
+  border-top: 1px solid var(--g3);
+}
+
+.feat__stats div {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--g3);
+  font-size: 0.9rem;
+}
+
+.feat__stats dt { color: var(--g5); font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* ============================================================
+   CH 06 — VERIFIABLE TRUST
+   Two states, A (real testimonial) and B (no testimonial).
+   ============================================================ */
+
+#ch06 { background: var(--g2); }
+
+.trustA, .trustB { display: none; }
+body[data-trust="a"] .trustA { display: block; }
+body[data-trust="b"] .trustB { display: block; }
+
+.trust__quote {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: var(--stack-sm);
+  max-width: 46rem;
+}
+
+.trust__mark {
+  font-size: 3rem;
+  line-height: 0.8;
+  color: var(--g4);
+}
+
+.trust__credentials {
+  margin-top: var(--stack-xl);
+  border-top: 1px solid var(--g3);
+  max-width: 46rem;
+}
+
+.trust__credentials div {
+  display: grid;
+  grid-template-columns: 10rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--g3);
+  font-size: 0.92rem;
+}
+
+.trust__credentials dt {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--g5);
+  padding-top: 0.2rem;
+}
+
+.trust__team {
+  display: grid;
+  grid-template-columns: 12rem minmax(0, 1fr);
+  gap: var(--stack-md);
+  align-items: start;
+  margin-top: var(--stack-lg);
+  max-width: 46rem;
+}
+
+.trust__team .ph { aspect-ratio: 1 / 1; }
+
+/* ============================================================
+   CH 07 — THE SCHEDULE
+   Only horizontal moment. Static fit — no pin, no hijack.
+   ============================================================ */
+
+.sched {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--g3);
+  border: 1px solid var(--g3);
+}
+
+.sched__step {
+  background: var(--g0);
+  padding: var(--stack-md) 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.sched__step .t-cap { color: var(--g4); }
+
+/* Emphasis state — construction is the longest and most feared phase */
+.sched__step--emph { background: var(--g1); }
+
+.sched__axis {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  margin-top: 0.75rem;
+}
+
+.sched__axis span {
+  position: relative;
+  padding-top: 0.5rem;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--g5);
+  border-top: 1px solid var(--g3);
+}
+
+.sched__axis span::before {
+  content: "";
+  position: absolute;
+  top: -1px; left: 0;
+  width: 1px; height: 5px;
+  background: var(--g4);
+}
+
+/* ============================================================
+   CH 08 — BEGIN
+   Dark. Form is the chapter, not a card beside text.
+   ============================================================ */
+
+#ch08 {
+  background: var(--g8);
+  color: var(--g1);
+}
+
+#ch08 .chapter__num,
+#ch08 .t-cap { color: var(--g5); }
+#ch08 .t-body { color: var(--g4); }
+
+.begin {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: var(--stack-xl);
+  align-items: start;
+}
+
+.form { display: grid; gap: var(--stack-md); max-width: 34rem; }
+
+.form__row { display: grid; gap: 0.4rem; }
+
+.form__row--split {
+  grid-template-columns: 1fr 1fr;
+  gap: var(--stack-md);
+}
+
+.form label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--g5);
+}
+
+.form input,
+.form select,
+.form textarea {
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--g1);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--g6);
+  padding: 0.5rem 0;
+  border-radius: 0;
+  width: 100%;
+}
+
+.form textarea { resize: vertical; min-height: 5rem; }
+.form input:focus, .form select:focus, .form textarea:focus {
+  outline: none;
+  border-bottom-color: var(--g1);
+}
+
+.form select option { color: #111; }
+
+#ch08 .btn { background: var(--g0); color: var(--g8); }
+
+.begin__alt {
+  margin-top: var(--stack-lg);
+  padding-top: var(--stack-md);
+  border-top: 1px solid var(--g7);
+}
+
+#ch08 .anno { background: #2a1319; color: #e8a9b5; }
+
+/* ============================================================
+   RESPONSIVE — mobile is redesigned, not scaled
+   ============================================================ */
+
+@media (max-width: 1023px) {
+  .datum-a { display: none !important; }
+  .datum-b { display: none !important; }
+  .datum-m { display: block; }
+
+  body { padding-top: 2rem; }
+
+  .chapter { padding-inline: var(--gutter); padding-block: var(--stack-lg); }
+  .nav { padding-inline: var(--gutter); }
+  .hero { padding-inline: var(--gutter); }
+  .hero__trust { padding-inline: var(--gutter); }
+
+  .hero { grid-template-columns: 1fr; align-items: start; }
+  .hero__media { aspect-ratio: 3 / 2; order: -1; }
+
+  .listen { grid-template-columns: 1fr; }
+  .listen__body { margin-top: var(--stack-md); }
+  .listen__media { margin-right: calc(var(--gutter) * -1); aspect-ratio: 4 / 3; }
+
+  /* CH03 mobile: no pin at any width below desktop. Sticky fights
+     mobile scroll physics and URL-bar behaviour. */
+  body[data-ch03="a"] .midA__sticky { position: static; min-height: 0; grid-template-columns: 1fr; }
+  body[data-ch03="a"] .midA__spacer { display: none; }
+  body[data-ch03="a"] .midA__frame .ph { position: relative; opacity: 1; }
+  body[data-ch03="a"] .midA__frame { aspect-ratio: auto; display: grid; gap: 0.5rem; background: none; }
+  body[data-ch03="a"] .midA__frame .ph { aspect-ratio: 4 / 3; }
+  body[data-ch03="a"] .midA__panel > div { display: block; margin-top: var(--stack-md); }
+  body[data-ch03="a"] .midA__ruler { display: none; }
+
+  .midB__step { grid-template-columns: 1fr; gap: var(--stack-md); }
+  .midB__step:nth-child(even) .midB__media { order: 0; }
+
+  .craft__row,
+  .craft__row--wide {
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    row-gap: 0.75rem;
+  }
+  .craft__row > *:nth-child(3) { grid-column: 2; }
+  .craft__row > *:nth-child(4) { grid-column: 2; }
+  .craft__evidence,
+  .craft__row--wide .craft__evidence { grid-template-columns: repeat(3, 1fr); }
+  .craft__row--wide .craft__evidence .ph { aspect-ratio: 1 / 1; }
+
+  .feat { grid-template-columns: 1fr; }
+  .feat__small { width: 46%; margin-top: -14%; margin-left: 8%; }
+  .feat__side { padding-top: 0; }
+
+  .trust__team { grid-template-columns: 8rem minmax(0, 1fr); }
+
+  /* CH07 mobile: horizontal becomes an explicit vertical sequence */
+  .sched { grid-template-columns: 1fr; }
+  .sched__axis { display: none; }
+  .sched__step { flex-direction: row; gap: 1rem; align-items: baseline; }
+  .sched__step .t-cap { flex: 0 0 4.5rem; }
+
+  .begin { grid-template-columns: 1fr; gap: var(--stack-lg); }
+}
+
+@media (max-width: 640px) {
+  .nav__links { display: none; }
+  .t-display { font-size: clamp(1.9rem, 8vw, 2.4rem); }
+  .form__row--split { grid-template-columns: 1fr; gap: var(--stack-md); }
+  .feat__small { width: 55%; margin-top: -12%; }
+  .craft__evidence { grid-template-columns: repeat(2, 1fr); }
+  .trust__team { grid-template-columns: 1fr; }
+  .trust__team .ph { max-width: 9rem; }
+  .proto-bar { font-size: 10px; }
+  body { padding-bottom: 5.5rem; }
+}
+
+/* Ultrawide cap. Without this the Craft rows (04) open a dead zone between
+   the service name and its description at ≥1600px, and the Schedule (07)
+   columns stretch past a comfortable measure. Finding L-1. */
+.hero, .listen, .craft, .feat, .sched, .sched__axis, .begin, .mid__head, .midA__sticky {
+  max-width: 1560px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .midA__frame .ph { transition: none; }
+}
