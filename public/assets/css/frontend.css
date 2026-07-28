@@ -171,9 +171,9 @@
 }
 
 .ch--approach .eyebrow--accent,
-.ch--begin .eyebrow--accent { color: var(--brand-burgundy-light); }
+.ch--begin .eyebrow--accent { color: var(--accent-on-dark); }
 .ch--approach .eyebrow--accent::before,
-.ch--begin .eyebrow--accent::before { background: var(--brand-burgundy-light); }
+.ch--begin .eyebrow--accent::before { background: var(--accent-on-dark); }
 
 .section-head { margin-bottom: var(--space-xl); }
 .section-head h2 { max-width: 18ch; }
@@ -458,7 +458,7 @@
   font-size: 0.6875rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--soft-gray);
+  color: var(--text-muted-on-light);
   transition: color 300ms var(--ease-out);
 }
 
@@ -481,7 +481,7 @@
   display: block;
   font-size: 0.625rem;
   letter-spacing: 0.18em;
-  color: var(--soft-gray);
+  color: var(--text-muted-on-light);
   margin-bottom: 2px;
 }
 
@@ -493,7 +493,7 @@
   font-size: 0.6875rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--soft-gray);
+  color: var(--text-muted-on-light);
   margin: 0 0 var(--space-md);
 }
 
@@ -568,12 +568,12 @@
   text-transform: uppercase;
 }
 
-.proof__stamp-step { color: var(--brand-burgundy-light); font-weight: 700; }
+.proof__stamp-step { color: var(--accent-on-dark); font-weight: 700; }
 
 .proof__disclosure {
   margin-top: var(--space-lg);
   font-size: 0.8125rem;
-  color: var(--soft-gray);
+  color: var(--text-muted-on-light);
   max-width: 62ch;
 }
 
@@ -933,10 +933,28 @@
   color: var(--warm-white);
 }
 
+/* Underline-only fields, so the focus ring is the underline itself. It
+   has to be thick enough to read as a state change: a 1px line on top
+   of an existing 1px border is not a visible indicator, especially on
+   this dark ground. Three pixels of burgundy against the 18%-white
+   resting border clears WCAG 2.4.11 comfortably.
+
+   outline:none is safe here only because the box-shadow replaces it.
+   The forced-colors fallback below restores a real outline, since
+   box-shadow is discarded in high-contrast mode. */
+.ch--begin .form-control:focus-visible,
 .ch--begin .form-control:focus {
   outline: none;
   border-bottom-color: var(--brand-burgundy-light);
-  box-shadow: 0 1px 0 0 var(--brand-burgundy-light);
+  box-shadow: 0 3px 0 0 var(--brand-burgundy-light);
+}
+
+@media (forced-colors: active) {
+  .ch--begin .form-control:focus,
+  .ch--begin .form-control:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
 }
 
 .ch--begin select.form-control option { color: var(--ink-black); }

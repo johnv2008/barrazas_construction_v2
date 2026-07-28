@@ -14,4 +14,5 @@ use App\Middleware\CsrfMiddleware;
 
 $router->get('/', [HomeController::class, 'index']);
 $router->get('/sitemap.xml', [HomeController::class, 'sitemap']);
+$router->get('/robots.txt', [HomeController::class, 'robots']);
 $router->post('/start-your-project', [LeadController::class, 'store'], [CsrfMiddleware::class]);

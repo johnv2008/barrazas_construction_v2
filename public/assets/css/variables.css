@@ -48,6 +48,26 @@
 
   --pure-white: #ffffff;
 
+  /* ---- Accessible pairings ----
+     --soft-gray and --brand-burgundy-light are correct against the dark
+     grounds they were designed for, but both fail WCAG AA when used for
+     small text against their opposite ground. Measured:
+
+       #a9a5a0 on #f7f4ef (soft-gray on warm-white)  = 2.23:1
+       #b3183f on #111214 (burgundy-light on ink)    = 2.78:1
+
+     Small text needs 4.5:1, so these two exist for exactly those cases.
+     They are tuned to clear the threshold with a little margin rather
+     than sitting on it:
+
+       #6f6a64 on #f7f4ef = 4.88:1
+       #d9576f on #111214 = 4.95:1
+
+     Use --soft-gray for muted text on ink, and --text-muted-on-light for
+     muted text on warm-white. Same for the two accents. */
+  --text-muted-on-light: #6f6a64;
+  --accent-on-dark: #d9576f;
+
   /* ---- Legacy token names, aliased onto the brand system above.
      Kept so admin/auth/error views (out of scope for this redesign)
      continue to work unchanged and automatically pick up the new

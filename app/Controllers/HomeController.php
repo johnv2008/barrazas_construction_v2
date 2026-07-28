@@ -35,6 +35,34 @@ final class HomeController extends Controller
     }
 
     /**
+     * robots.txt, rendered rather than served as a static file.
+     *
+     * The sitemap directive must be a fully-qualified URL — the spec
+     * requires it, and a relative path is silently ignored (Lighthouse
+     * reports it as an invalid sitemap URL). Rendering it here means the
+     * host comes from APP_URL, so local, staging and production each
+     * advertise their own sitemap without anyone remembering to edit a
+     * static file.
+     *
+     * public/robots.txt was removed when this was added: Apache serves
+     * real files before consulting the front controller, so a static
+     * copy would shadow this route and silently win.
+     */
+    public function robots(Request $request, array $params): void
+    {
+        header('Content-Type: text/plain; charset=utf-8');
+
+        $adminPath = trim((string) config('app.admin_path', 'admin'), '/');
+
+        echo "User-agent: *\n";
+        echo "Allow: /\n";
+        echo 'Disallow: /' . $adminPath . "/\n";
+        echo "Disallow: /uploads/\n";
+        echo "\n";
+        echo 'Sitemap: ' . base_url('sitemap.xml') . "\n";
+    }
+
+    /**
      * Homepage content, organised as the eight approved chapters.
      *
      * Emotional order is Dream -> Proof -> Trust -> Consultation:

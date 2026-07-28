@@ -810,7 +810,10 @@ textarea.form-control {
   color: var(--brand-burgundy-light);
 }
 
-.site-footer h4 {
+/* h3, not h4 — the footer follows an h2 chapter heading, and jumping
+   two levels breaks the document outline for screen reader users
+   navigating by heading. The visual size is unchanged. */
+.site-footer h3 {
   font-family: var(--font-sans);
   font-size: 0.75rem;
   font-weight: var(--fw-semibold);

@@ -26,7 +26,7 @@
       </div>
 
       <div>
-        <h4>Company</h4>
+        <h3>Company</h3>
         <ul class="site-footer__links">
           <li><a href="#services">Services</a></li>
           <li><a href="#projects">Our Work</a></li>
@@ -36,7 +36,7 @@
       </div>
 
       <div>
-        <h4>Services</h4>
+        <h3>Services</h3>
         <ul class="site-footer__links">
           <li><a href="#services">Kitchen Remodeling</a></li>
           <li><a href="#services">Bathroom Remodeling</a></li>
@@ -46,7 +46,7 @@
       </div>
 
       <div>
-        <h4>Get in Touch</h4>
+        <h3>Get in Touch</h3>
         <ul class="site-footer__links">
           <li>16561 Jacksonville Rd<br>Jamestown, CA 95327</li>
           <li><a href="#contact">Schedule a Consultation</a></li>
