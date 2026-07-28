@@ -172,14 +172,28 @@
   align-items: center;
 }
 
+/* The logo carries the identity — a homeowner should know whose site
+   this is within a second, so it is given real presence rather than
+   being reduced to a courtesy mark. It shrinks on scroll to reclaim
+   viewport, but never below a legible size. */
 .brand-mark__logo {
-  height: 64px;
+  height: 78px;
   width: auto;
   flex-shrink: 0;
+  transition: height var(--duration-standard) var(--ease-standard);
+}
+
+.site-header.is-scrolled .brand-mark__logo {
+  height: 58px;
 }
 
 .brand-mark--large .brand-mark__logo {
-  height: 84px;
+  height: 92px;
+}
+
+@media (max-width: 767px) {
+  .brand-mark__logo { height: 56px; }
+  .site-header.is-scrolled .brand-mark__logo { height: 48px; }
 }
 
 .site-nav {
@@ -376,13 +390,6 @@
   font-weight: var(--fw-semibold);
 }
 
-/* ---------- Cards ---------- */
-.card-grid {
-  display: grid;
-  gap: var(--space-md);
-  grid-template-columns: 1fr;
-}
-
 @media (min-width: 640px) {
   .card-grid--2 {
     grid-template-columns: repeat(2, 1fr);
@@ -393,28 +400,6 @@
   .card-grid--3 {
     grid-template-columns: repeat(3, 1fr);
   }
-
-  .card-grid--4 {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-/* ---------- Service cards ----------
-   Calm, conventional card: image on top, plain content below. No
-   dark overlay theatrics. */
-.service-card {
-  display: block;
-  border: 1px solid var(--line-on-light);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  background: var(--pure-white);
-  transition: border-color var(--duration-standard) var(--ease-standard), box-shadow var(--duration-standard) var(--ease-standard);
-}
-
-.service-card:hover,
-.service-card:focus-visible {
-  border-color: var(--color-border-on-light);
-  box-shadow: var(--shadow-sm);
 }
 
 .service-card__media {
@@ -427,11 +412,6 @@
   height: 100%;
   object-fit: cover;
   transition: transform var(--duration-slow) var(--ease-standard);
-}
-
-.service-card:hover .service-card__image,
-.service-card:focus-visible .service-card__image {
-  transform: scale(var(--hover-scale));
 }
 
 .service-card__body {
@@ -462,28 +442,6 @@
   transition: transform var(--duration-fast) var(--ease-standard);
 }
 
-.service-card:hover .service-card__link svg,
-.service-card:focus-visible .service-card__link svg {
-  transform: translateX(3px);
-}
-
-/* ---------- Project cards ----------
-   Same calm treatment as service cards: image + caption block. */
-.project-card {
-  display: block;
-  border: 1px solid var(--line-on-light);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  background: var(--pure-white);
-  transition: border-color var(--duration-standard) var(--ease-standard), box-shadow var(--duration-standard) var(--ease-standard);
-}
-
-.project-card:hover,
-.project-card:focus-visible {
-  border-color: var(--color-border-on-light);
-  box-shadow: var(--shadow-sm);
-}
-
 .project-card__media {
   aspect-ratio: 4 / 3;
   overflow: hidden;
@@ -494,11 +452,6 @@
   height: 100%;
   object-fit: cover;
   transition: transform var(--duration-slow) var(--ease-standard);
-}
-
-.project-card:hover .project-card__image,
-.project-card:focus-visible .project-card__image {
-  transform: scale(var(--hover-scale));
 }
 
 .project-card__body {
@@ -536,11 +489,6 @@
 
 .project-card__link svg {
   transition: transform var(--duration-fast) var(--ease-standard);
-}
-
-.project-card:hover .project-card__link svg,
-.project-card:focus-visible .project-card__link svg {
-  transform: translateX(3px);
 }
 
 /* ---------- Forms ---------- */
@@ -889,6 +837,16 @@ textarea.form-control {
   font-size: 0.8125rem;
   color: var(--soft-gray);
   opacity: 0.85;
+}
+
+/* The license number is the one legally required line in the footer —
+   it reads at full strength rather than inheriting the note's dimming. */
+.site-footer__license {
+  display: inline-block;
+  margin-top: 0.25rem;
+  color: var(--pure-white);
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 
 .site-footer__bottom {

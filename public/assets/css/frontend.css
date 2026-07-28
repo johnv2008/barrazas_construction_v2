@@ -1,385 +1,849 @@
 /*
-  Barraza's Construction — Homepage-specific layout.
-  Refinement pass: calm, light, restrained. Section list mirrors the
-  approved information architecture exactly — header, hero, trust
-  strip, intro, services, featured project, selected projects, why
-  choose, process, planning guidance, consultation, footer. No extra
-  sections, no decorative numbering, no dark-heavy backgrounds.
+  Barraza's Construction — homepage chapters.
+
+  Eight chapters, Dream -> Proof -> Trust -> Consultation. Finished work
+  leads; process substantiates it. No two adjacent chapters share ground
+  tone, primary axis, and density — that variance is the point, and the
+  Datum is the constant that licenses it.
+
+  Burgundy is woven structurally, never flooded: chapter numbers, Datum
+  accents, dividers, active states, image-frame rules, timeline markers,
+  hover and focus. Warm neutrals still do ~90% of the work.
+
+  Section order: datum, shared primitives, 01 arrival, 02 approach,
+  03 proof, 04 craft, 05 work, 06 trust, 07 process, 08 begin, motion,
+  responsive.
 */
 
-@keyframes fade-rise {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
+:root {
+  /* Datum geometry. --datum-clear must exceed the rendered width of the
+     marker (dash + number + rotated label) or the rail overlaps copy. */
+  --datum-x: clamp(1rem, 2.6vw, 2.75rem);
+  --datum-clear: 5.5rem;
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  /* Measured height of .site-header at each breakpoint (logo + padding).
+     Consumed by the hero's top offset and the mobile chapter bar. */
+  --header-height: 76px;
+
+  --burgundy-tint: rgba(128, 0, 32, 0.08);
+  --burgundy-line: rgba(128, 0, 32, 0.28);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur: 720ms;
 }
 
 /* =====================================================
-   Hero — full-bleed photograph, content anchored to the
-   bottom-left over a soft gradient scrim. Clears the fixed
-   header via top padding rather than shrinking the image.
+   The Datum — persistent reference line
    ===================================================== */
-.hero-full {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  min-height: min(78vh, 720px);
-  color: var(--pure-white);
-  overflow: hidden;
+
+.datum {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: var(--datum-x);
+  width: 1px;
+  z-index: 60;
+  pointer-events: none;
 }
 
-@media (max-width: 767px) {
-  .hero-full {
-    min-height: min(72vh, 560px);
-  }
-}
-
-.hero-full__media {
+.datum__rail {
   position: absolute;
   inset: 0;
-  z-index: 0;
+  background: var(--line-on-light);
 }
 
-.hero-full__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 25%;
-}
-
-.hero-full__scrim {
+.datum__progress {
   position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(
-    to top,
-    rgba(20, 16, 14, 0.72) 0%,
-    rgba(20, 16, 14, 0.4) 40%,
-    rgba(20, 16, 14, 0.05) 70%,
-    rgba(20, 16, 14, 0) 100%
-  );
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 0;
+  background: var(--brand-burgundy);
+  transition: height 120ms linear;
 }
 
-.hero-full__content {
-  position: relative;
-  z-index: 2;
-  padding-top: 180px;
-  padding-bottom: var(--space-xl);
-  max-width: 640px;
+.datum__tick {
+  position: absolute;
+  left: 0;
+  width: 5px;
+  height: 1px;
+  background: var(--line-on-light);
 }
 
-@media (max-width: 767px) {
-  .hero-full__content {
-    padding-top: 132px;
-    padding-bottom: var(--space-lg);
-  }
-}
-
-.hero-full__content > * {
-  animation: fade-rise var(--duration-slow) var(--ease-out) both;
-}
-
-.hero-full__content > *:nth-child(2) {
-  animation-delay: 70ms;
-}
-
-.hero-full__content > *:nth-child(3) {
-  animation-delay: 140ms;
-}
-
-.hero-full__content > *:nth-child(4) {
-  animation-delay: 210ms;
-}
-
-.hero-full__content .eyebrow {
-  color: var(--pure-white);
-}
-
-.hero-full__content h1 {
-  color: var(--pure-white);
-}
-
-.hero-full__lead {
-  font-size: var(--fs-body-lg);
-  color: rgba(255, 255, 255, 0.88);
-  max-width: var(--measure);
-  margin-bottom: var(--space-md);
-}
-
-.hero-full__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-md);
-}
-
-.hero-full__trust {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-/* =====================================================
-   Trust strip — compact, under 100px desktop height
-   ===================================================== */
-.trust-strip {
-  background: var(--stone);
-  padding-block: 18px;
-}
-
-.trust-strip__list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px var(--space-xl);
-}
-
-.trust-strip__item {
+.datum__marker {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--color-text-on-light);
+  gap: var(--space-2xs);
   white-space: nowrap;
 }
 
-.trust-strip__item::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
+.datum__dash {
+  width: 10px;
+  height: 1px;
   background: var(--brand-burgundy);
-  flex-shrink: 0;
+}
+
+.datum__num,
+.datum__label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--font-condensed);
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.datum__num { color: var(--brand-burgundy); }
+.datum__label {
+  color: var(--color-text-on-light-muted);
+  padding-block: var(--space-2xs);
+}
+
+/* The Datum sits over both light and dark chapters. */
+.datum.is-on-dark .datum__rail,
+.datum.is-on-dark .datum__tick { background: var(--line-on-dark); }
+.datum.is-on-dark .datum__label { color: var(--soft-gray); }
+.datum.is-on-dark .datum__num,
+.datum.is-on-dark .datum__dash { background: none; color: var(--brand-burgundy-light); }
+.datum.is-on-dark .datum__dash { background: var(--brand-burgundy-light); }
+
+/* Mobile collapse — a top hairline indicator, not a scaled-down rail */
+.datum-bar {
+  position: fixed;
+  top: var(--header-height, 64px);
+  left: 0;
+  right: 0;
+  z-index: 55;
+  display: none;
+  align-items: baseline;
+  gap: var(--space-2xs);
+  padding: var(--space-3xs) var(--space-md);
+  background: rgba(247, 244, 239, 0.92);
+  backdrop-filter: saturate(160%) blur(8px);
+  border-bottom: 1px solid var(--line-on-light);
+  font-family: var(--font-condensed);
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.datum-bar__num { color: var(--brand-burgundy); }
+.datum-bar__label { color: var(--color-text-on-light-muted); }
+
+.datum-bar__progress {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 1px;
+  width: 0;
+  background: var(--brand-burgundy);
+  transition: width 120ms linear;
 }
 
 /* =====================================================
-   Company introduction — simple split, one image
+   Shared primitives
    ===================================================== */
-.intro {
+
+/* Anchor offset for the fixed header is already handled globally by
+   `html { scroll-padding-top: 108px }` in base.css — adding
+   scroll-margin here as well would double it. */
+.ch {
+  position: relative;
+  padding-block: var(--space-section-mobile);
+}
+
+.eyebrow--accent {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  color: var(--brand-burgundy);
+}
+
+.eyebrow--accent::before {
+  content: "";
+  width: 22px;
+  height: 1px;
+  background: var(--brand-burgundy);
+}
+
+.ch--approach .eyebrow--accent,
+.ch--begin .eyebrow--accent { color: var(--brand-burgundy-light); }
+.ch--approach .eyebrow--accent::before,
+.ch--begin .eyebrow--accent::before { background: var(--brand-burgundy-light); }
+
+.section-head { margin-bottom: var(--space-xl); }
+.section-head h2 { max-width: 18ch; }
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-weight: var(--fw-semibold);
+  font-size: 0.9375rem;
+  color: var(--color-text-on-light);
+  text-decoration: none;
+  padding-bottom: 2px;
+  background-image: linear-gradient(var(--brand-burgundy), var(--brand-burgundy));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 1px;
+  transition: background-size 380ms var(--ease-out), color 240ms var(--ease-out);
+}
+
+.link-arrow::after {
+  content: "\2192";
+  color: var(--brand-burgundy);
+  transition: transform 380ms var(--ease-out);
+}
+
+.link-arrow:hover,
+.link-arrow:focus-visible { color: var(--brand-burgundy); background-size: 100% 1px; }
+.link-arrow:hover::after { transform: translateX(4px); }
+
+.link-arrow--sm { font-size: 0.875rem; }
+
+.ch--begin .link-arrow { color: var(--warm-white); }
+.ch--begin .link-arrow::after { color: var(--brand-burgundy-light); }
+
+/* A burgundy hairline that marks the top edge of alternating chapters —
+   the divider role from the approved colour list. */
+.ch--craft::before,
+.ch--trust::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 64px;
+  height: 2px;
+  background: var(--brand-burgundy);
+}
+
+/* =====================================================
+   01 · Arrival
+   ===================================================== */
+
+/* The header is fixed and the hero is not full-bleed, so the first
+   chapter must clear it explicitly or the eyebrow sits underneath. */
+.ch--arrival {
+  padding-top: calc(var(--header-height) + var(--space-lg));
+  padding-bottom: 0;
+}
+
+.arrival {
   display: grid;
-  gap: var(--space-lg);
+  gap: var(--space-xl);
+  padding-inline: var(--space-md);
 }
 
-@media (min-width: 1024px) {
-  .intro {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-2xl);
-    align-items: start;
-  }
+.arrival__heading {
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-display);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-display);
+  margin-block: var(--space-md) 0;
+  max-width: 15ch;
 }
 
-.intro__body {
+.arrival__lead {
   font-size: var(--fs-body-lg);
   color: var(--color-text-on-light-muted);
-  max-width: var(--measure);
+  max-width: 46ch;
+  margin-top: var(--space-md);
 }
 
-.intro__image {
+.arrival__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-md) var(--space-lg);
+  margin-top: var(--space-xl);
+}
+
+.arrival__media {
+  position: relative;
+  margin: 0;
+}
+
+/* Height-capped rather than aspect-driven: the source is a 3:4 portrait,
+   and letting it size itself pushes the headline off the first screen.
+   object-position holds the counter and backsplash — the part that sells
+   the room — rather than centring on the upper cabinets. */
+.arrival__media img {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: clamp(320px, 52vh, 480px);
   object-fit: cover;
+  object-position: center 62%;
   border-radius: var(--radius-md);
+}
+
+/* Burgundy frame rule — the "image frame" role, drawn rather than boxed */
+.arrival__media::after {
+  content: "";
+  position: absolute;
+  left: calc(-1 * var(--space-sm));
+  bottom: calc(-1 * var(--space-sm));
+  width: 42%;
+  height: 2px;
+  background: var(--brand-burgundy);
+}
+
+.plate {
+  position: absolute;
+  left: var(--space-md);
+  bottom: var(--space-md);
+  display: grid;
+  gap: 2px;
+  padding: var(--space-xs) var(--space-md);
+  background: rgba(247, 244, 239, 0.94);
+  backdrop-filter: saturate(160%) blur(10px);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 10px 30px rgba(17, 18, 20, 0.14);
+}
+
+.plate__label {
+  font-family: var(--font-condensed);
+  font-size: 0.625rem;
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--brand-burgundy);
+}
+
+.plate__title { font-weight: var(--fw-semibold); font-size: 0.9375rem; }
+
+.plate__meta {
+  font-size: 0.8125rem;
+  color: var(--color-text-on-light-muted);
+}
+
+.arrival__trust {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-md);
+  margin: var(--space-xl) 0 0;
+  padding: var(--space-sm) var(--space-md);
+  border-top: 1px solid var(--line-on-light);
+  font-family: var(--font-condensed);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-on-light-muted);
+}
+
+.arrival__trust-sep {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--brand-burgundy);
 }
 
 /* =====================================================
-   Featured project — one large image, up to two
-   supporting images, restrained editorial layout
+   02 · Approach — dark, quiet, largely empty
    ===================================================== */
-.featured-project {
+
+.ch--approach {
+  background: var(--ink-black);
+  color: var(--warm-white);
+  overflow: hidden;
+}
+
+.approach {
   display: grid;
-  gap: var(--space-lg);
+  gap: var(--space-xl);
 }
 
-@media (min-width: 1024px) {
-  .featured-project {
-    grid-template-columns: 1.1fr 1fr;
-    gap: var(--space-2xl);
-    align-items: start;
-  }
+.approach__heading {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.75rem, 3.4vw, 2.75rem);
+  font-weight: 400;
+  line-height: 1.24;
+  letter-spacing: -0.01em;
+  margin-block: var(--space-md) 0;
+  max-width: 20ch;
+  color: var(--pure-white);
 }
 
-.featured-project__main {
+.approach__body {
+  color: var(--soft-gray);
+  max-width: 48ch;
+  margin-top: var(--space-lg);
+}
+
+.approach__media { margin: 0; position: relative; }
+
+.approach__media img {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
   border-radius: var(--radius-md);
 }
 
-.featured-project__thumbs {
-  display: flex;
-  gap: var(--space-sm);
-  margin-top: var(--space-sm);
+.approach__media figcaption {
+  margin-top: var(--space-xs);
+  font-family: var(--font-condensed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--soft-gray);
 }
 
-.featured-project__thumbs img {
-  width: 50%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: var(--radius-md);
-}
+/* =====================================================
+   03 · The Middle Is the Proof
+   Pinned with position:sticky. Native scroll, never intercepted.
+   ===================================================== */
 
-.featured-project__meta {
-  font-size: 0.875rem;
+.ch--proof { background: var(--warm-white); }
+
+.proof__head { margin-bottom: var(--space-xl); }
+.proof__head h2 { margin-top: var(--space-md); max-width: 16ch; }
+
+.proof__lead {
+  margin-top: var(--space-md);
+  font-size: var(--fs-body-lg);
   color: var(--color-text-on-light-muted);
+  max-width: 52ch;
+}
+
+.proof__stage { display: grid; gap: var(--space-lg); }
+
+.proof__frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--stone);
+}
+
+.proof__shot {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  transition: opacity 460ms var(--ease-out);
+}
+
+.proof__shot.is-active { opacity: 1; }
+
+.proof__shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.proof__ruler {
+  display: flex;
+  gap: var(--space-md);
+  list-style: none;
+  margin: 0 0 var(--space-md);
+  padding: var(--space-xs) 0 0;
+  border-top: 1px solid var(--line-on-light);
+}
+
+.proof__step {
+  position: relative;
+  padding-top: var(--space-2xs);
+  font-family: var(--font-condensed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--soft-gray);
+  transition: color 300ms var(--ease-out);
+}
+
+/* Timeline markers — burgundy on the active state */
+.proof__step::before {
+  content: "";
+  position: absolute;
+  top: calc(-1 * var(--space-xs) - 1px);
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: transparent;
+  transition: background 300ms var(--ease-out);
+}
+
+.proof__step.is-active { color: var(--brand-burgundy); }
+.proof__step.is-active::before { background: var(--brand-burgundy); }
+
+.proof__text { display: none; }
+.proof__text.is-active { display: block; }
+.proof__text h3 { font-size: var(--fs-h3); max-width: 20ch; }
+.proof__text p {
+  margin-top: var(--space-sm);
+  color: var(--color-text-on-light-muted);
+  max-width: 48ch;
+}
+
+/* =====================================================
+   04 · What We Build — five services, three row layouts
+   ===================================================== */
+
+.craft { border-top: 1px solid var(--line-on-light); }
+
+.craft-row {
+  display: grid;
+  gap: var(--space-md);
+  padding-block: var(--space-xl);
+  border-bottom: 1px solid var(--line-on-light);
+}
+
+.craft-row__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+}
+
+.craft-row__num {
+  font-family: var(--font-condensed);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: var(--brand-burgundy);
+}
+
+.craft-row__title {
+  font-size: var(--fs-h3);
+  letter-spacing: var(--ls-tight);
+}
+
+.craft-row__benefit {
+  color: var(--color-text-on-light-muted);
+  max-width: 46ch;
   margin-bottom: var(--space-md);
 }
 
-.featured-project__link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 600;
-  color: var(--brand-burgundy);
-  border-bottom: 1px solid var(--brand-burgundy);
-  padding-bottom: 2px;
+.craft-row__media { display: grid; gap: var(--space-sm); }
+
+.craft-row__shot { margin: 0; overflow: hidden; border-radius: var(--radius-md); }
+
+.craft-row__shot img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  transition: transform 900ms var(--ease-out);
 }
+
+.craft-row:hover .craft-row__shot img { transform: scale(1.03); }
+
+/* The typographic row — no image by design. A burgundy rule carries it
+   so it reads as deliberate rather than unfinished. */
+.craft-row--plain { border-left: 2px solid var(--brand-burgundy); padding-left: var(--space-md); }
+.craft-row--plain .craft-row__benefit { max-width: 56ch; font-size: var(--fs-body-lg); }
 
 /* =====================================================
-   Why choose Barraza's — simple text blocks, no
-   oversized statistics
+   05 · Selected Work — editorial spread + uneven tiles
    ===================================================== */
-.benefits-grid {
-  display: grid;
-  gap: var(--space-md);
-  grid-template-columns: 1fr;
+
+.ch--work { background: var(--warm-white); }
+
+.feature { display: grid; gap: var(--space-xl); margin-bottom: var(--space-2xl); }
+
+.feature__media { position: relative; }
+
+.feature__main { margin: 0; border-radius: var(--radius-md); overflow: hidden; }
+
+.feature__main img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
 }
 
-@media (min-width: 640px) {
-  .benefits-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-lg) var(--space-xl);
-  }
-}
-
-.benefit {
-  padding-top: var(--space-sm);
-  border-top: 2px solid var(--brand-burgundy);
-}
-
-.benefit h3 {
-  font-size: 1.0625rem;
-  margin-bottom: 4px;
-}
-
-.benefit p {
-  font-size: 0.9375rem;
-  color: var(--color-text-on-light-muted);
-  margin: 0;
-}
-
-/* =====================================================
-   Process — five compact steps, horizontal desktop,
-   vertical mobile, no blueprint background
-   ===================================================== */
-.process-compact {
-  display: grid;
-  gap: var(--space-lg);
-  grid-template-columns: 1fr;
-}
-
-@media (min-width: 1024px) {
-  .process-compact {
-    grid-template-columns: repeat(5, 1fr);
-    gap: var(--space-md);
-  }
-}
-
-.process-compact__step {
-  padding-top: var(--space-sm);
-  border-top: 2px solid var(--line-on-light);
-}
-
-.process-compact__number {
-  display: block;
-  font-family: var(--font-display);
-  font-weight: var(--fw-display);
-  font-size: 1.5rem;
-  color: var(--brand-burgundy);
-  margin-bottom: 6px;
-}
-
-.process-compact__step h3 {
-  font-size: 1rem;
-  margin-bottom: 4px;
-}
-
-.process-compact__step p {
-  font-size: 0.9375rem;
-  color: var(--color-text-on-light-muted);
-  margin: 0;
-}
-
-/* =====================================================
-   Planning guidance — understated, three columns
-   ===================================================== */
-.planning-grid {
-  display: grid;
-  gap: var(--space-lg);
-}
-
-@media (min-width: 640px) {
-  .planning-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .planning-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-lg) var(--space-xl);
-  }
-}
-
-.planning-grid__item h3 {
-  font-size: 1.0625rem;
-  margin-bottom: 4px;
-}
-
-.planning-grid__item p {
-  font-size: 0.9375rem;
-  color: var(--color-text-on-light-muted);
-  margin: 0;
-}
-
-/* =====================================================
-   Consultation — clean two-column form section
-   ===================================================== */
-.consultation {
-  display: grid;
-  gap: var(--space-lg);
-}
-
-@media (min-width: 1024px) {
-  .consultation {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-2xl);
-    align-items: start;
-  }
-}
-
-.consultation__body {
-  color: var(--color-text-on-light-muted);
-  max-width: var(--measure);
-}
-
-.consultation-form {
-  background: var(--pure-white);
-  border: 1px solid var(--line-on-light);
+/* Overlapping detail image — the layered magazine move */
+.feature__detail {
+  margin: -18% 0 0 auto;
+  width: 52%;
+  position: relative;
+  z-index: 2;
+  border: 8px solid var(--warm-white);
   border-radius: var(--radius-md);
-  padding: var(--space-lg);
+  overflow: hidden;
 }
 
+.feature__detail img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.feature__copy h3 {
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-tight);
+  margin-block: var(--space-md) var(--space-md);
+  max-width: 18ch;
+}
+
+.feature__copy p { color: var(--color-text-on-light-muted); max-width: 50ch; }
+
+.feature__meta {
+  margin: var(--space-lg) 0;
+  border-top: 1px solid var(--line-on-light);
+}
+
+.feature__meta > div {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: var(--space-sm);
+  padding: var(--space-xs) 0;
+  border-bottom: 1px solid var(--line-on-light);
+}
+
+.feature__meta dt {
+  font-family: var(--font-condensed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand-burgundy);
+}
+
+.feature__meta dd { margin: 0; font-size: 0.9375rem; }
+
+.tiles { display: grid; gap: var(--space-md); }
+
+.tile {
+  position: relative;
+  margin: 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 900ms var(--ease-out);
+}
+
+.tile--tall img { aspect-ratio: 3 / 4; }
+.tile--square img { aspect-ratio: 1 / 1; }
+.tile--wide img { aspect-ratio: 3 / 2; }
+
+.tile figcaption {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: grid;
+  gap: 1px;
+  padding: var(--space-lg) var(--space-md) var(--space-sm);
+  background: linear-gradient(to top, rgba(17, 18, 20, 0.78), transparent);
+  color: var(--pure-white);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 420ms var(--ease-out), transform 420ms var(--ease-out);
+}
+
+.tile:hover img { transform: scale(1.04); }
+.tile:hover figcaption { opacity: 1; transform: none; }
+
+.tile__title { font-weight: var(--fw-semibold); font-size: 0.9375rem; }
+
+.tile__meta {
+  font-family: var(--font-condensed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--stone);
+}
+
+/* Captions must not be hover-only for touch users */
+@media (hover: none) {
+  .tile figcaption { opacity: 1; transform: none; }
+}
+
+/* =====================================================
+   06 · Credentials
+   ===================================================== */
+
+.ch--trust { background: var(--stone); }
+
+.trust { display: grid; gap: var(--space-xl); }
+
+.trust h2 { margin-top: var(--space-md); max-width: 14ch; }
+
+.trust__body {
+  margin-top: var(--space-md);
+  color: var(--color-text-on-light-muted);
+  max-width: 44ch;
+}
+
+.trust__evidence { display: grid; gap: var(--space-xl); }
+
+.trust__list { margin: 0; border-top: 1px solid var(--color-border-on-light); }
+
+/* Real work, not a badge. Credentials state the facts; the photograph
+   is the evidence sitting next to them. */
+.trust__media { margin: 0; }
+
+.trust__media img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}
+
+.trust__media figcaption {
+  margin-top: var(--space-xs);
+  font-family: var(--font-condensed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-on-light-muted);
+}
+
+.trust__row {
+  display: grid;
+  gap: var(--space-3xs);
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--color-border-on-light);
+}
+
+.trust__row dt {
+  font-family: var(--font-condensed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand-burgundy);
+}
+
+.trust__row dd { margin: 0; font-size: var(--fs-body); }
+
+/* =====================================================
+   07 · What Happens — the only horizontal moment
+   ===================================================== */
+
+.track {
+  display: grid;
+  gap: var(--space-lg);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: none;
+}
+
+.track__step { position: relative; padding-top: var(--space-md); border-top: 1px solid var(--line-on-light); }
+
+/* Timeline marker */
+.track__step::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--brand-burgundy);
+}
+
+.track__num {
+  display: block;
+  font-family: var(--font-condensed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  color: var(--brand-burgundy);
+  margin-bottom: var(--space-2xs);
+}
+
+.track__step h3 { font-size: var(--fs-h5); }
+
+.track__step p {
+  margin-top: var(--space-2xs);
+  font-size: 0.9375rem;
+  color: var(--color-text-on-light-muted);
+}
+
+/* =====================================================
+   08 · Begin — dark, warm photography, generous
+   ===================================================== */
+
+.ch--begin {
+  position: relative;
+  background: var(--ink-black);
+  color: var(--warm-white);
+  overflow: hidden;
+}
+
+.begin__bg { position: absolute; inset: 0; }
+
+.begin__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.16;
+}
+
+.begin__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, var(--ink-black) 30%, rgba(17, 18, 20, 0.72));
+}
+
+.begin { position: relative; display: grid; gap: var(--space-xl); }
+
+.begin h2 {
+  margin-top: var(--space-md);
+  color: var(--pure-white);
+  max-width: 14ch;
+}
+
+.begin__body {
+  margin-top: var(--space-md);
+  color: var(--soft-gray);
+  max-width: 42ch;
+  font-size: var(--fs-body-lg);
+}
+
+.begin__license {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--line-on-dark);
+  font-family: var(--font-condensed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--stone);
+}
+
+/* The form is the chapter, not a card floating beside text. */
+.ch--begin .consultation-form {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.ch--begin .form-label { color: var(--stone); }
+
+.ch--begin .form-control {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--color-border-on-dark-strong);
+  border-radius: 0;
+  padding-inline: 0;
+  color: var(--warm-white);
+}
+
+.ch--begin .form-control:focus {
+  outline: none;
+  border-bottom-color: var(--brand-burgundy-light);
+  box-shadow: 0 1px 0 0 var(--brand-burgundy-light);
+}
+
+.ch--begin select.form-control option { color: var(--ink-black); }
+.ch--begin .form-hint,
+.ch--begin .form-consent { color: var(--soft-gray); }
+
+/* Post-submission success state. Carried over from the previous
+   stylesheet and re-tuned for the dark chapter — this is the last
+   thing a converting visitor sees, so it should feel like an arrival,
+   not a system message. */
 .consultation-form__success {
   text-align: center;
-  padding-block: var(--space-md);
+  padding-block: var(--space-lg);
 }
 
 .consultation-form__success-icon {
@@ -395,9 +859,14 @@
   margin-bottom: var(--space-sm);
 }
 
-/* Honeypot — visually hidden, never removed from the accessibility
-   tree via display:none (some bots skip display:none fields), and
-   never focusable. */
+.ch--begin .consultation-form__success-icon {
+  background: var(--brand-burgundy-light);
+}
+
+/* Honeypot for the consultation form. Positioned off-canvas rather
+   than display:none so bots still fill it. Carried over verbatim from
+   the previous stylesheet — it must never become visible or real
+   submissions get rejected as spam. */
 .hp-field {
   position: absolute;
   left: -9999px;
@@ -405,4 +874,191 @@
   width: 1px;
   height: 1px;
   overflow: hidden;
+}
+
+/* =====================================================
+   Motion — restrained, reveals only. Nothing bounces.
+   ===================================================== */
+
+/* Scoped to .js — set by an inline script in the head before first
+   paint. Without scripting these selectors never match, so content is
+   simply visible. Content must never depend on JS to be readable. */
+.js [data-reveal],
+.js [data-reveal-media] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
+  will-change: opacity, transform;
+}
+
+.js [data-reveal-media] { transform: translateY(24px); }
+
+.js [data-reveal].is-revealed,
+.js [data-reveal-media].is-revealed {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal],
+  .js [data-reveal-media] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .proof__shot { transition: none; }
+  .craft-row__shot img,
+  .tile img { transition: none; }
+  .tile figcaption { opacity: 1; transform: none; transition: none; }
+  .datum__progress,
+  .datum-bar__progress { transition: none; }
+}
+
+/* =====================================================
+   Responsive — mobile is composed, not scaled
+   ===================================================== */
+
+@media (max-width: 1023px) {
+  .datum { display: none; }
+  .datum-bar { display: flex; }
+}
+
+/* ---- Mobile composition ----
+   Stacking the desktop layout verbatim produced a 22-viewport page on a
+   375px phone. Mobile is edited down instead: one image per service
+   rather than two, a two-up tile grid rather than a single column, and
+   a shorter hero. Same content order, same argument, ~35% less scroll. */
+@media (max-width: 767px) {
+  .ch--arrival { padding-top: calc(var(--header-height) + var(--space-md)); }
+  .arrival__media img { height: clamp(260px, 38vh, 340px); }
+
+  /* The supporting shot is a desktop luxury; the lead image carries the
+     service on a phone. */
+  .craft-row__shot--support { display: none; }
+  .craft-row { padding-block: var(--space-lg); }
+  .craft-row__shot img { aspect-ratio: 3 / 2; }
+
+  .feature__main img { aspect-ratio: 1 / 1; }
+  .feature__detail { width: 46%; margin-top: -14%; }
+
+  .tiles { grid-template-columns: 1fr 1fr; }
+  .tile--wide { grid-column: span 2; }
+  .tile--tall img,
+  .tile--square img { aspect-ratio: 1 / 1; }
+  .tile--wide img { aspect-ratio: 2 / 1; }
+  /* Captions are always visible on touch, so keep them compact. */
+  .tile figcaption { padding: var(--space-md) var(--space-sm) var(--space-2xs); }
+
+  .proof__frame { aspect-ratio: 3 / 2; }
+  .begin__bg img { object-position: center 40%; }
+}
+
+@media (min-width: 768px) {
+  :root { --header-height: 98px; }
+
+  .ch { padding-block: var(--space-2xl); }
+
+  /* The two quiet chapters get more air than the rest — enough to read
+     as considered, not so much that they become empty bands. 1.25x was
+     arrived at by eye; pushing further to chase a content-balance
+     percentage produced a void, which is the opposite of restraint. */
+  .ch--approach,
+  .ch--trust { padding-block: calc(var(--space-2xl) * 1.25); }
+
+  /* Selected Work is the largest chapter; keep its internal rhythm
+     tight so it does not swamp the page. */
+  .feature { margin-bottom: var(--space-xl); }
+
+  .arrival { grid-template-columns: 1fr 1fr; align-items: center; gap: var(--space-2xl); }
+  .arrival__media img { height: clamp(420px, 62vh, 620px); }
+
+  .approach { grid-template-columns: 1.35fr 0.8fr; gap: var(--space-2xl); align-items: end; }
+  /* Fragment, not a picture — bleeds off the right edge */
+  .approach__media { margin-right: calc(-1 * var(--space-2xl)); }
+
+  .proof__stage { grid-template-columns: 1.15fr 0.85fr; align-items: center; gap: var(--space-2xl); }
+
+  /* The media spans both rows, so rows must be sized explicitly:
+     min-content holds the title tight, 1fr absorbs the media's extra
+     height below the copy instead of wedging it between title and
+     body. align-self keeps both copy blocks top-aligned. */
+  .craft-row--wide,
+  .craft-row--standard {
+    grid-template-rows: min-content 1fr;
+    align-content: start;
+    column-gap: var(--space-2xl);
+  }
+
+  .craft-row--wide .craft-row__head,
+  .craft-row--wide .craft-row__body,
+  .craft-row--standard .craft-row__head,
+  .craft-row--standard .craft-row__body { align-self: start; }
+
+  .craft-row--wide {
+    grid-template-columns: 0.9fr 1.4fr;
+    grid-template-areas: "head media" "body media";
+  }
+  .craft-row--wide .craft-row__head { grid-area: head; }
+  .craft-row--wide .craft-row__body { grid-area: body; }
+  .craft-row--wide .craft-row__media { grid-area: media; grid-template-columns: 1.6fr 1fr; }
+
+  .craft-row--standard {
+    grid-template-columns: 1.1fr 0.9fr;
+    grid-template-areas: "media head" "media body";
+  }
+  .craft-row--standard .craft-row__head { grid-area: head; }
+  .craft-row--standard .craft-row__body { grid-area: body; }
+  .craft-row--standard .craft-row__media { grid-area: media; }
+  .craft-row--standard .craft-row__shot img { aspect-ratio: 3 / 2; }
+
+  .craft-row--plain { grid-template-columns: 0.9fr 1.4fr; column-gap: var(--space-2xl); }
+
+  .feature { grid-template-columns: 1.05fr 0.95fr; gap: var(--space-2xl); align-items: start; }
+  /* Slightly less tall than the 3:4 source so the featured project does
+     not dominate the page's overall length. */
+  .feature__main img { aspect-ratio: 4 / 5; }
+
+  .tiles {
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-flow: dense;
+  }
+  .tile--tall { grid-row: span 2; grid-column: span 1; }
+  .tile--wide { grid-column: span 2; }
+
+  .trust { grid-template-columns: 0.85fr 1.15fr; gap: var(--space-2xl); align-items: start; }
+  .trust__evidence { grid-template-columns: 1.1fr 0.9fr; gap: var(--space-xl); align-items: start; }
+
+  .track { grid-template-columns: repeat(5, 1fr); gap: var(--space-md); }
+
+  .begin { grid-template-columns: 0.85fr 1.15fr; gap: var(--space-2xl); align-items: start; }
+}
+
+@media (min-width: 1024px) {
+  /* Clear the Datum rail on every chapter's inner container */
+  .container,
+  .arrival { padding-left: calc(var(--datum-x) + var(--datum-clear)); }
+  .arrival__trust { padding-left: calc(var(--datum-x) + var(--datum-clear)); }
+
+  .proof__track { height: 165vh; }
+  .proof__stage {
+    position: sticky;
+    top: 0;
+    min-height: 100vh;
+    padding-block: var(--space-xl);
+  }
+
+  /* Fill the pinned viewport. An aspect-ratio frame leaves the stage
+     mostly empty at desktop, which reads as an unfinished layout
+     rather than a held moment. */
+  .proof__frame {
+    aspect-ratio: auto;
+    height: min(72vh, 660px);
+  }
+}
+
+@media (min-width: 1280px) {
+  .arrival { gap: var(--space-3xl); }
+  .feature__detail { margin-top: -22%; width: 46%; }
 }
