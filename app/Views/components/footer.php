@@ -52,7 +52,12 @@
           <li><a href="#contact">Schedule a Consultation</a></li>
           <li><a href="https://share.google/IZSCTK6fzXc9Gi9wm" target="_blank" rel="noopener noreferrer">View Our Google Profile</a></li>
         </ul>
-        <p class="site-footer__note">Licensed, Bonded &amp; Insured.</p>
+        <p class="site-footer__note">
+          Licensed, Bonded &amp; Insured.
+          <?php if (license_line() !== ''): ?>
+            <br><strong class="site-footer__license"><?= e(license_line()) ?></strong>
+          <?php endif; ?>
+        </p>
       </div>
     </div>
 

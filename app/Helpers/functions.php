@@ -41,6 +41,24 @@ function asset(string $path): string
     return '/assets/' . ltrim($path, '/');
 }
 
+/**
+ * The contractor license as displayed to the public, e.g.
+ * "CSLB License #1234567". Returns '' when no number is configured so
+ * callers can skip the whole line rather than print a bare label.
+ */
+function license_line(): string
+{
+    $number = trim((string) Config::get('business.license_number', ''));
+
+    if ($number === '') {
+        return '';
+    }
+
+    $authority = trim((string) Config::get('business.license_authority', ''));
+
+    return trim($authority . ' License #' . $number);
+}
+
 function csrf_field(): string
 {
     return Csrf::field();

@@ -43,6 +43,23 @@ return [
         'from_name' => Env::get('MAIL_FROM_NAME', "Barraza's Construction"),
     ],
 
+    /**
+     * Public business facts surfaced sitewide. Not secrets — these are
+     * published on every page by design. California B&P Code 7030.5
+     * requires the CSLB license number in all advertising, this site
+     * included, so `license_number` must be set before launch. Every
+     * display site is conditional on it, so a blank value degrades
+     * quietly rather than rendering "License #".
+     *
+     * Phase 2 moves these to the `site_settings` table (see
+     * database/seed.sql) and reads them through a settings service;
+     * until that exists, config is the single source of truth.
+     */
+    'business' => [
+        'license_number' => Env::get('BUSINESS_LICENSE_NUMBER', ''),
+        'license_authority' => Env::get('BUSINESS_LICENSE_AUTHORITY', 'CSLB'),
+    ],
+
     'security' => [
         // Failed attempts (per account) before a temporary lockout is applied.
         'max_failed_logins' => 5,
