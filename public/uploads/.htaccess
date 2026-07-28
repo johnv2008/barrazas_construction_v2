@@ -1,0 +1,43 @@
+# Barraza's Construction — public/uploads/
+#
+# Everything below this directory is visitor-supplied or CMS-supplied
+# content. It must be served as inert bytes and never executed, because
+# an upload that Apache is willing to run is a remote code execution
+# vulnerability regardless of how carefully the upload was validated.
+#
+# The consultation form already accepts a photo attachment, so this is
+# a live path today, not a future concern.
+
+# ---- Never execute anything here, whatever the extension ----
+# Belt and braces: several directives, because which ones are honoured
+# varies by host. one.com runs Apache with PHP as a handler, so the
+# SetHandler/RemoveHandler pair is what does the real work there.
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+
+<IfModule mod_php7.c>
+    php_flag engine off
+</IfModule>
+
+<IfModule mod_php8.c>
+    php_flag engine off
+</IfModule>
+
+RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .php8 .phps .pht .cgi .pl .py .shtml
+RemoveType .php .phtml .php3 .php4 .php5 .php7 .php8 .phps .pht .cgi .pl .py .shtml
+
+<FilesMatch "\.(php|phtml|php[0-9]|phps|pht|cgi|pl|py|sh|shtml|htaccess|htpasswd)$">
+    Require all denied
+</FilesMatch>
+
+# Force anything that is served to be treated as a download rather than
+# rendered, so a crafted "image" containing markup cannot execute in the
+# visitor's browser under this origin.
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Content-Security-Policy "default-src 'none'; img-src 'self'; style-src 'unsafe-inline'; sandbox"
+</IfModule>
+
+# ---- No directory listings ----
+Options -Indexes -ExecCGI

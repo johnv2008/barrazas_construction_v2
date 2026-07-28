@@ -38,7 +38,15 @@
     </div>
 
     <figure class="arrival__media" data-reveal-media>
-      <img src="<?= e($hero['image']) ?>" alt="<?= e($hero['imageAlt']) ?>" fetchpriority="high" decoding="async" width="1200" height="1600">
+      <?php
+        // The only LCP candidate on the page. Image::picture enforces
+        // that — a second priority request elsewhere is ignored.
+        echo responsive_image($hero['image'], [
+            'alt'      => $hero['imageAlt'],
+            'priority' => true,
+            'sizes'    => '(min-width: 1024px) 48vw, 100vw',
+        ]);
+      ?>
       <figcaption class="plate">
         <span class="plate__label"><?= e($hero['plate']['label']) ?></span>
         <span class="plate__title"><?= e($hero['plate']['title']) ?></span>
@@ -65,7 +73,10 @@
       <p class="approach__body" data-reveal><?= e($philosophy['body']) ?></p>
     </div>
     <figure class="approach__media" data-reveal-media>
-      <img src="<?= e($philosophy['image']) ?>" alt="<?= e($philosophy['imageAlt']) ?>" loading="lazy" decoding="async" width="450" height="600">
+      <?= responsive_image($philosophy['image'], [
+            'alt'   => $philosophy['imageAlt'],
+            'sizes' => '(min-width: 1024px) 36vw, 62vw',
+      ]) ?>
       <figcaption><?= e($philosophy['caption']) ?></figcaption>
     </figure>
   </div>
@@ -90,7 +101,10 @@
         <div class="proof__frame">
           <?php foreach ($middle['states'] as $i => $state): ?>
             <figure class="proof__shot<?= $i === 0 ? ' is-active' : '' ?>" data-proof-shot="<?= e((string) $i) ?>"<?= $i === 0 ? '' : ' inert' ?>>
-              <img src="<?= e($state['image']) ?>" alt="<?= e($state['imageAlt']) ?>" loading="lazy" decoding="async">
+              <?= responsive_image($state['image'], [
+                    'alt'   => $state['imageAlt'],
+                    'sizes' => '(min-width: 1024px) 58vw, 92vw',
+              ]) ?>
             </figure>
           <?php endforeach; ?>
         </div>
@@ -146,10 +160,16 @@
     <article class="feature">
       <div class="feature__media">
         <figure class="feature__main" data-reveal-media>
-          <img src="<?= e($f['image']) ?>" alt="<?= e($f['imageAlt']) ?>" loading="lazy" decoding="async" width="1200" height="1600">
+          <?= responsive_image($f['image'], [
+                'alt'   => $f['imageAlt'],
+                'sizes' => '(min-width: 1024px) 52vw, 100vw',
+          ]) ?>
         </figure>
         <figure class="feature__detail" data-reveal-media>
-          <img src="<?= e($f['detail']) ?>" alt="<?= e($f['detailAlt']) ?>" loading="lazy" decoding="async" width="450" height="600">
+          <?= responsive_image($f['detail'], [
+                'alt'   => $f['detailAlt'],
+                'sizes' => '(min-width: 1024px) 24vw, 46vw',
+          ]) ?>
         </figure>
       </div>
 
@@ -172,7 +192,10 @@
     <div class="tiles">
       <?php foreach ($work['tiles'] as $tile): ?>
         <figure class="tile tile--<?= e($tile['size']) ?>" data-reveal-media>
-          <img src="<?= e($tile['image']) ?>" alt="<?= e($tile['imageAlt']) ?>" loading="lazy" decoding="async">
+          <?= responsive_image($tile['image'], [
+                'alt'   => $tile['imageAlt'],
+                'sizes' => '(min-width: 1024px) 32vw, 50vw',
+          ]) ?>
           <figcaption>
             <span class="tile__title"><?= e($tile['title']) ?></span>
             <span class="tile__meta"><?= e($tile['meta']) ?></span>
@@ -204,7 +227,10 @@
       </dl>
 
       <figure class="trust__media" data-reveal-media>
-        <img src="<?= e($trust['image']) ?>" alt="<?= e($trust['imageAlt']) ?>" loading="lazy" decoding="async" width="450" height="600">
+        <?= responsive_image($trust['image'], [
+              'alt'   => $trust['imageAlt'],
+              'sizes' => '(min-width: 1024px) 26vw, 60vw',
+        ]) ?>
         <figcaption><?= e($trust['caption']) ?></figcaption>
       </figure>
     </div>
@@ -240,7 +266,10 @@
      Dark, warm photography, generous spacing. The form is the chapter. -->
 <section class="ch ch--begin" id="contact" data-chapter="08" data-chapter-label="Begin">
   <div class="begin__bg" aria-hidden="true">
-    <img src="<?= e($consultation['image']) ?>" alt="" loading="lazy" decoding="async">
+    <?= responsive_image($consultation['image'], [
+          'decorative' => true,
+          'sizes'      => '100vw',
+    ]) ?>
   </div>
 
   <div class="container begin">

@@ -38,11 +38,19 @@ $hasImage = !empty($item['image']);
   <?php if ($hasImage): ?>
     <div class="craft-row__media">
       <figure class="craft-row__shot">
-        <img src="<?= e($item['image']) ?>" alt="<?= e($item['imageAlt']) ?>" loading="lazy" decoding="async">
+        <?= responsive_image($item['image'], [
+              'alt'   => $item['imageAlt'] ?? '',
+              'sizes' => $layout === 'wide'
+                  ? '(min-width: 1024px) 40vw, 92vw'
+                  : '(min-width: 1024px) 30vw, 88vw',
+        ]) ?>
       </figure>
       <?php if (!empty($item['support'])): ?>
         <figure class="craft-row__shot craft-row__shot--support">
-          <img src="<?= e($item['support']) ?>" alt="<?= e($item['supportAlt']) ?>" loading="lazy" decoding="async">
+          <?= responsive_image($item['support'], [
+                'alt'   => $item['supportAlt'] ?? '',
+                'sizes' => '(min-width: 1024px) 18vw, 44vw',
+          ]) ?>
         </figure>
       <?php endif; ?>
     </div>

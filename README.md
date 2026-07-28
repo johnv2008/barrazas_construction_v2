@@ -166,6 +166,115 @@ Apache + `.htaccess` handles routing there.
 
 ---
 
+## 7a. Image Derivatives
+
+Source photographs are unoptimised phone JPEGs. They are never served
+directly to visitors. Instead a one-time CLI script generates responsive
+derivatives, which are committed as static files and served by Apache.
+
+**No Node, no build step, no Composer** — the script uses GD, which ships
+with PHP on one.com.
+
+### Regenerating
+
+```bash
+php bin/generate-image-derivatives.php            # only what changed
+php bin/generate-image-derivatives.php --force    # rebuild everything
+php bin/generate-image-derivatives.php --dry-run  # report, write nothing
+php bin/generate-image-derivatives.php --prune    # delete orphaned output
+php bin/generate-image-derivatives.php --path=images/projects/foo.jpg
+```
+
+Run it after adding, replacing, or removing anything under
+`public/assets/images/`, then commit both `public/assets/images/derived/`
+and `public/assets/images/derivatives.json`. Sources are hashed, so an
+unchanged image is skipped and re-running is cheap.
+
+### What it produces
+
+| Aspect | Behaviour |
+|---|---|
+| Widths | 480 (thumb), 900 (card), 1400 (content), 2000 (hero) |
+| Upscaling | Never. A 450px source emits one 450px variant and nothing wider |
+| Formats | WebP plus a same-family raster fallback (JPEG for JPEG, PNG for PNG) |
+| Transparency | Preserved. PNG logos keep their alpha — one sits on the dark footer |
+| Validation | MIME sniffed with `finfo`, never trusted from the extension |
+| EXIF | Orientation applied, then all EXIF stripped — which also removes the GPS coordinates embedded in photos of clients' homes |
+| Size guard | A derivative is discarded if it comes out heavier than its source, and the manifest points at the original instead |
+| Filenames | `{dir}-{name}-{hash8}-{width}w.{ext}` — content-hashed, so cache busting is automatic |
+| Originals | Never modified, renamed, or deleted. They are the only re-derivable source |
+
+### Using them in a view
+
+```php
+<?= responsive_image('images/projects/service-kitchen.jpg', [
+      'alt'      => 'Remodeled kitchen with grey shaker cabinetry',
+      'sizes'    => '(min-width: 1024px) 48vw, 100vw',
+      'priority' => true,   // LCP image only — see below
+]) ?>
+```
+
+This emits a `<picture>` with a WebP `<source>`, a fallback `<img>`,
+`srcset`/`sizes`, explicit `width`/`height`, and `object-position` when a
+focal point is set.
+
+Three rules the helper enforces so callers cannot get them wrong:
+
+- **One priority image per page.** `priority => true` sets
+  `fetchpriority="high"` and `loading="eager"`. The *first* caller wins;
+  any later request is ignored, so a second LCP candidate cannot appear
+  by accident. Everything else is `loading="lazy"`.
+- **Always dimensioned.** Every image carries `width`/`height`, so the
+  box is reserved before the bytes arrive and the layout does not shift.
+- **Degrades, never breaks.** An image with no manifest entry renders as
+  a plain `<img>` of the original rather than a broken tag.
+
+### Focal points
+
+Twenty of the twenty-one project photographs are phone-shot portraits.
+Displayed in a landscape frame, a centre crop often lands on a floor
+instead of the work. Set a focal point in
+`app/Config/image-derivatives.php` and it is emitted as
+`object-position`, so the same file crops correctly everywhere it
+appears. Values are 0–1 fractions; unlisted images default to centre.
+
+### Future CMS uploads
+
+`public/uploads/` is hardened against execution (`public/uploads/.htaccess`
+— PHP handlers removed, `Options -ExecCGI`, a restrictive CSP, no
+directory listings). That file is deliberately un-ignored in
+`.gitignore`, because losing it on a deploy would turn the upload
+directory into a remote code execution hole.
+
+When the CMS gains image upload, it should call the same generation
+routine on save rather than growing a second pipeline: validate with
+`finfo`, write the original to `public/uploads/...`, then invoke the
+generator with `--path=`. The manifest format already carries `focal`,
+`width`, and `height` per image, which are the same three values the
+future `project_images` table needs — so the migration is a copy, not a
+redesign.
+
+### Measured effect
+
+Homepage at 1440×900, same script and browser before and after
+(`homepage-chapters-pre-media-optimization` → current):
+
+| | Before | After | Change |
+|---|---|---|---|
+| Initial transfer | 590.9 KB | 270.1 KB | **−54%** |
+| Full page transfer | 2,038.1 KB | 628.6 KB | **−69%** |
+| Image bytes | 1,966.4 KB | 556.9 KB | **−72%** |
+| Largest single image | 145.6 KB | 55.1 KB | **−62%** |
+| LCP | 1,780 ms | 1,480 ms | **−300 ms** |
+| CLS | 0.0016 | 0.0016 | unchanged |
+| Images with `srcset` | 0 / 23 | 23 / 23 | |
+| Images without dimensions | 18 | 0 | |
+
+HTML grew from 32.7 KB to 44.2 KB — the cost of the `srcset` markup, and
+a fair trade for 1.4 MB of images.
+
+---
+
 ## 8. Folder Permissions
 
 On shared hosting, typical safe permissions are:

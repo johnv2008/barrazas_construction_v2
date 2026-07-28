@@ -7,6 +7,10 @@
 /storage/installed.lock
 /public/uploads/**/*
 !/public/uploads/**/.gitkeep
+# The hardening rules must ship with the repo — an uploads directory that
+# Apache is willing to execute is a remote code execution hole, and it
+# would be silently lost on every fresh deploy if it stayed ignored.
+!/public/uploads/.htaccess
 /vendor/
 /node_modules/
 .DS_Store

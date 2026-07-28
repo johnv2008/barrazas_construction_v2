@@ -2,11 +2,11 @@
   <div class="container">
     <div class="site-footer__grid">
       <div class="site-footer__brand-block">
-        <img
-          src="<?= e(asset('images/brand/logo-full-dark.png')) ?>"
-          alt="Barraza's Construction logo"
-          class="site-footer__logo"
-        >
+        <?= responsive_image('images/brand/logo-full-dark.png', [
+              'alt'   => "Barraza's Construction logo",
+              'class' => 'site-footer__logo',
+              'sizes' => '190px',
+        ]) ?>
         <p class="site-footer__desc">
           Residential construction and remodeling for Tuolumne County —
           experienced craftsmanship, clear communication, and attention to detail

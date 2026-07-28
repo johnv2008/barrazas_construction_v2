@@ -17,9 +17,12 @@
 $large = $large ?? false;
 ?>
 <span class="brand-mark<?= $large ? ' brand-mark--large' : '' ?>">
-  <img
-    src="<?= e(asset('images/brand/logo-full.png')) ?>"
-    alt="Barraza's Construction"
-    class="brand-mark__logo"
-  >
+  <?= responsive_image('images/brand/logo-full.png', [
+        'alt'   => "Barraza's Construction",
+        'class' => 'brand-mark__logo',
+        // Rendered small in the header, a little larger in the mobile
+        // drawer. Never near full width, so the 480w WebP is the one
+        // that should win at every breakpoint.
+        'sizes' => $large ? '220px' : '150px',
+  ]) ?>
 </span>

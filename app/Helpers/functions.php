@@ -42,6 +42,28 @@ function asset(string $path): string
 }
 
 /**
+ * Responsive <picture> markup for an image under public/assets/.
+ *
+ * Emits WebP with a JPEG fallback, a full srcset/sizes pair, explicit
+ * width/height, and object-position when a focal point is configured.
+ * Falls back to a plain <img> of the original if the image has no
+ * generated derivatives yet, so a missing manifest degrades rather than
+ * breaks.
+ *
+ *   responsive_image('images/projects/service-kitchen.jpg', [
+ *       'alt'      => 'Remodeled kitchen…',
+ *       'sizes'    => '(min-width: 1024px) 46vw, 100vw',
+ *       'priority' => true,   // at most one per page wins
+ *   ]);
+ *
+ * Regenerate derivatives with: php bin/generate-image-derivatives.php
+ */
+function responsive_image(string $path, array $options = []): string
+{
+    return \App\Helpers\Image::picture($path, $options);
+}
+
+/**
  * The contractor license as displayed to the public, e.g.
  * "CSLB License #1234567". Returns '' when no number is configured so
  * callers can skip the whole line rather than print a bare label.
