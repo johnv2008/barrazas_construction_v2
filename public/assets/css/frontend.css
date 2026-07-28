@@ -412,28 +412,34 @@
 
 .proof__stage { display: grid; gap: var(--space-lg); }
 
+/* Mobile-first: the two states are a plain vertical sequence, each
+   image at its natural height. The pinned crossfade is layered on at
+   >=1024px only — previously the absolute positioning was the base
+   rule, so on a phone both frames stacked inside one box and only the
+   last one was ever visible. */
 .proof__frame {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.proof__shot {
   position: relative;
-  aspect-ratio: 4 / 3;
+  margin: 0;
+  /* These sources are 450-600px on the long edge. Letting them fill a
+     wide column upscales them into mush, so the vertical layout caps
+     the display width at roughly the native size. Reset to none in the
+     pinned desktop layout, where the shot is absolutely positioned. */
+  width: 100%;
+  max-width: 560px;
   border-radius: var(--radius-md);
   overflow: hidden;
   background: var(--stone);
 }
 
-.proof__shot {
-  position: absolute;
-  inset: 0;
-  margin: 0;
-  opacity: 0;
-  transition: opacity 460ms var(--ease-out);
-}
-
-.proof__shot.is-active { opacity: 1; }
-
 .proof__shot img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  display: block;
 }
 
 .proof__ruler {
@@ -470,6 +476,106 @@
 
 .proof__step.is-active { color: var(--brand-burgundy); }
 .proof__step.is-active::before { background: var(--brand-burgundy); }
+
+.proof__step-num {
+  display: block;
+  font-size: 0.625rem;
+  letter-spacing: 0.18em;
+  color: var(--soft-gray);
+  margin-bottom: 2px;
+}
+
+.proof__step.is-active .proof__step-num { color: var(--brand-burgundy); }
+
+/* Project attribution — small, factual, drawing-sheet register. */
+.proof__project {
+  font-family: var(--font-condensed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--soft-gray);
+  margin: 0 0 var(--space-md);
+}
+
+/* ---- The text-led bridge -------------------------------------------
+   Chapter 03 has two photographs, not three. This block is the middle:
+   it is always visible, never gated behind a scroll state, and every
+   note describes something present in the first image. -------------- */
+.proof__bridge {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--line-on-light);
+}
+
+.proof__bridge-label {
+  display: block;
+  font-family: var(--font-condensed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brand-burgundy);
+  margin-bottom: var(--space-xs);
+}
+
+.proof__notes {
+  list-style: none;
+  margin: 0 0 var(--space-sm);
+  padding: 0;
+  display: grid;
+  gap: var(--space-3xs);
+}
+
+.proof__notes li {
+  position: relative;
+  padding-left: var(--space-sm);
+  font-size: 0.875rem;
+  color: var(--color-text-on-light-muted);
+}
+
+/* Tick marks rather than bullets — same drawing language as the datum. */
+.proof__notes li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 8px;
+  height: 1px;
+  background: var(--brand-burgundy);
+}
+
+.proof__bridge-body {
+  font-size: 0.9375rem;
+  color: var(--color-text-on-light-muted);
+  max-width: 46ch;
+  margin: 0;
+}
+
+/* Stage stamp burned into the image corner, so each frame is labelled
+   even when the panel is out of view on a narrow screen. */
+.proof__stamp {
+  position: absolute;
+  left: var(--space-sm);
+  bottom: var(--space-sm);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2xs);
+  padding: var(--space-3xs) var(--space-xs);
+  background: rgba(17, 18, 20, 0.72);
+  color: var(--warm-white);
+  font-family: var(--font-condensed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.proof__stamp-step { color: var(--brand-burgundy-light); font-weight: 700; }
+
+.proof__disclosure {
+  margin-top: var(--space-lg);
+  font-size: 0.8125rem;
+  color: var(--soft-gray);
+  max-width: 62ch;
+}
 
 .proof__text { display: none; }
 .proof__text.is-active { display: block; }
@@ -914,6 +1020,52 @@
   .tile figcaption { opacity: 1; transform: none; transition: none; }
   .datum__progress,
   .datum-bar__progress { transition: none; }
+
+  /* ---- Chapter 03 without the pin --------------------------------
+     A scroll-linked state change is motion the visitor did not ask
+     for, so under reduced-motion the track unsticks entirely and both
+     states render as a plain, fully-visible vertical sequence. The
+     media query wins over the desktop rules below because it is
+     declared later in the file. No content is gated behind scrolling
+     in either mode — the JS shows every state on this path too. ---- */
+  .proof__track {
+    height: auto !important;
+  }
+
+  .proof__stage {
+    position: static !important;
+    min-height: 0 !important;
+    display: block !important;
+    padding-block: 0 !important;
+  }
+
+  .proof__frame {
+    display: grid !important;
+    position: static !important;
+    height: auto !important;
+    gap: var(--space-md);
+    background: none;
+    overflow: visible !important;
+  }
+
+  .proof__shot {
+    position: relative !important;
+    inset: auto !important;
+    max-width: 560px !important;
+    opacity: 1 !important;
+    border-radius: var(--radius-md) !important;
+    overflow: hidden;
+    transition: none;
+  }
+
+  .proof__shot img {
+    height: auto !important;
+  }
+
+  .proof__text { display: block; }
+  .proof__text + .proof__text { margin-top: var(--space-md); }
+
+  .proof__panel { margin-top: var(--space-lg); }
 }
 
 /* =====================================================
@@ -951,7 +1103,6 @@
   /* Captions are always visible on touch, so keep them compact. */
   .tile figcaption { padding: var(--space-md) var(--space-sm) var(--space-2xs); }
 
-  .proof__frame { aspect-ratio: 3 / 2; }
   .begin__bg img { object-position: center 40%; }
 }
 
@@ -1041,20 +1192,47 @@
   .arrival { padding-left: calc(var(--datum-x) + var(--datum-clear)); }
   .arrival__trust { padding-left: calc(var(--datum-x) + var(--datum-clear)); }
 
-  .proof__track { height: 165vh; }
+  /* Track length is the chapter's whole budget. At 130vh the sticky
+     stage holds one viewport and scrubs across the remaining 30vh,
+     which lands the finished chapter just under 2 viewports including
+     its heading and closing note — the agreed 1.6-2.0 ceiling. Longer
+     than this and Chapter 03 starts to dominate the homepage, which is
+     the failure mode the brief warns about. */
+  .proof__track { height: 130vh; }
   .proof__stage {
     position: sticky;
     top: 0;
     min-height: 100vh;
-    padding-block: var(--space-xl);
+    padding-block: var(--space-lg);
   }
 
-  /* Fill the pinned viewport. An aspect-ratio frame leaves the stage
-     mostly empty at desktop, which reads as an unfinished layout
-     rather than a held moment. */
+  /* Desktop only: collapse the vertical sequence into one held frame
+     and crossfade between states as the track scrubs. Fills the pinned
+     viewport — an aspect-ratio box leaves the stage mostly empty here,
+     which reads as an unfinished layout rather than a held moment. */
   .proof__frame {
-    aspect-ratio: auto;
+    display: block;
+    position: relative;
     height: min(72vh, 660px);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--stone);
+  }
+
+  .proof__shot {
+    position: absolute;
+    inset: 0;
+    max-width: none;
+    border-radius: 0;
+    opacity: 0;
+    transition: opacity 460ms var(--ease-out);
+  }
+
+  .proof__shot.is-active { opacity: 1; }
+
+  .proof__shot img {
+    height: 100%;
+    object-fit: cover;
   }
 }
 

@@ -120,9 +120,29 @@
   var proofTexts = document.querySelectorAll('[data-proof-text]');
   var proofSteps = document.querySelectorAll('[data-proof-step]');
 
-  // Approved allocation: the middle state holds the most scroll.
-  var PROOF_BOUNDS = [0.28, 0.64];
+  // Chapter 03 is a TWO-state progression — one project, the only two
+  // verified photographs of it. The boundary sits past halfway so the
+  // "work underway" frame holds the longer dwell: the whole argument is
+  // that the middle deserves more attention than the reveal.
+  //
+  // Read from the DOM rather than hard-coded, so adding a genuine third
+  // photograph later needs no change here.
+  var proofCount = proof ? parseInt(proof.getAttribute('data-proof-states'), 10) || 2 : 2;
+  var PROOF_BOUNDS = proofCount >= 3 ? [0.28, 0.64] : [0.55];
   var proofState = -1;
+
+  // Momentum-free path for visitors who asked for less motion, and for
+  // the narrow viewports where pinning fights native scroll.
+  var reduceMotion = window.matchMedia
+    ? window.matchMedia('(prefers-reduced-motion: reduce)')
+    : null;
+
+  function proofIndexFor(progress) {
+    for (var b = 0; b < PROOF_BOUNDS.length; b++) {
+      if (progress < PROOF_BOUNDS[b]) return b;
+    }
+    return PROOF_BOUNDS.length;
+  }
 
   function setProofState(index) {
     if (index === proofState) return;
@@ -158,8 +178,11 @@
   function updateProof() {
     if (!proof || !proofShots.length) return;
 
-    // Below 1024px the stage is not pinned; show every state stacked.
-    if (window.innerWidth < 1024) {
+    // Below 1024px the stage is not pinned, and under reduced-motion it
+    // is not pinned at any width. In both cases every state is shown
+    // stacked and left in the accessibility tree — no content is ever
+    // reachable only by scrolling.
+    if (window.innerWidth < 1024 || (reduceMotion && reduceMotion.matches)) {
       proofShots.forEach(function (el) {
         el.classList.add('is-active');
         el.removeAttribute('inert');
@@ -177,7 +200,7 @@
     if (travel <= 0) return;
 
     var p = Math.min(1, Math.max(0, -rect.top / travel));
-    setProofState(p < PROOF_BOUNDS[0] ? 0 : (p < PROOF_BOUNDS[1] ? 1 : 2));
+    setProofState(proofIndexFor(p));
   }
 
   function updateDatum() {

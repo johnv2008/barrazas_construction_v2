@@ -49,6 +49,23 @@ svg {
 }
 
 /*
+  responsive_image() wraps every photograph in <picture>. That wrapper
+  must not become a layout box: the whole stylesheet sizes `img`
+  directly, and several frames set `height: 100%`, which would resolve
+  against the picture's auto height instead of the intended parent and
+  collapse the image to its natural size.
+
+  `display: contents` removes the wrapper from the box tree entirely, so
+  every existing `.foo img` rule keeps working exactly as it did before
+  the <picture> element was introduced. In a browser too old to support
+  it, this degrades to the inline default — the same behaviour as
+  before, never worse.
+*/
+picture {
+  display: contents;
+}
+
+/*
   Headings default to the bold display sans stack — this is the
   primary architectural voice of the brand. The refined serif
   (--font-serif) is intentionally NOT used here; it's reserved for the

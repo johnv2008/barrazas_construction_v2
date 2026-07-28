@@ -84,10 +84,19 @@
 
 
 <!-- ============ 03 · The Middle Is the Proof ============================
-     The signature chapter, held to roughly 2.2 viewports. The frame is
-     pinned with position:sticky — the browser's own scroll is never
-     intercepted. All three states ship in the HTML; inactive ones are
-     marked inert so screen readers announce one at a time. -->
+     Two states, not three, and deliberately so — see the long note in
+     HomeController::homeData(). One real project, the only two unique
+     photographs of it that exist. The middle is carried by copy and site
+     notes rather than by a borrowed photograph from another job.
+
+     The frame is pinned with position:sticky, so the browser's own
+     scroll is never intercepted: the scrollbar stays accurate, anchors
+     work, and keyboard paging behaves normally. Both states ship in the
+     HTML for crawlers and no-JS readers; the inactive one is marked
+     inert so a screen reader announces one at a time.
+
+     Under prefers-reduced-motion the track unsticks entirely and both
+     states render as a plain vertical sequence (see frontend.css). -->
 <section class="ch ch--proof" id="proof" data-chapter="03" data-chapter-label="The Middle">
   <div class="container">
     <div class="proof__head">
@@ -96,7 +105,7 @@
       <p class="proof__lead" data-reveal><?= e($middle['lead']) ?></p>
     </div>
 
-    <div class="proof__track" data-proof>
+    <div class="proof__track" data-proof data-proof-states="<?= e((string) count($middle['states'])) ?>">
       <div class="proof__stage">
         <div class="proof__frame">
           <?php foreach ($middle['states'] as $i => $state): ?>
@@ -105,14 +114,23 @@
                     'alt'   => $state['imageAlt'],
                     'sizes' => '(min-width: 1024px) 58vw, 92vw',
               ]) ?>
+              <figcaption class="proof__stamp">
+                <span class="proof__stamp-step"><?= e($state['step']) ?></span>
+                <span class="proof__stamp-label"><?= e($state['label']) ?></span>
+              </figcaption>
             </figure>
           <?php endforeach; ?>
         </div>
 
         <div class="proof__panel">
+          <p class="proof__project"><?= e($middle['project']) ?></p>
+
           <ol class="proof__ruler">
             <?php foreach ($middle['states'] as $i => $state): ?>
-              <li class="proof__step<?= $i === 0 ? ' is-active' : '' ?>" data-proof-step="<?= e((string) $i) ?>"><?= e($state['label']) ?></li>
+              <li class="proof__step<?= $i === 0 ? ' is-active' : '' ?>" data-proof-step="<?= e((string) $i) ?>">
+                <span class="proof__step-num"><?= e($state['step']) ?></span>
+                <?= e($state['label']) ?>
+              </li>
             <?php endforeach; ?>
           </ol>
 
@@ -122,9 +140,26 @@
               <p><?= e($state['body']) ?></p>
             </div>
           <?php endforeach; ?>
+
+          <?php $bridge = $middle['bridge']; ?>
+          <!-- The text-led middle. Always present and never hidden behind
+               a scroll state — it is the bridge between the two frames,
+               and every note describes something visible in the first
+               photograph rather than asserting an unverified process. -->
+          <aside class="proof__bridge">
+            <span class="proof__bridge-label"><?= e($bridge['label']) ?></span>
+            <ul class="proof__notes">
+              <?php foreach ($bridge['notes'] as $note): ?>
+                <li><?= e($note) ?></li>
+              <?php endforeach; ?>
+            </ul>
+            <p class="proof__bridge-body"><?= e($bridge['body']) ?></p>
+          </aside>
         </div>
       </div>
     </div>
+
+    <p class="proof__disclosure"><?= e($middle['disclosure']) ?></p>
   </div>
 </section>
 

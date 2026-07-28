@@ -116,47 +116,78 @@ final class HomeController extends Controller
             ],
 
             // ---------- 03 THE MIDDLE IS THE PROOF ----------
-            // The signature chapter, deliberately held to ~2.2vh so it
-            // substantiates the dream rather than becoming the site.
+            //
+            // TWO states, not three. This is deliberate and should not be
+            // "fixed" by adding a state.
+            //
+            // The chapter documents one real project — a hillside roof
+            // replacement — and the library contains exactly two unique
+            // photographs of it: the roof open to bare sheathing, and the
+            // finished result. Verified by file hash, since several
+            // filenames are byte-identical duplicates of one another
+            // (narrative-result.jpg, narrative-detail.jpg and
+            // contact-sheet-hillside-deck.jpg are the same file).
+            //
+            // An earlier revision filled the middle slot with
+            // process-detail.jpg — a bathroom mid-tile, from an entirely
+            // different job. Presented inside one pinned frame under
+            // During / In progress / Complete, that reads as a single
+            // project and is a fabricated progression. It was removed.
+            //
+            // The argument survives without a third photograph: the
+            // "middle" is carried by the bridge copy and the site notes
+            // below, which describe only what is visible in the first
+            // image. When genuine additional photography of THIS project
+            // exists, add a state here and the markup picks it up.
             'middle' => [
                 'eyebrow' => 'The middle is the proof',
                 'heading' => 'Anyone can show you the after.',
                 'lead' => 'The part that decides whether a remodel goes well is the part most homeowners '
                     . 'never get to see before they sign. We would rather show you.',
+                'project' => 'Roof replacement · Tuolumne County',
                 'states' => [
                     [
-                        'key' => 'during',
-                        'label' => 'During',
-                        'title' => 'Opened up, so what is underneath can be seen.',
-                        'body' => 'A roof taken down to the bare sheathing, with new material staged on '
-                            . 'site before the tear-off began. Anything we find underneath gets '
-                            . 'photographed and priced before it is covered back up.',
+                        'key' => 'underway',
+                        'label' => 'Work underway',
+                        'step' => '01',
+                        'title' => 'Open, and nothing hidden.',
+                        'body' => 'The work homeowners rarely see is where planning, protection, '
+                            . 'sequencing and craftsmanship matter most. This is the same house you '
+                            . 'see finished below, photographed while it was still open.',
                         'image' => asset('images/projects/narrative-progress.jpg'),
-                        'imageAlt' => 'Roof stripped to bare plywood sheathing with new shingle bundles '
-                            . 'staged in the foreground',
+                        'imageAlt' => 'Hillside home with the roof stripped to bare plywood sheathing '
+                            . 'and new shingle bundles staged in the foreground',
                     ],
                     [
-                        'key' => 'detail',
-                        'label' => 'In progress',
-                        'title' => 'The work you will never see again.',
-                        'body' => 'Substrate, waterproofing and slope decide whether a bathroom lasts '
-                            . 'twenty years or two. Tile is what you see; this is what you are paying for.',
-                        'image' => asset('images/projects/process-detail.jpg'),
-                        'imageAlt' => 'Bathroom mid-installation with new large-format floor tile laid '
-                            . 'and the drain still open',
-                    ],
-                    [
-                        'key' => 'after',
-                        'label' => 'Complete',
+                        'key' => 'complete',
+                        'label' => 'Completed result',
+                        'step' => '02',
                         'title' => 'And then you get your house back.',
-                        'body' => 'A finished roof and a deck that gets used again — the part you will '
-                            . 'live with for the next twenty years, and the part that depended entirely '
-                            . 'on the weeks in the middle.',
+                        'body' => 'The finished result is only possible because the difficult middle was '
+                            . 'handled carefully — the part you will live with for the next twenty years '
+                            . 'depended entirely on the weeks before it.',
                         'image' => asset('images/projects/narrative-result.jpg'),
-                        'imageAlt' => 'Hillside home with a new shingle roof and redwood deck, '
-                            . 'surrounded by pines',
+                        'imageAlt' => 'The same hillside home with its new shingle roof complete and the '
+                            . 'redwood deck back in use, surrounded by pines',
                     ],
                 ],
+                // The text-led bridge that stands in for a third frame.
+                // Every note describes something directly visible in the
+                // first photograph — no process promises are made here,
+                // because the company's actual site protocol has not been
+                // confirmed yet. See the blocker list.
+                'bridge' => [
+                    'label' => 'On site',
+                    'body' => 'One roof, two photographs, taken weeks apart. What happened in between is '
+                        . 'the part worth asking any contractor about.',
+                    'notes' => [
+                        'Stripped back to bare sheathing',
+                        'New material staged on site',
+                        'Structure open and visible',
+                    ],
+                ],
+                'disclosure' => 'Two photographs of one project. We would rather show a short, honest '
+                    . 'sequence than pad it out with somebody else\'s job.',
             ],
 
             // ---------- 04 WHAT WE BUILD — services as experiences ----------
