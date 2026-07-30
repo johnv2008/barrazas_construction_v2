@@ -280,7 +280,7 @@ final class HomeController extends Controller
                         'imageAlt' => 'Open renovated living space with new plank flooring and a brick fireplace',
                         'support' => asset('images/projects/project-supporting-1.jpg'),
                         'supportAlt' => 'Renovated kitchen with white shaker cabinetry and marble tile backsplash',
-                        'href' => '#projects',
+                        'href' => '/services/whole-home-renovation',
                         'layout' => 'stack',
                     ],
                     [

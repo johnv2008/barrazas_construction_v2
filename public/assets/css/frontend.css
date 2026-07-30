@@ -900,31 +900,18 @@
 
 .trust__list { margin: 0; border-top: 1px solid var(--color-border-on-light); }
 
-/* Real work, not a badge. Credentials state the facts; the photograph
-   is the evidence sitting next to them. */
-.trust__media { margin: 0; }
+/* .trust__media is retired — see the note in home.php. The credentials
+   are the composition now, so the chapter has no image rules at all. */
 
-.trust__media img {
-  width: 100%;
-  height: auto; /* see .approach__media img */
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  border-radius: var(--radius-md);
-}
-
-.trust__media figcaption {
-  margin-top: var(--space-xs);
-  font-family: var(--font-condensed);
-  font-size: var(--label-size);
-  letter-spacing: var(--label-tracking);
-  text-transform: uppercase;
-  color: var(--color-text-on-light-muted);
-}
-
+/* With the photograph gone the rows carry the chapter, so they are given
+   the room to do it: a wider measure, more air per row, and the value set
+   large enough to be read as a statement rather than as a caption. This is
+   the spec-schedule language at page scale — the same device as the
+   project pages, which is why it needs no new vocabulary. */
 .trust__row {
   display: grid;
-  gap: var(--space-3xs);
-  padding: var(--space-md) 0;
+  gap: var(--space-2xs);
+  padding: var(--space-lg) 0;
   border-bottom: 1px solid var(--color-border-on-light);
 }
 
@@ -936,7 +923,12 @@
   color: var(--brand-burgundy);
 }
 
-.trust__row dd { margin: 0; font-size: var(--fs-body); }
+.trust__row dd {
+  margin: 0;
+  font-size: var(--fs-body-lg);
+  font-weight: var(--fw-medium);
+  max-width: 34ch;
+}
 
 /* =====================================================
    07 · What Happens — the only horizontal moment
@@ -1298,7 +1290,41 @@
      far the largest photograph in the chapter — the hierarchy survives
      the crop. */
   .feature__main img { aspect-ratio: 1 / 1; }
-  .feature__detail { width: 46%; margin-top: -14%; }
+
+  /* ---- THE SLAB, TRANSLATED --------------------------------------
+     The homepage's signature is type crossing a photograph. On desktop
+     the slab cuts IN FROM THE RIGHT, into the side of a tall image. A
+     phone has no side margin to cut from — the image already spans the
+     full column — so reproducing that literally is impossible, and
+     shrinking it would produce a 20px nick that reads as a rendering
+     fault rather than a decision.
+
+     Translated: the slab crosses the image's BOTTOM edge instead. Same
+     sentence — the title is bound to the photograph rather than floating
+     beneath it — said with the axis a phone actually has.
+
+     It works because .ch--work's ground is also warm white, so the slab
+     is invisible everywhere except where it overlaps the photograph. It
+     is not a card laid on the image; it is the page cutting into it.
+
+     The detail plate is hidden here. Desktop composes three elements
+     (image, slab, plate) on a diagonal; a single column cannot hold that
+     diagonal, and the plate would collide with the slab. The least
+     load-bearing element goes, exactly as the craft rows already drop
+     their supporting shot on a phone. Two elements, one gesture, intact. */
+  .feature__detail { display: none; }
+  .feature__media { margin-bottom: 0; }
+
+  .feature__copy {
+    position: relative;
+    z-index: 3;
+    margin-top: calc(-1 * var(--space-2xl));
+    /* The inset is what proves it is a cut: the photograph stays visible
+       down the right-hand side of the slab. */
+    margin-right: var(--space-xl);
+    padding: var(--space-md) var(--space-md) 0 0;
+    background: var(--warm-white);
+  }
 
   /* The plate hangs past the bottom of the media box, eating into the
      row gap and leaving only 24px of air before the copy — measured. The

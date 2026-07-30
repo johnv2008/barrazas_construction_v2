@@ -288,13 +288,20 @@
         <?php endforeach; ?>
       </dl>
 
-      <figure class="trust__media" data-reveal-media>
-        <?= responsive_image($trust['image'], [
-              'alt'   => $trust['imageAlt'],
-              'sizes' => '(min-width: 1024px) 26vw, 60vw',
-        ]) ?>
-        <figcaption><?= e($trust['caption']) ?></figcaption>
-      </figure>
+      <?php
+        // The photograph that used to sit here has been removed.
+        //
+        // It illustrated CREDENTIALS AND TRUST with a half-demolished
+        // kitchen — the weakest image placement on the site — and it left
+        // roughly 300px of dead area beneath the copy column, which read
+        // as an unfinished grid rather than as deliberate void.
+        //
+        // DESIGN_SYSTEM §8.1 already answers this: when the evidence for a
+        // composition does not exist, the composition becomes typographic
+        // rather than being filled with the nearest available photograph.
+        // The credentials ARE the evidence in this chapter, so they are now
+        // the composition. Nothing was substituted in its place.
+      ?>
     </div>
   </div>
 </section>

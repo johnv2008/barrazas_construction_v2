@@ -193,14 +193,18 @@ $featuredHero = $featured !== null
      one gesture per page type, and no gesture appears on two
      (DESIGN_SYSTEM.md §10.1):
 
-       material  → Kitchen. Horizontal band, unequal crops, lead bleeds
-                   off the right edge.
-       vertical  → Bathroom. Three tall portrait frames descending on a
-                   broken baseline. No bleed; the lead already exceeds
-                   the fold.
+       material   → Kitchen. Horizontal band, unequal crops, lead bleeds
+                    off the right edge.
+       vertical   → Bathroom. Three tall portrait frames descending on a
+                    broken baseline. No bleed; the lead already exceeds
+                    the fold.
+       whitespace → Whole Home. One photograph held small inside the
+                    largest empty measure on the site. Scale by void
+                    rather than by size — the opposite idea, not a
+                    smaller version of the same one.
 
      A service with no registered signature falls back to the material
-     band rather than inventing a seventh device. -->
+     band rather than inventing an eighth device. -->
 <?php if ($materials !== []): ?>
 <?php $signature = $service['signature'] ?? 'material'; ?>
 <section class="ch ch--svc-materials ch--sig-<?= e($signature) ?>" id="materials" data-chapter="<?= e($ch['materials']) ?>" data-chapter-label="Materials">
@@ -208,18 +212,22 @@ $featuredHero = $featured !== null
     <div class="section-head">
       <span class="eyebrow eyebrow--accent">Materials &amp; craftsmanship</span>
       <h2 data-reveal>
-        <?= $signature === 'vertical'
-            ? 'The parts you will never see again.'
-            : 'What it is made of, and how it was done.' ?>
+        <?= match ($signature) {
+            'vertical'   => 'The parts you will never see again.',
+            'whitespace' => 'One house, and the year around it.',
+            default      => 'What it is made of, and how it was done.',
+        } ?>
       </h2>
     </div>
   </div>
 
-  <?php if ($signature === 'vertical'): ?>
-    <?php \App\Core\View::component('vertical-band', ['items' => $materials]); ?>
-  <?php else: ?>
-    <?php \App\Core\View::component('material-band', ['items' => $materials]); ?>
-  <?php endif; ?>
+  <?php
+    \App\Core\View::component(match ($signature) {
+        'vertical'   => 'vertical-band',
+        'whitespace' => 'whitespace-band',
+        default      => 'material-band',
+    }, ['items' => $materials]);
+  ?>
 </section>
 <?php endif; ?>
 

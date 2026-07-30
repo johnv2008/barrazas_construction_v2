@@ -435,6 +435,18 @@ The homepage already demonstrated the principle before it was named: Chapter 04'
 - **Tier is computed, never typed.** It is derived from the linked image records and surfaced in the admin as a read-only badge with its consequence stated in plain language ("Tier C — 2 usable images. The featured-transformation chapter will not render.") The editor sees the reasoning, so the system's honesty is legible rather than mysterious.
 - **Tiers are a ladder, not a label.** A subject promotes automatically as photography arrives. Nothing is redesigned; a higher tier simply unlocks more composition.
 
+#### A caution the library taught us
+
+Count FILES and you will over-estimate the tier. The project library holds
+24 `.jpg` files but only **21 unique photographs**: `narrative-result`,
+`narrative-detail` and `contact-sheet-hillside-deck` are byte-identical
+copies of one image, and `service-additions-detail` duplicates the roof
+tear-off — so a filename saying "additions" is in fact a roof photograph.
+
+Whole Home was estimated Tier A from filenames and is Tier B in fact. The
+tier must be computed by hashing the files and by looking at them, never
+by reading their names.
+
 #### What "usable" excludes
 
 Stock photography, images already carrying a different job elsewhere in a way that would read as recycling, images whose subject cannot survive any of the three sanctioned crops, and images that cannot be honestly grouped with the project they would be attributed to. A photograph that requires a caption to explain why it is there is not usable.
@@ -498,8 +510,8 @@ This registry is authoritative. Spending a gesture that belongs to another page 
 |---|---|---|---|
 | **Homepage** | **Typography interacting with photography** — a warm-white slab carrying the title cuts into the featured photograph | Ch 05 | **Shipped** (`homepage-art-direction-approved`) |
 | **Kitchen** | **Material-driven composition** — a band of unequal tight material crops (tile, stone, cabinet, hardware), the largest bleeding off the right edge, each annotated with a method note | Ch 06 Materials | Reference implementation |
-| **Bathroom** | **Vertical craftsmanship composition** — the chapter reads top-to-bottom rather than across; tall narrow frames stacked on a broken baseline, exploiting the library's native portrait orientation | Ch 06 | Planned |
-| **Whole Home** | **Architectural whitespace** — scale expressed by void rather than by image size; the largest empty measure on the site, one photograph held small inside it | Ch 03 | Planned |
+| **Bathroom** | **Vertical craftsmanship composition** — the chapter reads top-to-bottom rather than across; tall narrow frames stacked on a broken baseline, exploiting the library's native portrait orientation | Ch 06 | **Shipped** |
+| **Whole Home** | **Architectural whitespace** — scale expressed by void rather than by image size; the largest empty measure on the site, one photograph held small inside it | Ch 06 | **Shipped** |
 | **Portfolio / Projects hub** | **Contact-sheet editorial spread** — the sheet as the page's primary composition rather than a supporting component | Full page | Planned |
 | **Project Detail** | **Construction documentation and annotated details** — photographs annotated with numbered callouts tied to a written materials-and-methods schedule | Ch 02–03 | Reference implementation |
 

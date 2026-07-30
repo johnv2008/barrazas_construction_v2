@@ -147,6 +147,50 @@ final class Catalog
                     . 'Tuolumne County — tiled walk-in showers, tub surrounds, vanities and '
                     . 'floors, waterproofed properly before the finishes go on.',
             ],
+
+            'whole-home-renovation' => [
+                'slug' => 'whole-home-renovation',
+                'title' => 'Whole-Home Renovation',
+                'summary' => 'Whole-home renovation in Tuolumne County - roofing, envelope, '
+                    . 'flooring and finishes, sequenced so the house stays liveable.',
+                // TIER B, not A. The filenames suggested six or seven whole-home
+                // photographs; the FILES are only four unique images. Three
+                // filenames (narrative-result, narrative-detail,
+                // contact-sheet-hillside-deck) are byte-identical copies of one
+                // photograph, and service-additions-detail duplicates the roof
+                // tear-off. The tier is computed from what exists, so this page
+                // composes as Tier B: a diptych rather than a spread, one image
+                // per chapter, no contact sheet.
+                'inventory_tier' => 'B',
+                'signature' => 'whitespace',
+
+                'h1_statement' => 'The house should change as the people inside it do.',
+                'eyebrow' => 'Whole-home renovation',
+                'lead' => 'A whole-home renovation is not many small jobs bought at once. It is '
+                    . 'one sequence, planned in an order that keeps the house standing up and '
+                    . 'keeps you living in it.',
+
+                'hero_image_path' => 'images/projects/service-wholehome-primary.jpg',
+                'hero_image_alt' => 'Open renovated living space with new plank flooring and a '
+                    . 'brick fireplace',
+                'hero_caption_label' => 'Featured',
+                'hero_caption_title' => 'Hillside home',
+                'hero_caption_meta' => 'Tuolumne County',
+                'hero_cta_secondary' => 'See the roof, mid-job',
+
+                'featured_project_slug' => 'hillside-roof-replacement',
+                'related_project_slugs' => [
+                    'whole-home-kitchen-flooring',
+                    'kitchen-and-hallway-renovation',
+                ],
+                'related_service_slugs' => ['kitchen-remodeling', 'bathroom-remodeling'],
+                'form_project_type' => 'whole-home',
+
+                'meta_title' => "Whole-Home Renovation in Tuolumne County, CA | Barraza's Construction",
+                'meta_description' => 'Whole-home renovation in Jamestown, Sonora and across '
+                    . 'Tuolumne County - roofing, envelope, flooring and finishes, sequenced so '
+                    . 'the house stays liveable while the work happens.',
+            ],
         ];
     }
 
@@ -506,6 +550,89 @@ final class Catalog
                     ],
                 ],
             ],
+
+            // ================= WHOLE HOME =================
+            'whole-home-renovation' => [
+                'why_it_matters' => [
+                    'heading' => 'Most houses are asked to hold a life they were not drawn for.',
+                    'body' => 'The house was built for somebody else, decades ago, with different '
+                        . 'assumptions about how many people would be in it and what they would '
+                        . 'be doing. A whole-home renovation is not an upgrade - it is the point '
+                        . 'at which the building finally matches the people in it. It is also the '
+                        . 'largest disruption a family will voluntarily invite into their own '
+                        . 'home, which is why the plan matters more than any finish in it.',
+                ],
+                'what_changes' => [
+                    [
+                        'n' => '01',
+                        'title' => 'The envelope first, always',
+                        'body' => 'Roof, flashing, windows and doors before anything decorative. '
+                            . 'Every finish inside depends on the building being dry, and there '
+                            . 'is no order in which that stops being true.',
+                        'role' => 'plain', 'image_path' => null, 'image_alt' => '',
+                    ],
+                    [
+                        'n' => '02',
+                        'title' => 'A floor that runs through',
+                        'body' => 'One flooring material carried across the whole level, without '
+                            . 'a threshold at every doorway, is the single change that makes a '
+                            . 'chopped-up house read as one house.',
+                        'role' => 'plain', 'image_path' => null, 'image_alt' => '',
+                    ],
+                    [
+                        'n' => '03',
+                        'title' => 'Rooms that connect',
+                        'body' => 'Usually one or two walls, not many. Which ones can move is a '
+                            . 'structural question we answer before it becomes a design one.',
+                        'role' => 'plain', 'image_path' => null, 'image_alt' => '',
+                    ],
+                    [
+                        'n' => '04',
+                        'title' => 'You keep living there',
+                        'body' => 'Sequenced in zones so the house always has a working kitchen '
+                            . 'or a working bathroom - rarely both under construction at once, '
+                            . 'and never without telling you which weeks those are.',
+                        'role' => 'plain', 'image_path' => null, 'image_alt' => '',
+                    ],
+                ],
+                'process_step' => [
+                    ['n' => '01', 'title' => 'A conversation',
+                     'body' => 'What the house gets wrong, how long you plan to stay in it, and '
+                         . 'what the budget actually is. Whole-home scope is decided here.'],
+                    ['n' => '02', 'title' => 'We walk the whole house',
+                     'body' => 'Roof, crawlspace, panel, and every room. On a renovation this '
+                         . 'size the surprises are structural, and they are cheaper to find now.'],
+                    ['n' => '03', 'title' => 'Scope, sequence and estimate',
+                     'body' => 'In writing, and phased - so you can see what happens in which '
+                         . 'month, and which rooms are out of use when.'],
+                    ['n' => '04', 'title' => 'We build it in that order',
+                     'body' => 'Envelope, then rough trades, then floors, then rooms. Changing '
+                         . 'the order is how a renovation doubles in length.'],
+                    ['n' => '05', 'title' => 'You get the house back',
+                     'body' => 'Room by room as they finish, not all at the end - so the house '
+                         . 'becomes liveable again in stages rather than on one distant date.'],
+                ],
+                // ---- THE WHITESPACE SIGNATURE ----
+                // One photograph, held small, inside the largest empty measure
+                // on the site. Scale expressed by VOID rather than by image
+                // size: the room around the picture is the composition.
+                'materials_item' => [
+                    [
+                        'label' => 'The whole house',
+                        'title' => 'One building, one sequence',
+                        'body' => 'Everything on this page happened to a single house over a '
+                            . 'single run of months. The photograph is small on purpose. At this '
+                            . 'scale the work is not what you look at - the amount of room around '
+                            . 'it is, and that is closer to what a renovation of this size '
+                            . 'actually feels like from inside the house.',
+                        'image_path' => 'images/projects/service-whole-home.jpg',
+                        'image_alt' => 'Two-storey home exterior with fresh paint and mature '
+                            . 'landscaping',
+                        'focal' => ['x' => 0.5, 'y' => 0.5],
+                        'scale' => 'void',
+                    ],
+                ],
+            ],
         ];
 
         return $all[$serviceSlug] ?? [];
@@ -607,6 +734,37 @@ final class Catalog
                         . 'whether or not the rails go in today. Blocking costs almost nothing '
                         . 'while the wall is open and is a rebuild afterwards.',
                 ],
+            ],
+
+            'whole-home-renovation' => [
+                ['question' => 'Can we live in the house during a whole-home renovation?',
+                 'answer' => 'Usually yes, and most families do. It depends on sequencing rather '
+                     . 'than on luck: we work in zones so there is a functioning kitchen or a '
+                     . 'functioning bathroom at almost every point, and we tell you in advance '
+                     . 'which weeks are the hard ones so you can plan around them.'],
+                ['question' => 'How long does a whole-home renovation take?',
+                 'answer' => 'Months rather than weeks, and the honest range depends entirely on '
+                     . 'scope and on what the walls turn out to be hiding. We would rather give '
+                     . 'you a phased schedule after walking the house than a number on the phone '
+                     . 'that we both know is a guess.'],
+                ['question' => 'Why do you start with the roof and the exterior?',
+                 'answer' => 'Because every finish inside depends on the building being dry, and '
+                     . 'because a roof replaced after the floors go down means covering new work '
+                     . 'or redoing it. The envelope is not the exciting part and it is not '
+                     . 'negotiable as a starting point.'],
+                ['question' => 'Do we need to move everything out?',
+                 'answer' => 'Not everything and not all at once. We work room by room where the '
+                     . 'scope allows, and we will tell you what needs to be out of a space before '
+                     . 'we start on it rather than on the morning we arrive.'],
+                ['question' => 'What happens when you find something unexpected?',
+                 'answer' => 'On a house-wide job something is always found - old wiring, a soft '
+                     . 'subfloor, a roof that has been patched rather than replaced. We show you, '
+                     . 'price it, and get your decision in writing before we carry on. Nothing '
+                     . 'gets buried and nothing gets billed as a surprise.'],
+                ['question' => 'Can we do it in phases over a few years?',
+                 'answer' => 'Yes, and for a lot of families that is the sensible answer. The '
+                     . 'thing worth planning centrally is the order - doing the envelope in phase '
+                     . 'one protects everything you spend in phases two and three.'],
             ],
         ];
 
@@ -1182,6 +1340,78 @@ final class Catalog
                             . 'surround beneath a window, and plank flooring',
                         'caption' => 'Stock fittings, careful setting',
                         'sort_order' => 1,
+                    ],
+                ],
+            ],
+
+            // The site's ONLY verified before/after pair, and the project the
+            // homepage's Chapter 03 is built on. Grouping these two restates
+            // a claim the homepage already makes ("this is the same house you
+            // see finished below") rather than making a new one.
+            'hillside-roof-replacement' => [
+                'slug' => 'hillside-roof-replacement',
+                'short_title' => 'Hillside roof',
+                'title' => 'A roof stripped to the sheathing, and the deck back in use',
+                'project_type' => 'Whole-home renovation',
+                'category' => 'Whole home',
+                'city' => 'Tuolumne County',
+                'completion_year' => null,
+                'duration_weeks' => null,
+                'is_featured' => 1,
+                'service_slug' => 'whole-home-renovation',
+                'short_description' => 'A hillside home taken back to bare plywood and reroofed, '
+                    . 'photographed open and then finished.',
+                'full_description' => 'This is the only job on the site photographed properly at '
+                    . 'both ends, and it is the one we would point at first. The roof was stripped '
+                    . 'to bare sheathing rather than layered over, which is the decision that '
+                    . 'separates a roof that lasts from one that is sold cheaply: you cannot '
+                    . 'inspect what you cover, and a second layer hides every soft spot underneath '
+                    . 'it. The new bundles were staged on the roof before the tear-off began, so '
+                    . 'the house was open for hours rather than days. The finished photograph is '
+                    . 'taken from the deck of the same house, which is back in use.',
+                'materials' => 'Architectural asphalt shingle - new underlayment - full tear-off '
+                    . 'to plywood sheathing',
+                'scope' => 'Full roof replacement on a hillside home, as part of a whole-home '
+                    . 'renovation',
+                'notes' => [
+                    [
+                        'n' => '01',
+                        'title' => 'Stripped, not layered over',
+                        'body' => 'Back to bare plywood. Anything soft is found and replaced at '
+                            . 'this stage, because after this stage it cannot be seen again.',
+                    ],
+                    [
+                        'n' => '02',
+                        'title' => 'Material staged before the tear-off',
+                        'body' => 'The bundles are already on the roof in the first photograph. '
+                            . 'That is what keeps the house open for hours rather than days.',
+                    ],
+                    [
+                        'n' => '03',
+                        'title' => 'The deck went back into use',
+                        'body' => 'The second photograph is taken from it. On a hillside house the '
+                            . 'deck is the room people actually live in, and losing it for a '
+                            . 'season is a real cost.',
+                    ],
+                ],
+                'disclosure' => 'Two photographs of one project, taken weeks apart. What happened '
+                    . 'in between is the part worth asking any contractor about.',
+                'images' => [
+                    [
+                        'image_path' => 'images/projects/narrative-progress.jpg',
+                        'image_role' => 'during',
+                        'alt_text' => 'Hillside home with the roof stripped to bare plywood '
+                            . 'sheathing and new shingle bundles staged in the foreground',
+                        'caption' => 'Open, with the new material already staged',
+                        'sort_order' => 1,
+                    ],
+                    [
+                        'image_path' => 'images/projects/narrative-result.jpg',
+                        'image_role' => 'hero',
+                        'alt_text' => 'The same hillside home with its new shingle roof complete '
+                            . 'and the redwood deck back in use, surrounded by pines',
+                        'caption' => 'The same house, finished, from its own deck',
+                        'sort_order' => 2,
                     ],
                 ],
             ],

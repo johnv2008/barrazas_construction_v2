@@ -27,7 +27,7 @@ $home = static fn (string $fragment): string => $isHome ? $fragment : base_url('
 $footerServices = [
     ['label' => 'Kitchen Remodeling', 'href' => base_url('services/kitchen-remodeling')],
     ['label' => 'Bathroom Remodeling', 'href' => base_url('services/bathroom-remodeling')],
-    ['label' => 'Whole-Home Renovation', 'href' => null],
+    ['label' => 'Whole-Home Renovation', 'href' => base_url('services/whole-home-renovation')],
     ['label' => 'Home Additions', 'href' => null],
 ];
 

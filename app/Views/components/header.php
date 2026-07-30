@@ -35,6 +35,7 @@ $navItems = [
     ['label' => 'Home', 'href' => base_url('/'), 'match' => ''],
     ['label' => 'Kitchens', 'href' => base_url('services/kitchen-remodeling'), 'match' => 'services/kitchen-remodeling'],
     ['label' => 'Bathrooms', 'href' => base_url('services/bathroom-remodeling'), 'match' => 'services/bathroom-remodeling'],
+    ['label' => 'Whole Home', 'href' => base_url('services/whole-home-renovation'), 'match' => 'services/whole-home-renovation'],
     // "Projects" is deliberately omitted until /projects exists. It used to
     // point at a fragment that resolved to a three-card strip, which
     // actively misinformed. Nothing is better than that.

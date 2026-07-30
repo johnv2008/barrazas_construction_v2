@@ -858,3 +858,104 @@
   .svc-arrival,
   .prj-arrival { gap: var(--space-3xl); }
 }
+
+/* ---------------------------------------------------------------------
+   06c · ARCHITECTURAL WHITESPACE — the Whole Home page type's signature
+   ---------------------------------------------------------------------
+   The other signatures make something large. This one makes something
+   small and leaves the room around it empty, which is the opposite idea
+   rather than a quieter version of the same one.
+
+   It suits the subject and the evidence equally: a whole-home renovation
+   has no single frame that contains it, and Whole Home is Tier B — four
+   unique photographs, not the six or seven the filenames implied. A
+   composition built on void needs exactly one image to work.
+
+   No edge-bleed here. Spending one would fill the space the composition
+   is made of. Reserved to this page type — DESIGN_SYSTEM.md §10.1. */
+
+.ch--sig-whitespace { background: var(--warm-white); }
+
+.wband {
+  display: grid;
+  gap: var(--space-xl);
+  padding-inline: var(--space-md);
+}
+
+.wband__item { margin: 0; }
+
+.wband__frame {
+  overflow: hidden;
+  border-radius: var(--radius-photo);
+  background-color: var(--stone);
+}
+
+.wband__frame img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.wband__note { display: grid; gap: var(--space-2xs); max-width: 46ch; }
+
+.wband__label {
+  font-family: var(--font-condensed);
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  color: var(--brand-burgundy);
+}
+
+.wband__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-display);
+  letter-spacing: var(--ls-tight);
+}
+
+.wband__body {
+  color: var(--color-text-on-light-muted);
+  font-size: var(--fs-body-lg);
+  line-height: var(--lh-body);
+}
+
+@media (max-width: 767px) {
+  /* On a phone the void cannot be wide, so it is TALL instead: the image
+     stays small and held left, and the space is taken above and below it.
+     Same idea, the axis a phone actually has. */
+  .wband { padding-block: var(--space-xl); }
+  .wband__item { width: 62%; }
+}
+
+@media (min-width: 768px) {
+  /* The chapter is given roughly twice the vertical room of any other, and
+     the photograph is given a fifth of the width. The ratio between those
+     two numbers IS the composition. */
+  .ch--sig-whitespace { padding-block: calc(var(--space-2xl) * 2); }
+
+  .wband {
+    grid-template-columns: minmax(0, 0.28fr) minmax(0, 0.72fr);
+    column-gap: var(--space-3xl);
+    align-items: end;
+    padding-left: calc(var(--datum-x) + var(--datum-clear));
+    padding-right: var(--container-padding);
+  }
+
+  .wband__item { align-self: start; }
+  .wband__frame img { aspect-ratio: 3 / 4; }
+
+  /* The note sits low against the image's baseline rather than beside its
+     middle, so the emptiness collects above both of them. */
+  .wband__note { max-width: 42ch; }
+}
+
+@media (min-width: 1024px) {
+  .wband {
+    grid-template-columns: minmax(0, 0.2fr) minmax(0, 0.44fr) minmax(0, 0.36fr);
+    column-gap: var(--space-2xl);
+  }
+
+  /* The third column is empty and stays empty. It is the point. */
+  .wband__note { grid-column: 2; }
+}
