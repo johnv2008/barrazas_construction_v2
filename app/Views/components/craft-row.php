@@ -43,8 +43,14 @@ $showSupport = $layout === 'stack' && !empty($item['support']);
 
   <div class="craft-row__body">
     <p class="craft-row__benefit"><?= e($item['benefit']) ?></p>
+    <?php
+      // The homepage passes no ctaLabel and keeps its original wording
+      // byte-for-byte. Service pages supply their own, because "Ask about
+      // an ADU" is a homepage-Chapter-04 sentence, not a component default.
+      $ctaLabel = $item['ctaLabel'] ?? ($hasImage ? 'See this work' : 'Ask about an ADU');
+    ?>
     <a href="<?= e($item['href']) ?>" class="link-arrow link-arrow--sm">
-      <?= $hasImage ? 'See this work' : 'Ask about an ADU' ?>
+      <?= e($ctaLabel) ?>
     </a>
   </div>
 

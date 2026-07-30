@@ -11,6 +11,15 @@
   <meta property="og:title" content="<?= e($title ?? config('app.name')) ?>">
   <meta property="og:description" content="<?= e($metaDescription ?? '') ?>">
   <meta property="og:url" content="<?= e(base_url(current_path())) ?>">
+  <?php
+    // Optional per-page share image. Absent on the homepage, which had no
+    // og:image before this and still does not — adding one there would be
+    // a homepage change, and the homepage is the frozen reference standard.
+    if (!empty($ogImage)):
+  ?>
+  <meta property="og:image" content="<?= e(base_url(ltrim(asset($ogImage), '/'))) ?>">
+  <meta name="twitter:card" content="summary_large_image">
+  <?php endif; ?>
 
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#17191d">
@@ -46,6 +55,15 @@
   <link rel="stylesheet" href="<?= e(asset('css/base.css')) ?>">
   <link rel="stylesheet" href="<?= e(asset('css/components.css')) ?>">
   <link rel="stylesheet" href="<?= e(asset('css/frontend.css')) ?>">
+  <?php
+    // Per-page stylesheets, loaded AFTER frontend.css so a page type can
+    // extend the approved language without editing it. Service and project
+    // pages use this for their own chapters; the homepage passes nothing,
+    // so its rendering is byte-identical to the approved reference.
+    foreach (($extraStyles ?? []) as $extraStyle):
+  ?>
+  <link rel="stylesheet" href="<?= e(asset($extraStyle)) ?>">
+  <?php endforeach; ?>
 
   <?php
     // LocalBusiness / GeneralContractor structured data. Only fields we
@@ -90,6 +108,15 @@
     }
   ?>
   <script type="application/ld+json" nonce="<?= e(csp_nonce()) ?>"><?= json_encode($structuredData, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) ?></script>
+  <?php
+    // Additional per-page nodes (Service, CreativeWork, FAQPage,
+    // BreadcrumbList). Emitted as separate scripts rather than merged into
+    // the node above, so the business identity stays one canonical object
+    // that every page references rather than redefines.
+    foreach (($pageSchema ?? []) as $schemaNode):
+  ?>
+  <script type="application/ld+json" nonce="<?= e(csp_nonce()) ?>"><?= json_encode($schemaNode, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) ?></script>
+  <?php endforeach; ?>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to content</a>

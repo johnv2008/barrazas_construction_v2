@@ -67,8 +67,17 @@ $leadError = $allFlashes['lead_error'][0] ?? null;
         <label class="form-label" for="project_type">Project type<span class="form-required" aria-hidden="true">*</span></label>
         <select class="form-control" id="project_type" name="project_type" required>
           <option value="">Select one</option>
+          <?php
+            // A service page passes $preselect so the visitor does not
+            // re-declare what they were just reading about. A repopulated
+            // value after a validation error always wins, and the homepage
+            // passes nothing — so its rendering is unchanged.
+            $selectedType = old('project_type') !== '' && old('project_type') !== null
+                ? old('project_type')
+                : ($preselect ?? '');
+          ?>
           <?php foreach ($projectTypes as $value => $label): ?>
-            <option value="<?= e($value) ?>" <?= old('project_type') === $value ? 'selected' : '' ?>><?= e($label) ?></option>
+            <option value="<?= e($value) ?>" <?= $selectedType === $value ? 'selected' : '' ?>><?= e($label) ?></option>
           <?php endforeach; ?>
         </select>
       </div>

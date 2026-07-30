@@ -117,7 +117,13 @@ final class Image
         $jpegSrcset = array_values($jpegSrcset);
         $webpSrcset = array_values($webpSrcset);
 
-        $focal = $entry['focal'] ?? ['x' => 0.5, 'y' => 0.5];
+        // A per-call focal point overrides the manifest. The manifest holds
+        // one value per FILE, which is right when an image is used as a
+        // room; it is not enough when the same file is cropped to a
+        // different subject in a different frame (the Kitchen material band
+        // crops one photograph to its tile, and another to its hardware).
+        // Falls back to the manifest, then to dead centre.
+        $focal = $options['focal'] ?? $entry['focal'] ?? ['x' => 0.5, 'y' => 0.5];
         $style = '';
         if (abs(((float) $focal['x']) - 0.5) > 0.001 || abs(((float) $focal['y']) - 0.5) > 0.001) {
             $style = sprintf(

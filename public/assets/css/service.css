@@ -1,0 +1,690 @@
+/* =====================================================================
+   Service & Project pages
+   =====================================================================
+   Loaded AFTER frontend.css, only on service and project pages. The
+   homepage passes no extraStyles, so nothing in this file can reach it —
+   that is deliberate: the homepage is the frozen reference standard and
+   the safest way to honour that is to make regression structurally
+   impossible rather than merely unlikely.
+
+   This file EXTENDS the approved language and re-declares as little as
+   possible. Reused wholesale from frontend.css / base.css / components.css:
+   .ch, .container, .section-head, .eyebrow, .plate, .craft-row (all five
+   roles), .track, .link-arrow, .btn, .consultation-form, the Datum rail.
+
+   Section order: shared primitives, 01 arrival, 02 why, 03 featured,
+   04 changes, 05 process, 06 materials (signature), 07 questions,
+   08 projects, 09 consultation, project-page chapters, breakpoints.
+   ===================================================================== */
+
+/* ---------------------------------------------------------------------
+   Shared primitives
+   --------------------------------------------------------------------- */
+
+/* Breadcrumb — the annotation register, sitting above the H1 rather than
+   in a strip across the top of the page. Every contractor site has the
+   strip; this reads as a filing reference instead. */
+.crumbs {
+  font-family: var(--font-condensed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-on-light-muted);
+  margin-bottom: var(--space-md);
+}
+
+.crumbs ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+
+.crumbs li { display: flex; align-items: center; gap: var(--space-2xs); }
+
+/* Separator drawn in CSS so it is never read aloud as a word. */
+.crumbs li + li::before {
+  content: "";
+  width: 10px;
+  height: 1px;
+  background: var(--line-on-light);
+}
+
+.crumbs a { color: inherit; text-decoration: none; }
+.crumbs a:hover { color: var(--brand-burgundy); }
+.crumbs [aria-current="page"] { color: var(--color-text-on-light); }
+
+/* Caption beneath a photograph, on a hairline opened by the burgundy tick.
+   The same device as the homepage hero's credit line and the contact
+   sheet's filing rule — reused, not reinvented, because reuse is what
+   makes two page types read as one site. */
+.credit {
+  display: block;
+  margin-top: var(--space-sm);
+  padding-top: var(--space-2xs);
+  border-top: 1px solid var(--line-on-light);
+  font-family: var(--font-condensed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-on-light-muted);
+  max-width: 46ch;
+}
+
+.credit::before {
+  content: "";
+  display: block;
+  width: 28px;
+  height: 2px;
+  margin: -1px 0 var(--space-2xs);
+  background: var(--brand-burgundy);
+}
+
+/* Filing label — opens a section that is evidence rather than argument.
+   It is an h2 in the markup (the section needs a heading level; the project
+   titles beneath it are h3) but must not LOOK like a section title, so the
+   display font and heading weight inherited from h2 are both overridden. */
+.filing {
+  font-family: var(--font-condensed);
+  font-size: 0.6875rem;
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-on-light-muted);
+  margin: 0 0 var(--space-md);
+  padding-top: var(--space-md);
+  background-image:
+    linear-gradient(to right, var(--brand-burgundy) 0 28px, transparent 28px),
+    linear-gradient(to right, var(--line-on-light) 0 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 2px, 100% 1px;
+  background-position: left top, left top;
+}
+
+/* The spec schedule. Generalised from the homepage's .feature__meta so
+   service and project pages share one component. */
+.spec { margin: var(--space-lg) 0; border-top: 1px solid var(--line-on-light); }
+
+.spec > div {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: var(--space-sm);
+  padding: var(--space-xs) 0;
+  border-bottom: 1px solid var(--line-on-light);
+  align-items: baseline;
+}
+
+.spec--tight > div { grid-template-columns: 5rem 1fr; }
+
+.spec dt {
+  font-family: var(--font-condensed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand-burgundy);
+}
+
+.spec dd {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: var(--fw-medium);
+  line-height: 1.45;
+}
+
+/* An honest note about thin evidence. Quiet, not apologetic. */
+.disclosure {
+  margin-top: var(--space-md);
+  padding-left: var(--space-md);
+  border-left: 2px solid var(--brand-burgundy);
+  font-size: 0.9375rem;
+  color: var(--color-text-on-light-muted);
+  max-width: 52ch;
+}
+
+/* ---------------------------------------------------------------------
+   01 · Arrival — contained, axis mirrored against the homepage hero
+   --------------------------------------------------------------------- */
+
+.ch--svc-arrival,
+.ch--prj-arrival {
+  background: var(--warm-white);
+  padding-top: calc(var(--header-height) + var(--space-lg));
+}
+
+.svc-arrival,
+.prj-arrival { display: grid; gap: var(--space-xl); }
+
+.svc-arrival__media,
+.prj-arrival__media { margin: 0; }
+
+.svc-arrival__media img,
+.prj-arrival__media img {
+  width: 100%;
+  height: auto; /* load-bearing — see the note on aspect-ratio below */
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--radius-photo);
+}
+
+/* height:auto is required, not tidying. responsive_image() emits intrinsic
+   width/height for CLS; browsers map those to presentational hints, and
+   aspect-ratio is IGNORED while both used dimensions are definite. Without
+   it every ratio rule in this file is inert and images render at natural
+   pixel height. This cost real debugging time on the homepage. */
+
+/* One step below --fs-h1, deliberately. Two reasons, and they agree:
+   the homepage hero owns the largest type on the site and a service page
+   should not tie with it; and measured at 1440 the full --fs-h1 ran this
+   statement to SIX lines in the copy column — 430px of headline, which
+   pushed the supporting paragraph off the first screen. At this size it
+   settles to four. */
+.svc-arrival__heading,
+.prj-arrival__heading {
+  font-family: var(--font-display);
+  font-size: clamp(2.375rem, 3.9vw, 3.25rem);
+  font-weight: var(--fw-display-hero);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-display);
+  margin-block: var(--space-md) 0;
+  max-width: 20ch;
+  text-wrap: balance;
+}
+
+.svc-arrival__lead,
+.prj-arrival__lead {
+  font-size: var(--fs-body-lg);
+  color: var(--color-text-on-light-muted);
+  max-width: 46ch;
+  margin-top: var(--space-md);
+}
+
+.svc-arrival__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-md) var(--space-lg);
+  margin-top: var(--space-xl);
+}
+
+/* The hero's plate becomes the same editorial credit line the homepage
+   uses — an override of the floating badge, not a second badge style. */
+.svc-arrival__media .plate,
+.prj-arrival__media .plate {
+  position: static;
+  display: grid;
+  grid-auto-flow: row;
+  gap: 1px;
+  margin-top: var(--space-sm);
+  padding: var(--space-2xs) 0 0;
+  background: none;
+  backdrop-filter: none;
+  border-radius: 0;
+  box-shadow: none;
+  border-top: 1px solid var(--line-on-light);
+  max-width: 34ch;
+}
+
+.svc-arrival__media .plate::before,
+.prj-arrival__media .plate::before {
+  content: "";
+  display: block;
+  width: 28px;
+  height: 2px;
+  margin: -1px 0 var(--space-2xs);
+  background: var(--brand-burgundy);
+}
+
+/* ---------------------------------------------------------------------
+   02 · Why This Room Matters — dark, very sparse, no image
+   --------------------------------------------------------------------- */
+
+.ch--svc-why {
+  background: var(--ink-black);
+  color: var(--warm-white);
+  padding-block: calc(var(--space-2xl) * 1.25);
+}
+
+.svc-why { display: grid; gap: var(--space-lg); }
+
+/* Fraunces italic, 1 of the 2 sanctioned appearances on this page. Sized
+   below --fs-h1 so it never competes with the arrival. */
+.svc-why__statement {
+  font-size: clamp(1.75rem, 3.4vw, 2.75rem);
+  line-height: 1.24;
+  letter-spacing: -0.01em;
+  margin: 0;
+  max-width: 24ch;
+  text-wrap: balance;
+}
+
+.svc-why__body {
+  color: var(--color-text-on-dark-muted);
+  max-width: 54ch;
+  font-size: var(--fs-body-lg);
+}
+
+/* ---------------------------------------------------------------------
+   03 · Featured Transformation
+   --------------------------------------------------------------------- */
+
+.ch--svc-featured { background: var(--stone); }
+
+.svc-featured__body { display: grid; gap: var(--space-xl); }
+
+.svc-featured__media { margin: 0; }
+
+.svc-featured__media img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--radius-photo);
+}
+
+.svc-featured__copy p { color: var(--color-text-on-light-muted); max-width: 50ch; }
+
+/* ---------------------------------------------------------------------
+   04 · What Changes — reuses the approved craft-row roles
+   --------------------------------------------------------------------- */
+
+.ch--svc-changes { background: var(--warm-white); }
+
+/* ---------------------------------------------------------------------
+   05 · Process — horizontal, the page's one axis break
+   --------------------------------------------------------------------- */
+
+.ch--svc-process { background: var(--stone); }
+
+/* ---------------------------------------------------------------------
+   06 · Materials & Craftsmanship
+   ★ THE KITCHEN SIGNATURE — and this page's one edge-bleed
+   ---------------------------------------------------------------------
+   Four crops at four different scales, never a row of equals. Each frame
+   shows a SURFACE, not a room, so the chapter reads as material studies
+   rather than more kitchen photographs. The lead crop runs off the right
+   viewport edge.
+
+   Reserved to the Kitchen page type. Bathroom gets a vertical
+   craftsmanship composition, Whole Home gets architectural whitespace —
+   see DESIGN_SYSTEM.md §10.1. Repeating this band on another service page
+   would spend a gesture that belongs elsewhere. */
+
+.ch--svc-materials { background: var(--warm-white); overflow-x: clip; }
+
+.band { display: grid; gap: var(--space-lg); padding-inline: var(--space-md); }
+
+.band__item { margin: 0; }
+
+.band__frame {
+  overflow: hidden;
+  border-radius: var(--radius-photo);
+  background: var(--stone);
+}
+
+.band__frame img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Crop ratios ARE the hierarchy. The lead is a wide band; the small ones
+   are squares, which is how a material sample is shown. */
+.band__item--lead .band__frame img { aspect-ratio: 16 / 10; }
+.band__item--medium .band__frame img { aspect-ratio: 4 / 3; }
+.band__item--small .band__frame img { aspect-ratio: 1 / 1; }
+
+.band__note {
+  display: grid;
+  gap: 2px;
+  padding-top: var(--space-xs);
+  max-width: 42ch;
+}
+
+.band__label {
+  font-family: var(--font-condensed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand-burgundy);
+}
+
+.band__title { font-weight: var(--fw-semibold); font-size: 1.0625rem; }
+
+.band__body {
+  color: var(--color-text-on-light-muted);
+  font-size: 0.9375rem;
+  line-height: var(--lh-body);
+  margin-top: var(--space-3xs);
+}
+
+/* ---------------------------------------------------------------------
+   07 · Questions — warm ground, native <details>, no JavaScript
+   --------------------------------------------------------------------- */
+
+.ch--svc-questions { background: var(--stone); }
+
+.svc-questions { max-width: 68rem; }
+
+.qa { border-top: 1px solid var(--line-on-light); }
+
+.qa__item { border-bottom: 1px solid var(--line-on-light); }
+
+.qa__q {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+/* Replace the disclosure triangle rather than remove the affordance. */
+.qa__q::-webkit-details-marker { display: none; }
+.qa__q::marker { content: ""; }
+
+.qa__q h3 {
+  margin: 0;
+  font-size: var(--fs-h6);
+  font-weight: var(--fw-display);
+  letter-spacing: var(--ls-tight);
+  max-width: 46ch;
+}
+
+/* A drawn chevron, not an icon font. Rotates on open. */
+.qa__marker {
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  margin-top: 0.35em;
+  border-right: 2px solid var(--brand-burgundy);
+  border-bottom: 2px solid var(--brand-burgundy);
+  transform: rotate(45deg);
+  transition: transform 240ms var(--ease-out);
+}
+
+.qa__item[open] .qa__marker { transform: rotate(225deg); }
+
+.qa__a { padding-bottom: var(--space-md); }
+
+.qa__a p {
+  margin: 0;
+  color: var(--color-text-on-light-muted);
+  max-width: 66ch;
+}
+
+.qa__q:focus-visible {
+  outline: var(--focus-ring-width) solid var(--brand-burgundy);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* ---------------------------------------------------------------------
+   08 · Related Projects — editorial, unequal. NOT the contact sheet.
+   --------------------------------------------------------------------- */
+
+.ch--svc-projects,
+.ch--prj-projects { background: var(--warm-white); }
+
+.pgrid { display: grid; gap: var(--space-lg); }
+
+.pcard { margin: 0; }
+
+.pcard__link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.pcard__frame {
+  overflow: hidden;
+  border-radius: var(--radius-photo);
+  background: var(--stone);
+}
+
+.pcard__frame img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  transition: transform 900ms var(--ease-out);
+}
+
+.pcard__link:hover img { transform: scale(1.03); }
+
+/* Caption beneath the frame, always visible — never a hover-only overlay. */
+.pcard__caption { display: grid; gap: 2px; padding-top: var(--space-xs); }
+
+.pcard__title {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-tight);
+  max-width: 30ch;
+}
+
+.pcard__meta {
+  font-family: var(--font-condensed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-on-light-muted);
+}
+
+.pcard__link:focus-visible {
+  outline: var(--focus-ring-width) solid var(--brand-burgundy);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* ---------------------------------------------------------------------
+   09 · Consultation
+   ---------------------------------------------------------------------
+   Deliberately NOT re-implemented. Both new page types reuse the
+   homepage's .ch--begin / .begin chapter verbatim — background treatment,
+   dark-ground form overrides (15 rules), focus states, success state and
+   the select-option colour fix. Re-declaring any of that here would be
+   two implementations of one component drifting apart on the day someone
+   edits only one of them. */
+
+/* ---------------------------------------------------------------------
+   Project page — 02 record, 03 documentation (the signature)
+   --------------------------------------------------------------------- */
+
+.ch--prj-record { background: var(--stone); }
+
+.prj-record { display: grid; gap: var(--space-xl); }
+
+.prj-record__narrative p {
+  color: var(--color-text-on-light-muted);
+  max-width: 58ch;
+  font-size: var(--fs-body-lg);
+  margin-top: var(--space-md);
+}
+
+.prj-record__narrative .disclosure { font-size: 0.9375rem; }
+
+.ch--prj-doc { background: var(--warm-white); }
+
+.prj-doc__body { display: grid; gap: var(--space-xl); }
+
+/* Numbered construction notes — the annotation half of this page type's
+   signature. Large hairline-thin numerals: scale without weight, the same
+   device the homepage's process timeline uses. */
+.notes { list-style: none; margin: 0; padding: 0; display: grid; }
+
+.notes__item {
+  display: grid;
+  grid-template-columns: 3.25rem 1fr;
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
+  border-top: 1px solid var(--line-on-light);
+}
+
+.notes__item:last-child { border-bottom: 1px solid var(--line-on-light); }
+
+.notes__num {
+  font-family: var(--font-condensed);
+  font-size: 1.5rem;
+  font-weight: var(--fw-regular, 400);
+  letter-spacing: 0.04em;
+  color: var(--brand-burgundy);
+  line-height: 1;
+}
+
+.notes__title {
+  margin: 0 0 var(--space-2xs);
+  font-size: var(--fs-h6);
+  letter-spacing: var(--ls-tight);
+}
+
+.notes__body { margin: 0; color: var(--color-text-on-light-muted); max-width: 56ch; }
+
+.prj-doc__media { display: grid; gap: var(--space-lg); }
+
+.prj-doc__shot { margin: 0; }
+
+.prj-doc__shot img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--radius-photo);
+}
+
+/* =====================================================================
+   Breakpoints
+   ===================================================================== */
+
+@media (max-width: 767px) {
+  .ch--svc-arrival,
+  .ch--prj-arrival { padding-top: calc(var(--header-height) + var(--space-md)); }
+
+  /* Same correction the homepage hero needed: --fs-h1 bottoms out at 52px,
+     which on a ~312px column strands a single word on its own line. Fluid
+     40-48px plus text-wrap: balance gives a stable, balanced composition
+     from 320 to 430px. */
+  .svc-arrival__heading,
+  .prj-arrival__heading {
+    font-size: clamp(2.5rem, 11vw, 3rem);
+    max-width: none;
+    letter-spacing: -0.025em;
+  }
+
+  .svc-arrival__media img,
+  .prj-arrival__media img { aspect-ratio: 1 / 1; }
+
+  .svc-why__statement { font-size: clamp(1.5rem, 8vw, 2rem); }
+
+  /* Material band flattens to one column but keeps its scale hierarchy:
+     the lead crop stays wide and the samples stay square and half-width,
+     so the chapter still reads as a set of studies rather than a stack. */
+  .band__item--small { width: 62%; }
+  .band__item--medium { width: 84%; }
+
+  .notes__item { grid-template-columns: 2.5rem 1fr; gap: var(--space-sm); }
+}
+
+@media (min-width: 768px) {
+  .svc-arrival,
+  .prj-arrival { gap: var(--space-2xl); align-items: center; }
+
+  .svc-featured__body { grid-template-columns: 1.15fr 0.85fr; align-items: start; }
+
+  .prj-record { grid-template-columns: 1.25fr 0.75fr; align-items: start; }
+
+  .prj-doc__body { grid-template-columns: 1fr 0.8fr; align-items: start; }
+
+  .prj-doc__media { gap: var(--space-xl); }
+
+  .svc-contact { grid-template-columns: 0.85fr 1.15fr; align-items: start; }
+
+  /* ---- The material band at tablet and up --------------------------
+     Two columns, with the lead spanning both so it stays unmistakably
+     dominant, and the two squares sharing the row beneath it. */
+  .band {
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--space-xl);
+    row-gap: var(--space-2xl);
+  }
+
+  .band__item--lead { grid-column: 1 / -1; }
+  .band__item--medium { grid-column: 1 / -1; width: 62%; }
+}
+
+@media (min-width: 1024px) {
+  /* Clear the Datum rail, exactly as the homepage does. */
+  .svc-arrival,
+  .prj-arrival { padding-left: calc(var(--datum-x) + var(--datum-clear)); }
+
+  /* Axis MIRRORED against the homepage hero: image left, copy right. The
+     same language read the other way round, rather than the same
+     composition reused. */
+  .svc-arrival { grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr); }
+  .svc-arrival__media { grid-column: 1; }
+  .svc-arrival__copy { grid-column: 2; }
+
+  .svc-arrival__media img,
+  .prj-arrival__media img { height: clamp(440px, 66vh, 660px); aspect-ratio: auto; }
+
+  /* The project page inverts it again — copy left, photograph right — so a
+     project page does not read as a service page either. */
+  .prj-arrival { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); }
+  .prj-arrival__copy { grid-column: 1; }
+  .prj-arrival__media { grid-column: 2; }
+
+  .svc-featured__body { grid-template-columns: 1.3fr 0.7fr; column-gap: var(--space-2xl); }
+
+  .prj-record { grid-template-columns: 1.4fr 0.6fr; column-gap: var(--space-2xl); }
+
+  .prj-doc__body { grid-template-columns: 1.1fr 0.9fr; column-gap: var(--space-2xl); }
+
+  .svc-contact { grid-template-columns: 0.8fr 1.2fr; column-gap: var(--space-2xl); }
+
+  /* ---- THE ONE EDGE-BLEED ON THIS PAGE ----------------------------
+     Spent on the signature chapter, not the hero — the homepage owns the
+     bleeding hero, and this is how the two page types stay recognisably
+     related without sharing a silhouette.
+
+     Achieved by removing the container's right padding rather than by a
+     negative margin: a negative margin extends the document box and
+     produces a horizontal scrollbar. The chapter also sets
+     overflow-x: clip as a belt-and-braces guard, because the band is the
+     only place on these pages where anything crosses the viewport edge. */
+  .band {
+    grid-template-columns: 1.45fr 0.75fr 0.8fr;
+    column-gap: var(--space-2xl);
+    row-gap: var(--space-2xl);
+    padding-left: calc(var(--datum-x) + var(--datum-clear));
+    /* The band keeps its right padding so the SAMPLES stay contained. */
+    padding-right: var(--container-padding);
+    align-items: start;
+  }
+
+  /* ONLY the lead crosses the edge. Zeroing the band's right padding made
+     the rightmost sample touch the viewport too, which read as the grid
+     accidentally running off rather than as one deliberate bleed — and a
+     bleed that happens twice in one chapter is not a bleed, it is a margin
+     error. The negative margin is safe here because the chapter sets
+     overflow-x: clip, so the document box never widens. */
+  .band__item--lead {
+    grid-column: 1 / -1;
+    margin-right: calc(-1 * var(--container-padding));
+    /* Rounded only where an edge still exists. */
+    border-radius: var(--radius-photo) 0 0 var(--radius-photo);
+    overflow: hidden;
+  }
+
+  .band__item--lead .band__frame { border-radius: var(--radius-photo) 0 0 var(--radius-photo); }
+  .band__item--lead .band__frame img { aspect-ratio: 21 / 8; }
+  .band__item--lead .band__note { max-width: 52ch; }
+
+  .band__item--medium { grid-column: 1; width: auto; }
+  .band__item--small { grid-column: auto; width: auto; }
+}
+
+@media (min-width: 1280px) {
+  .svc-arrival,
+  .prj-arrival { gap: var(--space-3xl); }
+}

@@ -21,8 +21,16 @@ final class HomeController extends Controller
     }
 
     /**
-     * Minimal XML sitemap. Lists only the homepage in Phase 1; extend
-     * this as published pages/projects/services exist to list.
+     * XML sitemap: the homepage plus every PUBLISHED service and project.
+     *
+     * Enumerated from the same catalogue the routes resolve against, so the
+     * sitemap cannot advertise a URL that 404s and cannot omit one that
+     * exists. Services with no page — ADU, which is Tier D — have no
+     * catalogue entry at all, so they are absent here by construction
+     * rather than by a filter somebody has to remember to write.
+     *
+     * /services and /projects index pages are deliberately not listed:
+     * they do not exist yet.
      */
     public function sitemap(Request $request, array $params): void
     {
@@ -31,6 +39,15 @@ final class HomeController extends Controller
         echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
         echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
         echo '  <url><loc>' . e(base_url('/')) . '</loc></url>' . "\n";
+
+        foreach (\App\Content\Catalog::publishedServiceSlugs() as $slug) {
+            echo '  <url><loc>' . e(base_url('services/' . $slug)) . '</loc></url>' . "\n";
+        }
+
+        foreach (\App\Content\Catalog::publishedProjectSlugs() as $slug) {
+            echo '  <url><loc>' . e(base_url('projects/' . $slug)) . '</loc></url>' . "\n";
+        }
+
         echo '</urlset>';
     }
 

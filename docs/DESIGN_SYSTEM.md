@@ -401,6 +401,44 @@ Only functional, never decorative: a gradient scrim behind hero text for legibil
 **Consistency mechanism going forward**
 As real client photography accumulates, establish a lightweight intake rule: every new project photo set gets the same edit recipe and crop-ratio pass before it enters the CMS media library — this belongs in the admin workflow (§14), not left to whoever is uploading that day.
 
+See `docs/PHOTOGRAPHY_REQUIREMENTS.md` for the capture brief given to whoever shoots a job. Its shot list maps one-to-one onto the `image_role` values below, so a completed shoot drops into the CMS without interpretation.
+
+---
+
+### 8.1 Composition is assigned by inventory, not taste
+
+**This is a permanent law of the design system, not a guideline.**
+
+> A page's composition is determined by the photography that genuinely exists for it. It is never determined by a layout we would prefer, and it is never padded to fill a template.
+
+Every page type in this system is built from the same chapters, but **how** those chapters compose is selected by counting the usable photographs available for that subject. Two consequences follow, and both are intentional:
+
+1. **Pages differ from each other automatically.** A subject with seven photographs and a subject with two cannot resolve to the same layout. This is what stops a modular system from looking templated — the variety is a by-product of honesty rather than an effect applied on top of it.
+2. **A page can be refused.** If the evidence does not exist, the page does not ship. This is the rule most likely to be argued with and the one most worth keeping.
+
+The homepage already demonstrated the principle before it was named: Chapter 04's ADU row is typographic because no ADU photography exists, and Chapter 03 carries an explicit disclosure — *"Two photographs of one project. We would rather show a short, honest sequence than pad it out with somebody else's job."* That sentence is the design system's conscience. §8.1 generalises it.
+
+#### The four tiers
+
+| Tier | Usable images | Composition | Meaning |
+|---|---|---|---|
+| **A** | 6+ incl. ≥1 detail and ≥1 context | **Full editorial composition** | Signature moment, layered spreads, multi-image chapters, contact sheet |
+| **B** | 4–5 | **Balanced composition** | Diptychs instead of spreads; one image per chapter; reduced sheet |
+| **C** | 2–3 | **Text-led composition** | Image-dependent chapters *removed, not thinned*; the page argues in words and uses its few photographs at full strength |
+| **D** | 0–1 | **Do not publish** | No page, no placeholder, no "coming soon", no nav entry, no sitemap entry, no schema |
+
+#### Tier rules
+
+- **Tier C removes, it does not thin.** A "featured transformation" assembled from two photographs is a claim the evidence does not support. The chapter is dropped and its job passes to chapters that are typographic by nature — which are also the chapters that answer a homeowner's actual questions.
+- **Tier D is absolute for page types that promise a body of work** (service pages, category pages). Such a page asserts "we do this kind of work, repeatedly, well." Without photographs that is an unevidenced claim, and a page built to make it would be doorway content in substance whatever the intent.
+- **Tier D does not apply to records of a single job.** A project detail page documents one specific job rather than promising a category. One good photograph plus real scope, materials and duration data is a legitimate record. The bar is lower because the claim is smaller.
+- **Tier is computed, never typed.** It is derived from the linked image records and surfaced in the admin as a read-only badge with its consequence stated in plain language ("Tier C — 2 usable images. The featured-transformation chapter will not render.") The editor sees the reasoning, so the system's honesty is legible rather than mysterious.
+- **Tiers are a ladder, not a label.** A subject promotes automatically as photography arrives. Nothing is redesigned; a higher tier simply unlocks more composition.
+
+#### What "usable" excludes
+
+Stock photography, images already carrying a different job elsewhere in a way that would read as recycling, images whose subject cannot survive any of the three sanctioned crops, and images that cannot be honestly grouped with the project they would be attributed to. A photograph that requires a caption to explain why it is there is not usable.
+
 ---
 
 ## 9. Animation System
@@ -447,6 +485,32 @@ Reusable patterns — every page should feel like it belongs to the same family 
 - **Forms:** Two-column desktop (context/copy left, form right — as currently implemented for consultation), single column stacked on mobile.
 - **Alternating Layouts (page rhythm rule):** Background tokens must alternate section-to-section (Warm White → Stone → Warm White → Ink Black → Warm White...). No identical background appears twice in a row. This single rule is what makes a long homepage or service page feel composed rather than like a stacked list of blocks.
 - **Grid / Magazine Layout:** Used for the Projects hub — an editorial, unevenly-sized grid (a few "featured" large tiles among standard tiles) rather than a uniform Pinterest-style masonry, to preserve the "curated" feeling.
+
+---
+
+### 10.1 Signature moments — one per page type, never repeated
+
+Cohesion comes from the constants (typography, spacing, hairlines, radius, the Datum rail, the annotation register). **Distinction comes from exactly one reserved compositional gesture per page type.** A gesture used on two page types stops being a signature and becomes a style, at which point neither page is memorable.
+
+This registry is authoritative. Spending a gesture that belongs to another page type is a design error, not a stylistic choice.
+
+| Page type | Signature gesture | Where it lives | Status |
+|---|---|---|---|
+| **Homepage** | **Typography interacting with photography** — a warm-white slab carrying the title cuts into the featured photograph | Ch 05 | **Shipped** (`homepage-art-direction-approved`) |
+| **Kitchen** | **Material-driven composition** — a band of unequal tight material crops (tile, stone, cabinet, hardware), the largest bleeding off the right edge, each annotated with a method note | Ch 06 Materials | Reference implementation |
+| **Bathroom** | **Vertical craftsmanship composition** — the chapter reads top-to-bottom rather than across; tall narrow frames stacked on a broken baseline, exploiting the library's native portrait orientation | Ch 06 | Planned |
+| **Whole Home** | **Architectural whitespace** — scale expressed by void rather than by image size; the largest empty measure on the site, one photograph held small inside it | Ch 03 | Planned |
+| **Portfolio / Projects hub** | **Contact-sheet editorial spread** — the sheet as the page's primary composition rather than a supporting component | Full page | Planned |
+| **Project Detail** | **Construction documentation and annotated details** — photographs annotated with numbered callouts tied to a written materials-and-methods schedule | Ch 02–03 | Reference implementation |
+
+**Rules governing the registry**
+
+1. **One gesture per page type.** Not one per page — every Kitchen-type page uses the material band; a second Kitchen-family page does not invent a new one.
+2. **The gesture lives in one chapter.** It is a moment, not a treatment applied throughout.
+3. **The edge-bleed is spent on the signature chapter.** Each page type gets at most one bleed and it belongs to whichever chapter carries the signature. The homepage bleeds at Ch 01 and service pages bleed at their signature chapter — same vocabulary, different silhouette.
+4. **Type crossing a photograph is permanently reserved to the homepage.** It is the single most distinctive gesture in the system. If service pages repeated it, the homepage would stop being the reference standard and become one page among many.
+5. **A gesture requires the inventory to support it (§8.1).** At Tier C the signature chapter may not be renderable; the page then has no signature moment, which is preferable to a weak one. It does not borrow another page type's gesture to compensate.
+6. **Adding a page type means adding a row here first.** If no unspent gesture is available, the new page type inherits the closest existing family rather than inventing a seventh device — six is close to the ceiling before "reserved" becomes meaningless.
 
 ---
 
