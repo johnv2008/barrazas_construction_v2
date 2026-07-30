@@ -361,6 +361,100 @@
 }
 
 /* ---------------------------------------------------------------------
+   06b · THE VERTICAL BAND — ★ the Bathroom page type's signature
+   ---------------------------------------------------------------------
+   Three tall portrait frames descending on a broken baseline. Distinct
+   from Kitchen's band in every axis that matters: it reads top-to-bottom
+   rather than across, its frames are portrait rather than cropped wide,
+   its heights are unequal rather than its widths, and it spends no
+   edge-bleed — the lead frame already runs past the fold, which is the
+   vertical equivalent and does not borrow Kitchen's gesture.
+
+   Reserved to this page type. Whole Home gets architectural whitespace;
+   Portfolio gets the contact-sheet spread. See DESIGN_SYSTEM.md §10.1. */
+
+.vband { display: grid; gap: var(--space-2xl); padding-inline: var(--space-md); }
+
+.vband__item { margin: 0; }
+
+.vband__frame {
+  overflow: hidden;
+  border-radius: var(--radius-photo);
+  background: var(--stone);
+}
+
+.vband__frame img { width: 100%; height: auto; object-fit: cover; }
+
+/* Portrait ratios, deliberately unequal. The library is 20/21 portrait,
+   so this composition uses the source the way it was actually shot. */
+.vband__item--lead .vband__frame img { aspect-ratio: 3 / 4; }
+.vband__item--tall .vband__frame img { aspect-ratio: 1 / 2; }
+.vband__item--medium .vband__frame img { aspect-ratio: 4 / 5; }
+
+.vband__note { display: grid; gap: 2px; padding-top: var(--space-xs); max-width: 40ch; }
+
+/* A hairline-thin step numeral — scale without weight, the same device as
+   the process timeline. It numbers an argument, not a gallery. */
+.vband__step {
+  font-family: var(--font-condensed);
+  font-size: 1.375rem;
+  letter-spacing: 0.04em;
+  color: var(--brand-burgundy);
+  line-height: 1;
+  margin-bottom: var(--space-2xs);
+}
+
+.vband__label {
+  font-family: var(--font-condensed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand-burgundy);
+}
+
+.vband__title { font-weight: var(--fw-semibold); font-size: 1.0625rem; max-width: 26ch; }
+
+.vband__body {
+  color: var(--color-text-on-light-muted);
+  font-size: 0.9375rem;
+  line-height: var(--lh-body);
+  margin-top: var(--space-3xs);
+}
+
+/* ---------------------------------------------------------------------
+   Related services — Service → Projects → Related services → Consultation
+   --------------------------------------------------------------------- */
+
+.also {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2xs) var(--space-md);
+  margin: var(--space-2xl) 0 0;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--line-on-light);
+}
+
+.also__label {
+  font-family: var(--font-condensed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-on-light-muted);
+}
+
+.also a {
+  font-weight: var(--fw-medium);
+  font-size: 0.9375rem;
+  color: var(--color-text-on-light);
+  text-decoration: none;
+  border-bottom: 1px solid var(--brand-burgundy);
+  padding-bottom: 1px;
+}
+
+.also a:hover { color: var(--brand-burgundy); }
+
+/* ---------------------------------------------------------------------
    07 · Questions — warm ground, native <details>, no JavaScript
    --------------------------------------------------------------------- */
 
@@ -583,6 +677,15 @@
   .band__item--small { width: 62%; }
   .band__item--medium { width: 84%; }
 
+  /* The vertical band keeps its stagger on a phone — that IS the
+     composition — but expressed as alternating width and indent rather
+     than as vertical offset, which would just be wasted scroll. */
+  .vband { gap: var(--space-xl); }
+  .vband__item--lead { width: 100%; }
+  .vband__item--tall { width: 56%; margin-left: auto; }
+  .vband__item--medium { width: 78%; }
+  .vband__item--lead .vband__frame img { aspect-ratio: 4 / 5; }
+
   .notes__item { grid-template-columns: 2.5rem 1fr; gap: var(--space-sm); }
 }
 
@@ -682,6 +785,46 @@
 
   .band__item--medium { grid-column: 1; width: auto; }
   .band__item--small { grid-column: auto; width: auto; }
+
+  /* ---- The vertical band at desktop -------------------------------
+     A twelve-column field with each frame placed in a different span and
+     pushed progressively further down. The result is a descending
+     diagonal: the eye travels down and across, in the direction the page
+     scrolls, which is the whole point of a vertical composition.
+
+     The offsets are what break the baseline. Without them these are three
+     photographs in a row; with them they are a sequence. */
+  .vband {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: var(--space-2xl);
+    row-gap: 0;
+    padding-left: calc(var(--datum-x) + var(--datum-clear));
+    padding-right: var(--container-padding);
+    align-items: start;
+  }
+
+  /* 01 — the tallest frame, held left and starting at the top. Sized by
+     height rather than ratio so it runs PAST the fold: you cannot take it
+     in at once, which is this page's answer to an edge-bleed. */
+  .vband__item--lead { grid-column: 1 / span 5; }
+  .vband__item--lead .vband__frame img {
+    height: min(88vh, 860px);
+    aspect-ratio: auto;
+  }
+
+  /* 02 — narrow and very tall, dropped a third of a screen. */
+  .vband__item--tall {
+    grid-column: 7 / span 3;
+    margin-top: 22vh;
+  }
+
+  /* 03 — the shortest, dropped furthest, closing the diagonal at the
+     bottom right. */
+  .vband__item--medium {
+    grid-column: 10 / span 3;
+    margin-top: 46vh;
+  }
 }
 
 @media (min-width: 1280px) {

@@ -42,6 +42,19 @@ final class ServiceController extends Controller
             : null;
         $related = Catalog::projectsBySlugs($service['related_project_slugs'] ?? []);
 
+        // Sibling services, filtered to those that actually have a page.
+        // A Tier D service has no catalogue entry, so it cannot leak into
+        // a link here even if a slug were listed against it by mistake.
+        $relatedServices = [];
+
+        foreach ($service['related_service_slugs'] ?? [] as $siblingSlug) {
+            $sibling = Catalog::service($siblingSlug);
+
+            if ($sibling !== null) {
+                $relatedServices[] = $sibling;
+            }
+        }
+
         // Tier gate for the featured-transformation chapter. Two images of
         // one room is enough for a diptych; one is enough for a single
         // lead; none removes the chapter rather than thinning it.
@@ -68,6 +81,7 @@ final class ServiceController extends Controller
             'featured' => $featured,
             'hasTransformation' => $hasTransformation,
             'related' => $related,
+            'relatedServices' => $relatedServices,
             // "Services" is deliberately unlinked: the index page does not
             // exist yet, and a breadcrumb link to a 404 is worse than a
             // breadcrumb without one. It gains an href when /services ships.

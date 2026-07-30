@@ -66,7 +66,13 @@ $featuredHero = $featured !== null
       <div class="svc-arrival__actions" data-reveal>
         <a href="#contact" class="btn btn-primary">Start your project</a>
         <?php if ($hasTransformation): ?>
-          <a href="#transformation" class="link-arrow">See a finished kitchen</a>
+          <?php
+            // Was hardcoded to "See a finished kitchen", which read as
+            // "See a finished kitchen" on the Bathroom page — the exact
+            // failure mode a shared template invites. Service-supplied,
+            // with a neutral fallback rather than a guess.
+          ?>
+          <a href="#transformation" class="link-arrow"><?= e($service['hero_cta_secondary'] ?? 'See a finished project') ?></a>
         <?php endif; ?>
       </div>
     </div>
@@ -182,18 +188,38 @@ $featuredHero = $featured !== null
 
 
 <!-- ============ 06 · Materials & Craftsmanship ===========================
-     ★ THE SIGNATURE CHAPTER for the Kitchen page type, and where this
-     page spends its single edge-bleed. See components/material-band.php. -->
+     ★ THE SIGNATURE CHAPTER. Which composition renders is chosen by the
+     service's registered gesture, never by taste and never at random —
+     one gesture per page type, and no gesture appears on two
+     (DESIGN_SYSTEM.md §10.1):
+
+       material  → Kitchen. Horizontal band, unequal crops, lead bleeds
+                   off the right edge.
+       vertical  → Bathroom. Three tall portrait frames descending on a
+                   broken baseline. No bleed; the lead already exceeds
+                   the fold.
+
+     A service with no registered signature falls back to the material
+     band rather than inventing a seventh device. -->
 <?php if ($materials !== []): ?>
-<section class="ch ch--svc-materials" id="materials" data-chapter="<?= e($ch['materials']) ?>" data-chapter-label="Materials">
+<?php $signature = $service['signature'] ?? 'material'; ?>
+<section class="ch ch--svc-materials ch--sig-<?= e($signature) ?>" id="materials" data-chapter="<?= e($ch['materials']) ?>" data-chapter-label="Materials">
   <div class="container">
     <div class="section-head">
       <span class="eyebrow eyebrow--accent">Materials &amp; craftsmanship</span>
-      <h2 data-reveal>What it is made of, and how it was done.</h2>
+      <h2 data-reveal>
+        <?= $signature === 'vertical'
+            ? 'The parts you will never see again.'
+            : 'What it is made of, and how it was done.' ?>
+      </h2>
     </div>
   </div>
 
-  <?php \App\Core\View::component('material-band', ['items' => $materials]); ?>
+  <?php if ($signature === 'vertical'): ?>
+    <?php \App\Core\View::component('vertical-band', ['items' => $materials]); ?>
+  <?php else: ?>
+    <?php \App\Core\View::component('material-band', ['items' => $materials]); ?>
+  <?php endif; ?>
 </section>
 <?php endif; ?>
 
@@ -238,6 +264,19 @@ $featuredHero = $featured !== null
       <?php endforeach; ?>
     </div>
 
+    <?php
+      // Service → Projects → Related services → Consultation. Only
+      // services that actually have a published page appear here, so this
+      // can never link to a Tier D URL that does not exist.
+      if (!empty($relatedServices)):
+    ?>
+      <p class="also">
+        <span class="also__label">Often part of the same job</span>
+        <?php foreach ($relatedServices as $sibling): ?>
+          <a href="<?= e('/services/' . $sibling['slug']) ?>"><?= e($sibling['title']) ?></a>
+        <?php endforeach; ?>
+      </p>
+    <?php endif; ?>
   </div>
 </section>
 <?php endif; ?>

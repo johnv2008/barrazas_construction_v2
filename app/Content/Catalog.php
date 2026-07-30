@@ -85,6 +85,7 @@ final class Catalog
                 'hero_caption_label' => 'Featured',
                 'hero_caption_title' => 'Galley kitchen remodel',
                 'hero_caption_meta' => 'Tuolumne County',
+                'hero_cta_secondary' => 'See a finished kitchen',
 
                 'featured_project_slug' => 'galley-kitchen-remodel',
                 'related_project_slugs' => [
@@ -103,6 +104,48 @@ final class Catalog
                 'meta_description' => 'Kitchen remodeling in Jamestown, Sonora and across Tuolumne '
                     . 'County — cabinetry, quartz counters, tile and flooring, sequenced so your '
                     . 'kitchen is out of service once rather than four separate times.',
+            ],
+
+            'bathroom-remodeling' => [
+                'slug' => 'bathroom-remodeling',
+                'title' => 'Bathroom Remodeling',
+                'summary' => 'Bathroom remodeling in Tuolumne County — tiled showers, tub '
+                    . 'surrounds, vanities and floors, waterproofed properly before anything '
+                    . 'that shows goes on.',
+                'inventory_tier' => 'A',
+                // Signature: vertical craftsmanship composition (Ch 06).
+                // Reserved to this page type — DESIGN_SYSTEM.md §10.1.
+                'signature' => 'vertical',
+
+                'h1_statement' => 'The first room you use every morning should not be the '
+                    . 'one you have given up on.',
+                'eyebrow' => 'Bathroom remodeling',
+                'lead' => 'Bathrooms are the smallest rooms in the house and the least forgiving '
+                    . 'work in it. Almost everything that goes wrong in one goes wrong behind the '
+                    . 'tile, years later, where nobody was looking when it was built.',
+
+                'hero_image_path' => 'images/projects/hero-inset.jpg',
+                'hero_image_alt' => 'Carrara marble walk-in shower with a built-in niche, a tiled '
+                    . 'bench and a small mosaic floor falling to a centre drain',
+                'hero_caption_label' => 'Featured',
+                'hero_caption_title' => 'Marble walk-in shower',
+                'hero_caption_meta' => 'Tuolumne County',
+                'hero_cta_secondary' => 'See a finished bathroom',
+
+                'featured_project_slug' => 'primary-suite-bathroom',
+                'related_project_slugs' => [
+                    'family-bathroom-vanity',
+                    'tub-surround-replacement',
+                    'bathroom-floor-tile-sequence',
+                ],
+                'related_service_slugs' => ['kitchen-remodeling'],
+
+                'form_project_type' => 'bathroom',
+
+                'meta_title' => "Bathroom Remodeling in Tuolumne County, CA | Barraza's Construction",
+                'meta_description' => 'Bathroom remodeling in Jamestown, Sonora and across '
+                    . 'Tuolumne County — tiled walk-in showers, tub surrounds, vanities and '
+                    . 'floors, waterproofed properly before the finishes go on.',
             ],
         ];
     }
@@ -307,6 +350,162 @@ final class Catalog
                     ],
                 ],
             ],
+
+            // ================= BATHROOM =================
+            // Every one of the seven usable bathroom photographs is used
+            // exactly ONCE across this page — hero, featured pair, one
+            // outcome row, and three in the vertical band. No image is
+            // cropped twice, which is a strictly better outcome than the
+            // Kitchen page manages and is only possible because the
+            // bathroom library is the deepest one the company has.
+            'bathroom-remodeling' => [
+
+                'why_it_matters' => [
+                    'heading' => 'You are in it before you are properly awake.',
+                    'body' => 'Nobody tours a bathroom. It is not the room you show people. It is '
+                        . 'the room you stand in at six in the morning, half asleep, noticing the '
+                        . 'grout you have been meaning to do something about for four years. A '
+                        . 'bathroom does not have to be large or expensive to stop being the thing '
+                        . 'you apologise for — it has to be built properly and finished carefully, '
+                        . 'and those are the two parts you cannot see once it is done.',
+                ],
+
+                'what_changes' => [
+                    [
+                        'n' => '01',
+                        'title' => 'A room that dries out',
+                        'body' => 'Most tired bathrooms are damp bathrooms. Extraction that actually '
+                            . 'moves air, a surround that is sealed rather than caulked over, and '
+                            . 'a floor that can be wiped — the room stops smelling like a bathroom.',
+                        'role' => 'dominant',
+                        'image_path' => 'images/projects/contact-sheet-bath-vanity.jpg',
+                        'image_alt' => 'Remodeled family bathroom with a white shaker vanity, framed '
+                            . 'mirror and a two-light fixture above it',
+                    ],
+                    [
+                        'n' => '02',
+                        'title' => 'Storage that is not a shelf over the toilet',
+                        'body' => 'A vanity with real drawers, a niche in the shower instead of a '
+                            . 'basket hanging off the mixer, and somewhere for towels that is not '
+                            . 'the back of the door.',
+                        'role' => 'plain',
+                        'image_path' => null,
+                        'image_alt' => '',
+                    ],
+                    [
+                        'n' => '03',
+                        'title' => 'Light you can shave and make up in',
+                        'body' => 'One ceiling fixture puts your own shadow on your face. Light at '
+                            . 'the mirror, at the right height, changes the room more than any '
+                            . 'finish in it.',
+                        'role' => 'plain',
+                        'image_path' => null,
+                        'image_alt' => '',
+                    ],
+                    [
+                        'n' => '04',
+                        'title' => 'A shower you can get into later in life',
+                        'body' => 'A low or level threshold, a bench, and blocking in the wall for '
+                            . 'a grab rail — fitted now or not, but blocked for. It costs almost '
+                            . 'nothing during the build and is close to impossible afterwards.',
+                        'role' => 'plain',
+                        'image_path' => null,
+                        'image_alt' => '',
+                    ],
+                    [
+                        'n' => '05',
+                        'title' => 'Work that stays behind the tile',
+                        'body' => 'The failures in a bathroom are almost never cosmetic. They are '
+                            . 'water finding a way through a joint that was rushed, and they surface '
+                            . 'two years later as a soft floor in the next room.',
+                        'role' => 'plain',
+                        'image_path' => null,
+                        'image_alt' => '',
+                    ],
+                ],
+
+                'process_step' => [
+                    [
+                        'n' => '01',
+                        'title' => 'A conversation',
+                        'body' => 'Whether this is the only bathroom in the house is the first '
+                            . 'question, because it changes the whole plan and most of the timeline.',
+                    ],
+                    [
+                        'n' => '02',
+                        'title' => 'We open what we can see',
+                        'body' => 'Age of the supply and waste, whether the subfloor around the pan '
+                            . 'is sound, and where the vent actually terminates. Bathrooms hide more '
+                            . 'than any other room and we would rather find it now.',
+                    ],
+                    [
+                        'n' => '03',
+                        'title' => 'Scope and estimate',
+                        'body' => 'In writing, with the tile and fixture allowances separate, and an '
+                            . 'honest note about what we might find once the surround is out.',
+                    ],
+                    [
+                        'n' => '04',
+                        'title' => 'We build it',
+                        'body' => 'Rough plumbing, then waterproofing, then tile, then fixtures. The '
+                            . 'order is not negotiable — everything that shows depends on the two '
+                            . 'stages you will never see again.',
+                    ],
+                    [
+                        'n' => '05',
+                        'title' => 'You get the room back',
+                        'body' => 'Walkthrough with the doors adjusted, the silicone lines checked, '
+                            . 'and the fall to the drain tested with water rather than with a nod.',
+                    ],
+                ],
+
+                // ---- THE VERTICAL BAND — this page type's signature ----
+                // Three tall frames on a broken baseline, read top to bottom.
+                // Ordered as an argument rather than a gallery: the stage
+                // nobody photographs, then the material decision, then the
+                // ordinary bathroom that got the same care.
+                'materials_item' => [
+                    [
+                        'label' => 'Sequence',
+                        'title' => 'The floor goes down before anything sits on it',
+                        'body' => 'Tile laid and the drain set while the room is still empty. Doing '
+                            . 'it in this order means the floor runs unbroken under the fixtures '
+                            . 'instead of being cut around them, and there is no seam at the base '
+                            . 'of the pan for water to find in ten years.',
+                        'image_path' => 'images/projects/process-detail.jpg',
+                        'image_alt' => 'Large-format marble-look floor tile newly laid in an empty '
+                            . 'bathroom, with the toilet flange open and the supply stub capped',
+                        'focal' => ['x' => 0.5, 'y' => 0.62],
+                        'scale' => 'lead',
+                    ],
+                    [
+                        'label' => 'Surface',
+                        'title' => 'Fewer joints is fewer places to fail',
+                        'body' => 'Large-format panels in a tub surround mean a fraction of the '
+                            . 'grout of a small tile — less to seal, less to clean, and far less '
+                            . 'to go wrong. The dark frame on the door is the only hard line in '
+                            . 'the room, which is what makes it read as deliberate.',
+                        'image_path' => 'images/projects/intro-detail.jpg',
+                        'image_alt' => 'Tub surround in large-format marble-look panels with a black '
+                            . 'framed shower door',
+                        'focal' => ['x' => 0.5, 'y' => 0.45],
+                        'scale' => 'tall',
+                    ],
+                    [
+                        'label' => 'Standard',
+                        'title' => 'The ordinary bathroom gets the same build',
+                        'body' => 'Not every bathroom is a marble one, and it should not have to be. '
+                            . 'This one is a stock surround and a stock vanity — set level, sealed '
+                            . 'properly, with the floor run through and the trim returned cleanly '
+                            . 'at the door.',
+                        'image_path' => 'images/projects/contact-sheet-bath-tub.jpg',
+                        'image_alt' => 'Remodeled family bathroom with a new white tub and shower '
+                            . 'surround beneath a window, and plank flooring',
+                        'focal' => ['x' => 0.5, 'y' => 0.42],
+                        'scale' => 'medium',
+                    ],
+                ],
+            ],
         ];
 
         return $all[$serviceSlug] ?? [];
@@ -361,6 +560,52 @@ final class Catalog
                         . 'we would not sell you one on that basis. If you are remodelling to sell '
                         . 'within a year, tell us and we will keep the scope tight and the finishes '
                         . 'neutral. If you are staying, build the kitchen you actually want.',
+                ],
+            ],
+
+            'bathroom-remodeling' => [
+                [
+                    'question' => 'Do I need a permit for a bathroom remodel?',
+                    'answer' => 'Replacing a vanity, a toilet or a surround in the same place '
+                        . 'usually does not need one. Moving the toilet or the shower drain, adding '
+                        . 'circuits, or opening a wall does. Tuolumne County will want to inspect '
+                        . 'the rough plumbing before it is covered, which is the inspection worth '
+                        . 'having — it is the one that looks at the part you will never see again.',
+                ],
+                [
+                    'question' => 'How long will the bathroom be out of use?',
+                    'answer' => 'Two to four weeks for a full remodel, and the honest number depends '
+                        . 'on tile and on what is behind the old surround. If it is the only '
+                        . 'bathroom in the house, tell us at the first conversation — we sequence '
+                        . 'those differently and we will tell you exactly which days it is out.',
+                ],
+                [
+                    'question' => 'Can you remodel the only bathroom in the house?',
+                    'answer' => 'Yes, and we do it regularly. It changes the plan rather than the '
+                        . 'price: we stage the work so the room is unusable for the shortest '
+                        . 'possible run of days rather than for the whole job, and we tell you '
+                        . 'which days those are before we start so you can make arrangements.',
+                ],
+                [
+                    'question' => 'What do you do about waterproofing?',
+                    'answer' => 'It goes in before the tile and it is the reason the room lasts. A '
+                        . 'shower is a container before it is a finish — the pan, the joints and '
+                        . 'the wall behind the tile all have to be sealed as a system. Almost every '
+                        . 'failed bathroom we are called to fix failed there, not at the surface.',
+                ],
+                [
+                    'question' => 'Will you find something behind the old shower?',
+                    'answer' => 'Sometimes, and it is usually a soft subfloor or a leaking valve '
+                        . 'that has been weeping quietly for years. We will show you, tell you what '
+                        . 'it costs to put right, and get your decision in writing before we carry '
+                        . 'on. What we will not do is tile over it.',
+                ],
+                [
+                    'question' => 'Can you make the bathroom easier to use as we get older?',
+                    'answer' => 'Yes, and the cheapest time is now. A low threshold, a bench, a '
+                        . 'handheld on a slide bar, and blocking in the walls for grab rails — '
+                        . 'whether or not the rails go in today. Blocking costs almost nothing '
+                        . 'while the wall is open and is a rebuild afterwards.',
                 ],
             ],
         ];
@@ -592,6 +837,320 @@ final class Catalog
                         'alt_text' => 'Kitchen counter detail with a quartz surface, gloss white '
                             . 'stacked-tile backsplash, under-cabinet lighting and matte black hardware',
                         'caption' => 'Quartz, gloss tile, and under-cabinet light',
+                        'sort_order' => 1,
+                    ],
+                ],
+            ],
+
+            // ================= BATHROOM PROJECTS =================
+
+            // The second verified two-photograph project in the library.
+            // The homepage already asserts this pairing — its Chapter 05
+            // presents the shower and the tub as one primary suite — so
+            // grouping them here restates an existing claim rather than
+            // making a new one.
+            'primary-suite-bathroom' => [
+                'slug' => 'primary-suite-bathroom',
+                'title' => 'A primary suite that finally looks at the view it was built for',
+                'project_type' => 'Bathroom remodel',
+                'category' => 'Bathroom',
+                'city' => 'Tuolumne County',
+                'completion_year' => null,
+                'duration_weeks' => null,
+                'is_featured' => 1,
+                'service_slug' => 'bathroom-remodeling',
+                'short_description' => 'A tiled walk-in shower with a bench and custom niche, and a '
+                    . 'soaking tub set into the window wall, joined by one continuous accent band.',
+                'full_description' => 'The room had a view and was arranged as though it did not. '
+                    . 'The tub was moved into the window wall so that the thing you look at while '
+                    . 'you are in it is the foothills rather than a door, and the shower was rebuilt '
+                    . 'as a walk-in with a bench and a niche instead of a shelf hanging off the '
+                    . 'mixer. The glass accent band runs unbroken from the shower through to the tub '
+                    . 'surround, which is what stops the room reading as two separate halves that '
+                    . 'happen to share a floor. The cedar ceiling is carried across both for the '
+                    . 'same reason.',
+                'materials' => 'Ceramic wall tile · glass mosaic accent band · cedar plank ceiling · '
+                    . 'built-in bench and niche',
+                'scope' => 'Primary suite bathroom, full remodel — shower, tub, ceiling, finishes',
+                'notes' => [
+                    [
+                        'n' => '01',
+                        'title' => 'One band, two fixtures',
+                        'body' => 'The glass mosaic runs at a single height from the shower to the '
+                            . 'tub surround without a break or a change of level.',
+                    ],
+                    [
+                        'n' => '02',
+                        'title' => 'The bench is built, not bought',
+                        'body' => 'Framed and tiled as part of the shower rather than dropped in, so '
+                            . 'there is no joint along its back edge for water to sit in.',
+                    ],
+                    [
+                        'n' => '03',
+                        'title' => 'The ceiling ties the room together',
+                        'body' => 'Cedar plank carried across both halves at the same run, which is '
+                            . 'the second device holding a divided room as one.',
+                    ],
+                ],
+                'disclosure' => null,
+                'images' => [
+                    [
+                        'image_path' => 'images/projects/service-bathroom.jpg',
+                        'image_role' => 'hero',
+                        'alt_text' => 'Custom tiled walk-in shower with a glass mosaic accent band, a '
+                            . 'built-in bench and a cedar plank ceiling',
+                        'caption' => 'The walk-in shower — bench, niche, and the accent band',
+                        'sort_order' => 1,
+                    ],
+                    [
+                        'image_path' => 'images/projects/project-supporting-2.jpg',
+                        'image_role' => 'context',
+                        'alt_text' => 'Soaking tub set beneath a window overlooking the foothills',
+                        'caption' => 'The tub moved into the window wall',
+                        'sort_order' => 2,
+                    ],
+                ],
+            ],
+
+            'carrara-walk-in-shower' => [
+                'slug' => 'carrara-walk-in-shower',
+                'title' => 'A marble walk-in with the floor doing the hard work',
+                'project_type' => 'Bathroom remodel',
+                'category' => 'Bathroom',
+                'city' => 'Tuolumne County',
+                'completion_year' => null,
+                'duration_weeks' => null,
+                'is_featured' => 0,
+                'service_slug' => 'bathroom-remodeling',
+                'short_description' => 'Carrara marble walk-in shower with a built-in niche, a tiled '
+                    . 'bench and a small mosaic floor falling to a centre drain.',
+                'full_description' => 'Large marble panels on the walls and small mosaic on the floor '
+                    . 'is not a decorative choice, it is a functional one: a floor has to fall to the '
+                    . 'drain from every direction, and only a small tile can follow that slope '
+                    . 'without lipping at the edges. The niche is set between studs so it costs no '
+                    . 'floor area, and the bench is tiled as part of the enclosure rather than added '
+                    . 'to it. The glass panel is fixed rather than hinged, so there is no seal along '
+                    . 'a moving edge to fail.',
+                'materials' => 'Carrara marble wall panels · marble mosaic floor · built-in niche '
+                    . 'and bench · fixed glass panel',
+                'scope' => 'Walk-in shower — enclosure, niche, bench, floor and glass',
+                'notes' => [
+                    [
+                        'n' => '01',
+                        'title' => 'Small tile on the floor, large on the walls',
+                        'body' => 'The mosaic can follow the fall to the drain from all four sides. '
+                            . 'A large tile cannot do that without lipping.',
+                    ],
+                    [
+                        'n' => '02',
+                        'title' => 'The niche costs no space',
+                        'body' => 'Set into the depth between studs, so it takes nothing off the '
+                            . 'footprint of an already tight room.',
+                    ],
+                ],
+                'disclosure' => 'One photograph of this job.',
+                'images' => [
+                    [
+                        'image_path' => 'images/projects/hero-inset.jpg',
+                        'image_role' => 'hero',
+                        'alt_text' => 'Carrara marble walk-in shower with a built-in niche, a tiled '
+                            . 'bench and a small mosaic floor falling to a centre drain',
+                        'caption' => 'Marble panels above, mosaic below',
+                        'sort_order' => 1,
+                    ],
+                ],
+            ],
+
+            'family-bathroom-vanity' => [
+                'slug' => 'family-bathroom-vanity',
+                'title' => 'A family bathroom that stopped being the one you apologise for',
+                'project_type' => 'Bathroom remodel',
+                'category' => 'Bathroom',
+                'city' => 'Tuolumne County',
+                'completion_year' => null,
+                'duration_weeks' => null,
+                'is_featured' => 0,
+                'service_slug' => 'bathroom-remodeling',
+                'short_description' => 'New vanity, mirror and lighting in a small family bathroom, '
+                    . 'with the floor run through and the walls repainted.',
+                'full_description' => 'Not every bathroom needs to be rebuilt. This one needed the '
+                    . 'things that were actually wrong with it put right: a vanity with drawers '
+                    . 'instead of a pedestal, light at the mirror rather than only overhead, and a '
+                    . 'floor that goes under the fixtures rather than being cut around them. The '
+                    . 'existing surround was sound and was kept, which is where most of the budget '
+                    . 'for a room like this usually goes.',
+                'materials' => 'Shaker vanity with integrated top · framed mirror · two-light '
+                    . 'fixture · luxury vinyl plank',
+                'scope' => 'Vanity, mirror, lighting, flooring and paint',
+                'notes' => [
+                    [
+                        'n' => '01',
+                        'title' => 'Light at the face, not the ceiling',
+                        'body' => 'A fixture above the mirror at working height, which is the single '
+                            . 'cheapest change that makes a small bathroom usable.',
+                    ],
+                    [
+                        'n' => '02',
+                        'title' => 'The sound surround was kept',
+                        'body' => 'Replacing something that is working is how a modest budget gets '
+                            . 'spent on the wrong thing.',
+                    ],
+                ],
+                'disclosure' => 'One photograph of this job.',
+                'images' => [
+                    [
+                        'image_path' => 'images/projects/contact-sheet-bath-vanity.jpg',
+                        'image_role' => 'hero',
+                        'alt_text' => 'Remodeled family bathroom with a white shaker vanity, framed '
+                            . 'mirror and a two-light fixture above it',
+                        'caption' => 'Vanity, mirror and light at working height',
+                        'sort_order' => 1,
+                    ],
+                ],
+            ],
+
+            'tub-surround-replacement' => [
+                'slug' => 'tub-surround-replacement',
+                'title' => 'Fewer joints, and one hard line',
+                'project_type' => 'Bathroom remodel',
+                'category' => 'Bathroom',
+                'city' => 'Tuolumne County',
+                'completion_year' => null,
+                'duration_weeks' => null,
+                'is_featured' => 0,
+                'service_slug' => 'bathroom-remodeling',
+                'short_description' => 'A tub surround rebuilt in large-format marble-look panels '
+                    . 'with a black framed shower door.',
+                'full_description' => 'Large panels mean a fraction of the grout of a small tile: '
+                    . 'less to seal on the day, less to clean every week, and far fewer joints for '
+                    . 'water to find later. The black frame on the door is the only hard line in the '
+                    . 'room, which is what stops a pale surround reading as bland — one strong '
+                    . 'element against quiet ones, rather than several competing.',
+                'materials' => 'Large-format marble-look wall panels · black framed shower door',
+                'scope' => 'Tub surround and shower door',
+                'notes' => [
+                    [
+                        'n' => '01',
+                        'title' => 'Grout is the maintenance',
+                        'body' => 'Fewer joints is less sealing, less cleaning and fewer places for '
+                            . 'water to get behind the surface.',
+                    ],
+                    [
+                        'n' => '02',
+                        'title' => 'One strong element',
+                        'body' => 'The dark door frame is the room\'s only hard line. Adding a second '
+                            . 'would have cancelled it.',
+                    ],
+                ],
+                'disclosure' => 'One photograph of this job.',
+                'images' => [
+                    [
+                        'image_path' => 'images/projects/intro-detail.jpg',
+                        'image_role' => 'hero',
+                        'alt_text' => 'Tub surround in large-format marble-look panels with a black '
+                            . 'framed shower door',
+                        'caption' => 'Large panels, and the one hard line',
+                        'sort_order' => 1,
+                    ],
+                ],
+            ],
+
+            'bathroom-floor-tile-sequence' => [
+                'slug' => 'bathroom-floor-tile-sequence',
+                'title' => 'The floor went down before anything sat on it',
+                'project_type' => 'Bathroom remodel',
+                'category' => 'Bathroom',
+                'city' => 'Tuolumne County',
+                'completion_year' => null,
+                'duration_weeks' => null,
+                'is_featured' => 0,
+                'service_slug' => 'bathroom-remodeling',
+                'short_description' => 'Large-format floor tile laid and the drain set while the '
+                    . 'bathroom was still empty — photographed mid-installation.',
+                'full_description' => 'This is the stage almost nobody photographs, and it is the '
+                    . 'stage that decides whether the room lasts. The tile is laid across the whole '
+                    . 'floor while the room is empty, so it runs unbroken beneath where the toilet '
+                    . 'and vanity will sit rather than being cut tightly around them. The flange is '
+                    . 'set to the finished floor height at this point, not shimmed up to it '
+                    . 'afterwards — which is the difference between a seal that lasts and one that '
+                    . 'weeps quietly into the subfloor.',
+                'materials' => 'Large-format marble-look porcelain floor tile',
+                'scope' => 'Bathroom floor tile and drain setting, mid-renovation',
+                'notes' => [
+                    [
+                        'n' => '01',
+                        'title' => 'Unbroken under the fixtures',
+                        'body' => 'The floor runs beneath the toilet and vanity rather than being cut '
+                            . 'around them, so there is no seam at their base.',
+                    ],
+                    [
+                        'n' => '02',
+                        'title' => 'Flange set to the finished height',
+                        'body' => 'Set level with the tile it sits in, not packed up to reach it '
+                            . 'afterwards.',
+                    ],
+                    [
+                        'n' => '03',
+                        'title' => 'Supplies capped, room empty',
+                        'body' => 'Nothing is fitted until the floor is down and cured. Working the '
+                            . 'other way round is faster on the day and worse for a decade.',
+                    ],
+                ],
+                'disclosure' => 'One photograph of this job, taken mid-installation.',
+                'images' => [
+                    [
+                        'image_path' => 'images/projects/process-detail.jpg',
+                        'image_role' => 'during',
+                        'alt_text' => 'Large-format marble-look floor tile newly laid in an empty '
+                            . 'bathroom, with the toilet flange open and the supply stub capped',
+                        'caption' => 'Floor down, flange set, nothing fitted yet',
+                        'sort_order' => 1,
+                    ],
+                ],
+            ],
+
+            'family-bathroom-tub' => [
+                'slug' => 'family-bathroom-tub',
+                'title' => 'A stock surround, set properly',
+                'project_type' => 'Bathroom remodel',
+                'category' => 'Bathroom',
+                'city' => 'Tuolumne County',
+                'completion_year' => null,
+                'duration_weeks' => null,
+                'is_featured' => 0,
+                'service_slug' => 'bathroom-remodeling',
+                'short_description' => 'A new tub and shower surround beneath the window, with plank '
+                    . 'flooring run through and the trim returned at the door.',
+                'full_description' => 'There is nothing exotic here and that is the point. A stock '
+                    . 'tub and surround, set dead level so the water goes where it should, sealed at '
+                    . 'the joints rather than smeared over them, with the plank floor run through '
+                    . 'from the doorway and the trim returned cleanly against it. Most bathrooms in '
+                    . 'most houses are this bathroom. Whether it is a good one comes down entirely '
+                    . 'to how carefully those four things were done.',
+                'materials' => 'One-piece tub and shower surround · luxury vinyl plank flooring',
+                'scope' => 'Tub, surround, flooring, trim and paint',
+                'notes' => [
+                    [
+                        'n' => '01',
+                        'title' => 'Level before sealed',
+                        'body' => 'A surround set out of level cannot be corrected with silicone, '
+                            . 'though it is frequently attempted.',
+                    ],
+                    [
+                        'n' => '02',
+                        'title' => 'Floor through, trim returned',
+                        'body' => 'The plank runs from the doorway without a threshold and the trim '
+                            . 'closes against it rather than stopping short.',
+                    ],
+                ],
+                'disclosure' => 'One photograph of this job.',
+                'images' => [
+                    [
+                        'image_path' => 'images/projects/contact-sheet-bath-tub.jpg',
+                        'image_role' => 'hero',
+                        'alt_text' => 'Remodeled family bathroom with a new white tub and shower '
+                            . 'surround beneath a window, and plank flooring',
+                        'caption' => 'Stock fittings, careful setting',
                         'sort_order' => 1,
                     ],
                 ],
