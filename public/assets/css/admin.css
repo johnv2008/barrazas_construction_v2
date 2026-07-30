@@ -222,7 +222,7 @@
 .admin-card__label {
   font-size: 0.8125rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--label-tracking);
   color: var(--color-text-on-light-muted);
   margin-bottom: var(--space-2xs);
 }

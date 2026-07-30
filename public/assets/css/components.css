@@ -301,7 +301,7 @@
   padding: var(--space-lg) var(--container-padding);
   overflow-y: auto;
   transform: translateX(100%);
-  transition: transform var(--duration-standard) var(--ease-out);
+  transition: transform var(--duration-standard) var(--ease);
 }
 
 .mobile-nav[data-open="true"] {
@@ -496,11 +496,31 @@
   margin-bottom: var(--space-md);
 }
 
+/* ---- Forms — Design System v1.0 -------------------------------------
+   The consultation form is the conversion event, it appears on all three
+   page types, and it contained the only elements on the site that had
+   never been designed: a native select chevron, a native file input, and
+   a native textarea resize grabber — the last two rendering as light-grey
+   OS chrome on a near-black editorial page.
+
+   It also carried the only labels on the site outside the annotation
+   register: 14px, weight 600, sentence case, while every other label is
+   11px uppercase and letterspaced. That single difference is what made a
+   magazine suddenly feel like a web form.
+
+   Nothing below is a redesign. The controls keep their underline
+   treatment, their sizes, their tap targets and their validation
+   behaviour. They stop announcing which operating system you are on. */
+
 .form-label {
   display: block;
-  font-size: 0.875rem;
-  font-weight: 600;
-  margin-bottom: var(--space-3xs);
+  font-family: var(--font-condensed);
+  font-size: var(--label-size);
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  color: var(--color-text-on-light-muted);
+  margin-bottom: var(--space-2xs);
 }
 
 .form-control {
@@ -532,7 +552,70 @@
 
 textarea.form-control {
   min-height: 120px;
-  resize: vertical;
+  /* The native resize grabber is three diagonal lines drawn by the OS in
+     the corner of an otherwise designed field. Removed; the field is
+     already tall enough for the message it asks for, and it scrolls. */
+  resize: none;
+}
+
+/* ---- Select — the native chevron replaced by a drawn one ------------
+   appearance:none removes the OS control entirely, so the arrow has to be
+   supplied. Drawn as a background gradient rather than an SVG data URI or
+   an icon font: it inherits nothing, loads nothing, and is one line to
+   recolour on a dark ground. */
+select.form-control {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: var(--space-lg);
+  background-image:
+    linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position:
+    right var(--space-sm) center,
+    calc(100% - var(--space-sm) + 5px) center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+/* The dropdown list itself is OS-drawn and cannot be styled; forcing the
+   option colour at least stops white-on-white in the dark chapters. */
+select.form-control option { color: var(--ink-black); background: var(--pure-white); }
+
+/* ---- File input — the worst offender --------------------------------
+   A native "Choose File | No file chosen" button on a near-black page.
+   The native button is hidden and the LABEL becomes the control, styled
+   as a quiet secondary action. The input keeps its accessible name and
+   its keyboard behaviour; only the OS button stops rendering. */
+.form-control[type="file"] {
+  padding: 0;
+  border: 0;
+  min-height: 0;
+}
+
+.form-control[type="file"]::-webkit-file-upload-button,
+.form-control[type="file"]::file-selector-button {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0 var(--space-sm) 0 0;
+  padding: var(--space-2xs) var(--space-md);
+  background: transparent;
+  border: 1px solid var(--color-border-on-light);
+  border-radius: var(--radius-control);
+  color: inherit;
+  font-family: var(--font-condensed);
+  font-size: var(--label-size);
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color var(--dur-micro) var(--ease), color var(--dur-micro) var(--ease);
+}
+
+.form-control[type="file"]::-webkit-file-upload-button:hover,
+.form-control[type="file"]::file-selector-button:hover {
+  border-color: var(--brand-burgundy);
+  color: var(--brand-burgundy);
 }
 
 .form-hint {
@@ -817,7 +900,7 @@ textarea.form-control {
   font-family: var(--font-sans);
   font-size: 0.75rem;
   font-weight: var(--fw-semibold);
-  letter-spacing: 0.14em;
+  letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   color: var(--pure-white);
   margin-bottom: var(--space-md);
@@ -872,4 +955,72 @@ textarea.form-control {
 .site-footer__legal a:hover,
 .site-footer__legal a:focus-visible {
   color: var(--brand-burgundy-light);
+}
+
+
+/* ---- Spec schedule — Design System v1.0 -----------------------------
+   The Datum language applied to content: hairlines, burgundy condensed
+   keys, values at medium weight so the fact leads and the label recedes.
+
+   This was built TWICE — `.feature__meta` on the homepage and `.spec` on
+   the service pages — two independent implementations of one visual
+   design. They matched only because the second was copied carefully, and
+   would have drifted the first time either was edited alone. There is now
+   one, and it lives here because all three page types use it.
+
+   Rows arrive pre-filtered: a row whose value is unknown is never
+   rendered rather than printed as "Varies" or "TBD". An empty schedule
+   renders nothing at all. */
+.spec { margin: var(--space-lg) 0; border-top: 1px solid var(--line-on-light); }
+
+.spec > div {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: var(--space-sm);
+  padding: var(--space-xs) 0;
+  border-bottom: 1px solid var(--line-on-light);
+  align-items: baseline;
+}
+
+.spec--tight > div { grid-template-columns: 5rem 1fr; }
+
+.spec dt {
+  font-family: var(--font-condensed);
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  color: var(--brand-burgundy);
+}
+
+.spec dd {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: var(--fw-medium);
+  line-height: 1.45;
+}
+
+
+/* ---- Image frames — Design System v1.0 ------------------------------
+   A photograph that has not arrived yet should read as a held space, not
+   as a hole. Some frames already carried `background: var(--stone)` and
+   were acting as accidental placeholders; the hero frames had none and
+   flashed white before the image painted.
+
+   One rule, applied wherever a figure holds a photograph. It costs
+   nothing, needs no markup, and means the layout looks composed at every
+   stage of loading rather than only at the end. */
+.arrival__media,
+.approach__media,
+.trust__media,
+.feature__main,
+.feature__detail,
+.proof__frame,
+.craft-row__shot,
+.svc-arrival__media,
+.prj-arrival__media,
+.svc-featured__media,
+.prj-doc__shot {
+  background-color: var(--stone);
+  border-radius: var(--radius-photo);
+  overflow: hidden;
 }

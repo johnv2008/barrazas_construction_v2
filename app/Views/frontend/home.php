@@ -231,7 +231,7 @@
              only its painted position changes, at >=1024px only. -->
         <h3 class="feature__title" data-reveal><?= e($f['title']) ?></h3>
         <p class="feature__body" data-reveal><?= e($f['body']) ?></p>
-        <dl class="feature__meta">
+        <dl class="spec spec--tight">
           <?php foreach ($f['meta'] as $row): ?>
             <div>
               <dt><?= e($row['label']) ?></dt>

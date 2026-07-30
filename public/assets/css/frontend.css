@@ -28,8 +28,8 @@
   --burgundy-tint: rgba(128, 0, 32, 0.08);
   --burgundy-line: rgba(128, 0, 32, 0.28);
 
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --dur: 720ms;
+  --ease-out: var(--ease);
+  --dur: var(--dur-reveal);
 }
 
 /* =====================================================
@@ -59,7 +59,7 @@
   width: 1px;
   height: 0;
   background: var(--brand-burgundy);
-  transition: height 120ms linear;
+  transition: height var(--dur-micro) linear;
 }
 
 .datum__tick {
@@ -92,7 +92,7 @@
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   font-family: var(--font-condensed);
-  font-size: 0.625rem;
+  font-size: var(--label-size-sm);
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -126,7 +126,7 @@
   backdrop-filter: saturate(160%) blur(8px);
   border-bottom: 1px solid var(--line-on-light);
   font-family: var(--font-condensed);
-  font-size: 0.625rem;
+  font-size: var(--label-size-sm);
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -141,7 +141,7 @@
   height: 1px;
   width: 0;
   background: var(--brand-burgundy);
-  transition: width 120ms linear;
+  transition: width var(--dur-micro) linear;
 }
 
 /* =====================================================
@@ -191,13 +191,13 @@
   background-repeat: no-repeat;
   background-position: 0 100%;
   background-size: 0 1px;
-  transition: background-size 380ms var(--ease-out), color 240ms var(--ease-out);
+  transition: background-size var(--dur-state) var(--ease), color var(--dur-micro) var(--ease-out);
 }
 
 .link-arrow::after {
   content: "\2192";
   color: var(--brand-burgundy);
-  transition: transform 380ms var(--ease-out);
+  transition: transform var(--dur-state) var(--ease);
 }
 
 .link-arrow:hover,
@@ -336,7 +336,7 @@
 
 .plate__label {
   font-family: var(--font-condensed);
-  font-size: 0.625rem;
+  font-size: var(--label-size-sm);
   letter-spacing: var(--ls-eyebrow);
   text-transform: uppercase;
   color: var(--brand-burgundy);
@@ -359,7 +359,7 @@
   border-top: 1px solid var(--line-on-light);
   font-family: var(--font-condensed);
   font-size: 0.75rem;
-  letter-spacing: 0.1em;
+  letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   color: var(--color-text-on-light-muted);
 }
@@ -406,8 +406,13 @@
 
 .approach__media { margin: 0; position: relative; }
 
+/* height:auto is load-bearing: responsive_image() emits intrinsic
+   width/height for CLS, and aspect-ratio is IGNORED while both used
+   dimensions are definite. Without it this rendered at 600px natural
+   pixel height and the 3:4 crop below was inert. */
 .approach__media img {
   width: 100%;
+  height: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
   border-radius: var(--radius-md);
@@ -416,8 +421,8 @@
 .approach__media figcaption {
   margin-top: var(--space-xs);
   font-family: var(--font-condensed);
-  font-size: 0.6875rem;
-  letter-spacing: 0.12em;
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   color: var(--soft-gray);
 }
@@ -493,11 +498,11 @@
   position: relative;
   padding-top: var(--space-2xs);
   font-family: var(--font-condensed);
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   color: var(--text-muted-on-light);
-  transition: color 300ms var(--ease-out);
+  transition: color var(--dur-state) var(--ease);
 }
 
 /* Timeline markers — burgundy on the active state */
@@ -509,7 +514,7 @@
   width: 100%;
   height: 2px;
   background: transparent;
-  transition: background 300ms var(--ease-out);
+  transition: background var(--dur-state) var(--ease);
 }
 
 .proof__step.is-active { color: var(--brand-burgundy); }
@@ -517,7 +522,7 @@
 
 .proof__step-num {
   display: block;
-  font-size: 0.625rem;
+  font-size: var(--label-size-sm);
   letter-spacing: 0.18em;
   color: var(--text-muted-on-light);
   margin-bottom: 2px;
@@ -528,7 +533,7 @@
 /* Project attribution — small, factual, drawing-sheet register. */
 .proof__project {
   font-family: var(--font-condensed);
-  font-size: 0.6875rem;
+  font-size: var(--label-size);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--text-muted-on-light);
@@ -548,7 +553,7 @@
 .proof__bridge-label {
   display: block;
   font-family: var(--font-condensed);
-  font-size: 0.6875rem;
+  font-size: var(--label-size);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--brand-burgundy);
@@ -601,8 +606,8 @@
   background: rgba(17, 18, 20, 0.72);
   color: var(--warm-white);
   font-family: var(--font-condensed);
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
   text-transform: uppercase;
 }
 
@@ -628,6 +633,16 @@
    04 · What We Build — five services, three row layouts
    ===================================================== */
 
+/* Chapter 04 takes the stone ground so the middle third of the page
+   alternates. 03, 04 and 05 were all warm white — three consecutive
+   chapters sharing a ground, which DESIGN_SYSTEM §10 forbids and calls
+   "the single rule that makes a long page feel composed". The sequence is
+   now WW / ink / WW / stone / WW / stone / WW / ink.
+
+   Craft is the right chapter to move: it is the page's dense list, and a
+   list reads better held slightly away from the chapters around it. */
+.ch--craft { background: var(--stone); }
+
 .craft { border-top: 1px solid var(--line-on-light); }
 
 .craft-row {
@@ -646,7 +661,7 @@
 .craft-row__num {
   font-family: var(--font-condensed);
   font-size: 0.75rem;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--label-tracking);
   color: var(--brand-burgundy);
 }
 
@@ -676,10 +691,10 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 900ms var(--ease-out);
+  transition: transform var(--dur-reveal) var(--ease);
 }
 
-.craft-row:hover .craft-row__shot img { transform: scale(1.03); }
+.craft-row:hover .craft-row__shot img { transform: scale(var(--hover-scale)); }
 
 /* ---- Role crops (mobile-first) -------------------------------------
    Ratios chosen against what each source can actually carry, and against
@@ -774,46 +789,10 @@
 
 .feature__body { color: var(--color-text-on-light-muted); max-width: 48ch; }
 
-/* The spec table — the Datum language applied to content. Hairlines and
-   condensed caps so it reads as a drawing annotation, not a feature
-   list. "Tuolumne County" is worth more to an anxious homeowner than
-   any adjective, so it is set as fact and nothing decorates it. */
-.feature__meta {
-  margin: var(--space-lg) 0;
-  border-top: 1px solid var(--line-on-light);
-}
-
-/* 7rem of label column left only ~239px for the value in the desktop
-   copy column, which wrapped "Primary suite bathroom, full remodel" and
-   made the fact look like an afterthought. 5.5rem still holds the longest
-   label ("Location") on one line and hands the difference to the value —
-   the value is the part that reassures a homeowner. */
-.feature__meta > div {
-  display: grid;
-  grid-template-columns: 5.5rem 1fr;
-  gap: var(--space-sm);
-  padding: var(--space-xs) 0;
-  border-bottom: 1px solid var(--line-on-light);
-  align-items: baseline;
-}
-
-.feature__meta dt {
-  font-family: var(--font-condensed);
-  font-size: 0.6875rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--brand-burgundy);
-}
-
-/* The value carries the weight, not the label. Medium rather than regular
-   so the fact reads as the row's subject and the burgundy key recedes to
-   an annotation. */
-.feature__meta dd {
-  margin: 0;
-  font-size: 0.9375rem;
-  font-weight: var(--fw-medium);
-  line-height: 1.45;
-}
+/* The spec schedule is the shared `.spec` component in components.css.
+   `.feature__meta` was a second implementation of it and has been
+   removed — the markup below now uses .spec, so the homepage and the
+   service pages are finally the same component. */
 
 /* ---- The contact sheet ---------------------------------------------
    Four identical frames. Uniformity is the point: a sheet is one roll
@@ -838,8 +817,8 @@
 
 .sheet__label {
   font-family: var(--font-condensed);
-  font-size: 0.6875rem;
-  letter-spacing: 0.12em;
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   color: var(--color-text-on-light-muted);
   margin: 0 0 var(--space-md);
@@ -863,10 +842,10 @@
   height: auto; /* see .feature__main img */
   aspect-ratio: 3 / 4;
   object-fit: cover;
-  transition: transform 900ms var(--ease-out);
+  transition: transform var(--dur-reveal) var(--ease);
 }
 
-.tile:hover img { transform: scale(1.03); }
+.tile:hover img { transform: scale(var(--hover-scale)); }
 
 /* Caption beneath the frame, always visible. A gradient overlay revealed
    on hover is gallery language, and it hides the caption entirely from
@@ -886,8 +865,8 @@
 
 .tile__index {
   font-family: var(--font-condensed);
-  font-size: 0.625rem;
-  letter-spacing: 0.12em;
+  font-size: var(--label-size-sm);
+  letter-spacing: var(--label-tracking);
   color: var(--brand-burgundy);
 }
 
@@ -895,8 +874,8 @@
 
 .tile__meta {
   font-family: var(--font-condensed);
-  font-size: 0.6875rem;
-  letter-spacing: 0.12em;
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   color: var(--color-text-on-light-muted);
 }
@@ -927,6 +906,7 @@
 
 .trust__media img {
   width: 100%;
+  height: auto; /* see .approach__media img */
   aspect-ratio: 4 / 3;
   object-fit: cover;
   border-radius: var(--radius-md);
@@ -935,8 +915,8 @@
 .trust__media figcaption {
   margin-top: var(--space-xs);
   font-family: var(--font-condensed);
-  font-size: 0.6875rem;
-  letter-spacing: 0.12em;
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   color: var(--color-text-on-light-muted);
 }
@@ -950,8 +930,8 @@
 
 .trust__row dt {
   font-family: var(--font-condensed);
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   color: var(--brand-burgundy);
 }
@@ -988,8 +968,8 @@
 .track__num {
   display: block;
   font-family: var(--font-condensed);
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
   color: var(--brand-burgundy);
   margin-bottom: var(--space-2xs);
 }
@@ -1049,8 +1029,8 @@
   padding-top: var(--space-sm);
   border-top: 1px solid var(--line-on-dark);
   font-family: var(--font-condensed);
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   color: var(--stone);
 }
@@ -1065,13 +1045,22 @@
 .ch--begin .form-label { color: var(--stone); }
 
 .ch--begin .form-control {
-  background: transparent;
+  /* background-COLOR, not the background shorthand. The shorthand resets
+     background-image, which silently wiped the drawn select chevron and
+     left the field with no affordance at all — worse than the native one
+     it replaced. This is exactly the class of bug a shorthand override
+     hides: nothing errors, the control just quietly loses a part. */
+  background-color: transparent;
   border: 0;
   border-bottom: 1px solid var(--color-border-on-dark-strong);
   border-radius: 0;
   padding-inline: 0;
   color: var(--warm-white);
 }
+
+/* The select still needs room for its chevron on this ground, since the
+   rule above zeroes inline padding for every other field. */
+.ch--begin select.form-control { padding-right: var(--space-lg); }
 
 /* Underline-only fields, so the focus ring is the underline itself. It
    has to be thick enough to read as a state change: a 1px line on top
@@ -1100,6 +1089,22 @@
 .ch--begin select.form-control option { color: var(--ink-black); }
 .ch--begin .form-hint,
 .ch--begin .form-consent { color: var(--soft-gray); }
+
+/* The drawn select chevron and the file-upload button both inherit
+   currentColor, so on this ground they arrive light without a second
+   colour declaration. Only the file button's resting border needs the
+   dark-ground line value. */
+.ch--begin .form-control[type="file"]::-webkit-file-upload-button,
+.ch--begin .form-control[type="file"]::file-selector-button {
+  border-color: var(--color-border-on-dark-strong);
+  color: var(--stone);
+}
+
+.ch--begin .form-control[type="file"]::-webkit-file-upload-button:hover,
+.ch--begin .form-control[type="file"]::file-selector-button:hover {
+  border-color: var(--brand-burgundy-light);
+  color: var(--warm-white);
+}
 
 /* Post-submission success state. Carried over from the previous
    stylesheet and re-tuned for the dark chapter — this is the last
@@ -1151,7 +1156,7 @@
 .js [data-reveal-media] {
   opacity: 0;
   transform: translateY(18px);
-  transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease-out);
   will-change: opacity, transform;
 }
 
@@ -1628,7 +1633,7 @@
     max-width: none;
     border-radius: 0;
     opacity: 0;
-    transition: opacity 460ms var(--ease-out);
+    transition: opacity var(--dur-state) var(--ease);
   }
 
   .proof__shot.is-active { opacity: 1; }

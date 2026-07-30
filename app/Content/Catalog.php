@@ -629,6 +629,9 @@ final class Catalog
             // same room. Reference implementation for Project Detail.
             'galley-kitchen-remodel' => [
                 'slug' => 'galley-kitchen-remodel',
+                // Short label for the final breadcrumb crumb; the full title
+                // is a sentence and makes a poor crumb.
+                'short_title' => 'Galley kitchen',
                 'title' => 'A galley kitchen that stopped wasting its own length',
                 'project_type' => 'Kitchen remodel',
                 'category' => 'Kitchen',
@@ -699,6 +702,9 @@ final class Catalog
             // bar is lower. Each states plainly that it is one photograph.
             'whole-home-kitchen-flooring' => [
                 'slug' => 'whole-home-kitchen-flooring',
+                // Short label for the final breadcrumb crumb; the full title
+                // is a sentence and makes a poor crumb.
+                'short_title' => 'Flooring sequence',
                 'title' => 'New floor going down while the old kitchen was still standing',
                 'project_type' => 'Whole-home renovation',
                 'category' => 'Whole home',
@@ -747,6 +753,9 @@ final class Catalog
 
             'kitchen-and-hallway-renovation' => [
                 'slug' => 'kitchen-and-hallway-renovation',
+                // Short label for the final breadcrumb crumb; the full title
+                // is a sentence and makes a poor crumb.
+                'short_title' => 'Kitchen & hallway',
                 'title' => 'A kitchen that finally reaches the hallway',
                 'project_type' => 'Whole-home renovation',
                 'category' => 'Whole home',
@@ -796,6 +805,9 @@ final class Catalog
 
             'two-tone-kitchen-finishes' => [
                 'slug' => 'two-tone-kitchen-finishes',
+                // Short label for the final breadcrumb crumb; the full title
+                // is a sentence and makes a poor crumb.
+                'short_title' => 'Two-tone finishes',
                 'title' => 'Two-tone cabinetry, matte black, and light where it is needed',
                 'project_type' => 'Kitchen remodel',
                 'category' => 'Kitchen',
@@ -851,6 +863,9 @@ final class Catalog
             // making a new one.
             'primary-suite-bathroom' => [
                 'slug' => 'primary-suite-bathroom',
+                // Short label for the final breadcrumb crumb; the full title
+                // is a sentence and makes a poor crumb.
+                'short_title' => 'Primary suite',
                 'title' => 'A primary suite that finally looks at the view it was built for',
                 'project_type' => 'Bathroom remodel',
                 'category' => 'Bathroom',
@@ -914,6 +929,9 @@ final class Catalog
 
             'carrara-walk-in-shower' => [
                 'slug' => 'carrara-walk-in-shower',
+                // Short label for the final breadcrumb crumb; the full title
+                // is a sentence and makes a poor crumb.
+                'short_title' => 'Marble walk-in',
                 'title' => 'A marble walk-in with the floor doing the hard work',
                 'project_type' => 'Bathroom remodel',
                 'category' => 'Bathroom',
@@ -963,6 +981,9 @@ final class Catalog
 
             'family-bathroom-vanity' => [
                 'slug' => 'family-bathroom-vanity',
+                // Short label for the final breadcrumb crumb; the full title
+                // is a sentence and makes a poor crumb.
+                'short_title' => 'Family bathroom',
                 'title' => 'A family bathroom that stopped being the one you apologise for',
                 'project_type' => 'Bathroom remodel',
                 'category' => 'Bathroom',
@@ -1011,6 +1032,9 @@ final class Catalog
 
             'tub-surround-replacement' => [
                 'slug' => 'tub-surround-replacement',
+                // Short label for the final breadcrumb crumb; the full title
+                // is a sentence and makes a poor crumb.
+                'short_title' => 'Tub surround',
                 'title' => 'Fewer joints, and one hard line',
                 'project_type' => 'Bathroom remodel',
                 'category' => 'Bathroom',
@@ -1057,6 +1081,9 @@ final class Catalog
 
             'bathroom-floor-tile-sequence' => [
                 'slug' => 'bathroom-floor-tile-sequence',
+                // Short label for the final breadcrumb crumb; the full title
+                // is a sentence and makes a poor crumb.
+                'short_title' => 'Floor tile sequence',
                 'title' => 'The floor went down before anything sat on it',
                 'project_type' => 'Bathroom remodel',
                 'category' => 'Bathroom',
@@ -1111,6 +1138,9 @@ final class Catalog
 
             'family-bathroom-tub' => [
                 'slug' => 'family-bathroom-tub',
+                // Short label for the final breadcrumb crumb; the full title
+                // is a sentence and makes a poor crumb.
+                'short_title' => 'Tub & surround',
                 'title' => 'A stock surround, set properly',
                 'project_type' => 'Bathroom remodel',
                 'category' => 'Bathroom',

@@ -68,12 +68,19 @@ final class ProjectController extends Controller
             'specRows' => $this->specRows($project),
             // The service crumb DOES link — that page exists. "Projects"
             // does not yet, so it stays unlinked (see ServiceController).
+            //
+            // The final crumb is the PROJECT, not its type. It used to be
+            // the project type, which is also the eyebrow rendered 40px
+            // directly beneath it — so every project page showed the same
+            // two words stacked twice and read as a template bug. A
+            // breadcrumb's last item is where you are, which is this
+            // project, not its category.
             'breadcrumb' => array_values(array_filter([
                 ['label' => 'Home', 'href' => '/'],
                 $service !== null
                     ? ['label' => $service['title'], 'href' => '/services/' . $service['slug']]
                     : null,
-                ['label' => $project['project_type'], 'href' => null],
+                ['label' => $project['short_title'] ?? $project['title'], 'href' => null],
             ])),
         ], 'layouts/frontend');
     }

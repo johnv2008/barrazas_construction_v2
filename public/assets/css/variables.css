@@ -152,12 +152,22 @@
   --color-stone: var(--stone);
 
   /* Color: borders / overlays */
-  --color-border-on-dark: rgba(255, 255, 255, 0.1);
-  --color-border-on-dark-strong: rgba(255, 255, 255, 0.18);
-  --color-border-on-light: rgba(17, 18, 20, 0.12);
+  /* Aliases onto the three hairline values above — see the note there. */
+  --color-border-on-dark: var(--line-on-dark);
+  --color-border-on-dark-strong: var(--line-on-dark);
+  --color-border-on-light: var(--line-on-light);
   --color-overlay-dark: rgba(17, 18, 20, 0.6);
-  --line-on-dark: rgba(255, 255, 255, 0.08);
-  --line-on-light: rgba(17, 18, 20, 0.1);
+  /* ---- Hairlines — THREE values ----
+     Design System v1.0. The hairline is the most repeated element on the
+     site and the audit found four values in use: two on-light alphas
+     (0.10 / 0.12) and two on-dark (0.08 / 0.18), applied interchangeably.
+
+     One on light, one on dark, one accent. The "strong" variants are
+     retained as aliases rather than deleted, so existing call sites keep
+     working and simply stop being different. */
+  --line-on-light: rgba(17, 18, 20, 0.12);
+  --line-on-dark: rgba(255, 255, 255, 0.12);
+  --line-accent: var(--brand-burgundy);
 
   /* Color: semantic */
   --color-success: #4b7a52;
@@ -227,9 +237,40 @@
   --lh-heading: 1.2;
   --lh-body: 1.65;
 
-  --ls-eyebrow: 0.14em;
   --ls-tight: -0.01em;
   --ls-display: -0.02em;
+
+  /* ---- The annotation register ----
+     Design System v1.0. This is the most repeated element on the site and
+     the strongest carrier of its identity: the small uppercase
+     letterspaced label used for eyebrows, captions, breadcrumbs, filing
+     labels, spec-table keys and project metadata.
+
+     The audit measured it as ELEVEN near-misses — four sizes, five
+     tracking values and three weights across components that are all
+     meant to be the same thing. Two components at 12px carried different
+     tracking (1.68px vs 1.2px); two at 11px likewise. `0.6875rem` was
+     declared twenty separate times with no token behind it.
+
+     Three sizes, one tracking, two weights. Nothing else.
+
+       --label-size      the register. Captions, meta, breadcrumbs, keys.
+       --label-size-lg   section openers only (.eyebrow).
+       --label-size-sm   micro — a label riding on top of another label.
+
+     Tracking is ONE value at every size. Optical tracking that varies per
+     size is a real typographic technique, but it needs a rule; five
+     values arrived at separately is not a rule, and the difference
+     between 1.32px and 1.54px is not a decision anyone made. */
+  --label-size: 0.6875rem;
+  --label-size-lg: 0.75rem;
+  --label-size-sm: 0.625rem;
+  --label-tracking: 0.12em;
+  --label-weight: 500;
+  --label-weight-strong: 600;
+
+  /* Legacy alias — the eyebrow's old 0.14em now resolves to the register. */
+  --ls-eyebrow: var(--label-tracking);
 
   /* ---- Weights ----
      Display weight is a HIERARCHY, not a constant. Every heading was
@@ -292,9 +333,21 @@
   --focus-ring-offset: 2px;
 
   /* Radii — deliberately restrained (architectural, not "rounded card") */
-  --radius-sm: 2px;
-  --radius-md: 3px;
-  --radius-lg: 6px;
+  /* ---- Radius — TWO values, and one reason for the difference ----
+     Design System v1.0. The audit found five radii in use (2/3/6/7/999),
+     which put a 2px button beside a 7px photograph — the clearest visible
+     seam between the interface layer and the editorial layer.
+
+     There are now two: controls are nearly square because they are
+     mechanisms, photographs are softened because they are prints. The
+     legacy names remain as aliases so no call site had to be hunted down,
+     and every one of them now resolves to one of the two real values. */
+  --radius-control: 2px;
+  /* --radius-photo is defined below, beside the note explaining 7px. */
+
+  --radius-sm: var(--radius-control);
+  --radius-md: var(--radius-control);
+  --radius-lg: var(--radius-photo);
   --radius-pill: 999px;
 
   /* Editorial photography sits slightly softer than UI chrome. 3px reads
@@ -311,12 +364,42 @@
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 24px 56px rgba(0, 0, 0, 0.4);
 
-  /* Motion */
-  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --duration-fast: 180ms;
-  --duration-standard: 300ms;
-  --duration-slow: 450ms;
+  /* ---- Motion — ONE curve, THREE durations ----
+     Design System v1.0. The audit found two easing languages running side
+     by side: the interface layer used Material Design's
+     cubic-bezier(0.4, 0, 0.2, 1) at 180ms, while the editorial layer used
+     the brand curve at 240-900ms. On every page that contains both — which
+     is every page — the difference is perceptible even to someone who
+     cannot name it. The chrome animated like a framework and the content
+     animated like the brand.
+
+     There is now one curve. --ease-standard is redefined rather than
+     removed, so every existing call site converges without being edited.
+     That is deliberate: the homepage inherits the corrected motion
+     language without a single homepage rule changing.
+
+     Durations are bound to interaction classes, not chosen per component:
+
+       --dur-micro   a state change the eye should not have to follow —
+                     hover, focus, colour, border
+       --dur-state   a component changing what it is showing — accordion,
+                     caption, crossfade
+       --dur-reveal  something arriving — entrance, image scale
+
+     Anything outside these three is a bug, not a decision. */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --dur-micro: 180ms;
+  --dur-state: 320ms;
+  --dur-reveal: 720ms;
+
+  /* Legacy names, retained as aliases so no call site had to be hunted
+     down. Both easing tokens now resolve to the one curve. */
+  --ease-standard: var(--ease);
+  --ease-out: var(--ease);
+  --duration-fast: var(--dur-micro);
+  --duration-standard: var(--dur-state);
+  --duration-slow: var(--dur-reveal);
 
   /* Restrained image hover scale (never more than this) */
   --hover-scale: 1.03;

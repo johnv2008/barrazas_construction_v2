@@ -26,8 +26,8 @@
    strip; this reads as a filing reference instead. */
 .crumbs {
   font-family: var(--font-condensed);
-  font-size: 0.6875rem;
-  letter-spacing: 0.12em;
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   color: var(--color-text-on-light-muted);
   margin-bottom: var(--space-md);
@@ -67,8 +67,8 @@
   padding-top: var(--space-2xs);
   border-top: 1px solid var(--line-on-light);
   font-family: var(--font-condensed);
-  font-size: 0.6875rem;
-  letter-spacing: 0.12em;
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   color: var(--color-text-on-light-muted);
   max-width: 46ch;
@@ -89,9 +89,9 @@
    display font and heading weight inherited from h2 are both overridden. */
 .filing {
   font-family: var(--font-condensed);
-  font-size: 0.6875rem;
+  font-size: var(--label-size);
   font-weight: var(--fw-medium);
-  letter-spacing: 0.12em;
+  letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   color: var(--color-text-on-light-muted);
   margin: 0 0 var(--space-md);
@@ -104,35 +104,9 @@
   background-position: left top, left top;
 }
 
-/* The spec schedule. Generalised from the homepage's .feature__meta so
-   service and project pages share one component. */
-.spec { margin: var(--space-lg) 0; border-top: 1px solid var(--line-on-light); }
-
-.spec > div {
-  display: grid;
-  grid-template-columns: 5.5rem 1fr;
-  gap: var(--space-sm);
-  padding: var(--space-xs) 0;
-  border-bottom: 1px solid var(--line-on-light);
-  align-items: baseline;
-}
-
-.spec--tight > div { grid-template-columns: 5rem 1fr; }
-
-.spec dt {
-  font-family: var(--font-condensed);
-  font-size: 0.6875rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--brand-burgundy);
-}
-
-.spec dd {
-  margin: 0;
-  font-size: 0.9375rem;
-  font-weight: var(--fw-medium);
-  line-height: 1.45;
-}
+/* The spec schedule now lives in components.css: it is shared by the
+   homepage, service pages and project pages, so it is not a service-page
+   concern. */
 
 /* An honest note about thin evidence. Quiet, not apologetic. */
 .disclosure {
@@ -345,8 +319,8 @@
 
 .band__label {
   font-family: var(--font-condensed);
-  font-size: 0.6875rem;
-  letter-spacing: 0.12em;
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   color: var(--brand-burgundy);
 }
@@ -406,8 +380,8 @@
 
 .vband__label {
   font-family: var(--font-condensed);
-  font-size: 0.6875rem;
-  letter-spacing: 0.12em;
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   color: var(--brand-burgundy);
 }
@@ -437,8 +411,8 @@
 
 .also__label {
   font-family: var(--font-condensed);
-  font-size: 0.6875rem;
-  letter-spacing: 0.12em;
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   color: var(--color-text-on-light-muted);
 }
@@ -497,7 +471,7 @@
   border-right: 2px solid var(--brand-burgundy);
   border-bottom: 2px solid var(--brand-burgundy);
   transform: rotate(45deg);
-  transition: transform 240ms var(--ease-out);
+  transition: transform var(--dur-micro) var(--ease);
 }
 
 .qa__item[open] .qa__marker { transform: rotate(225deg); }
@@ -543,10 +517,10 @@
   height: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
-  transition: transform 900ms var(--ease-out);
+  transition: transform var(--dur-reveal) var(--ease);
 }
 
-.pcard__link:hover img { transform: scale(1.03); }
+.pcard__link:hover img { transform: scale(var(--hover-scale)); }
 
 /* Caption beneath the frame, always visible — never a hover-only overlay. */
 .pcard__caption { display: grid; gap: 2px; padding-top: var(--space-xs); }
@@ -561,8 +535,8 @@
 
 .pcard__meta {
   font-family: var(--font-condensed);
-  font-size: 0.6875rem;
-  letter-spacing: 0.12em;
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   color: var(--color-text-on-light-muted);
 }
@@ -671,20 +645,73 @@
 
   .svc-why__statement { font-size: clamp(1.5rem, 8vw, 2rem); }
 
-  /* Material band flattens to one column but keeps its scale hierarchy:
-     the lead crop stays wide and the samples stay square and half-width,
-     so the chapter still reads as a set of studies rather than a stack. */
-  .band__item--small { width: 62%; }
-  .band__item--medium { width: 84%; }
+  /* ---- The material band, TRANSLATED for a phone ------------------
+     Not the desktop band shrunk. The desktop composition says "one wide
+     material dominates, three samples support it, and the dominant one
+     escapes the page." A 375px column cannot hold a 21:8 crop — at that
+     width it is a 40px sliver — so the same sentence is said differently:
 
-  /* The vertical band keeps its stagger on a phone — that IS the
-     composition — but expressed as alternating width and indent rather
-     than as vertical offset, which would just be wasted scroll. */
-  .vband { gap: var(--space-xl); }
-  .vband__item--lead { width: 100%; }
-  .vband__item--tall { width: 56%; margin-left: auto; }
-  .vband__item--medium { width: 78%; }
-  .vband__item--lead .vband__frame img { aspect-ratio: 4 / 5; }
+       - The lead escapes by going FULL BLEED, edge to edge, breaking the
+         container's inline padding. On a phone, edge-to-edge IS the
+         escape; there is no side margin left to bleed into.
+       - Its crop returns to 3:2, because the point is dominance, not the
+         particular ratio that produced dominance on a wide screen.
+       - The samples stay inset and unequal, so the hierarchy survives.
+
+     Same hierarchy, different geometry. */
+  .band { padding-inline: 0; }
+
+  .band__item--lead {
+    margin-inline: 0;
+    width: 100%;
+  }
+
+  .band__item--lead .band__frame {
+    border-radius: 0;
+  }
+
+  .band__item--lead .band__frame img { aspect-ratio: 3 / 2; }
+
+  /* The note returns to the text column the lead image just escaped. */
+  .band__item--lead .band__note { padding-inline: var(--space-md); }
+
+  .band__item--medium,
+  .band__item--small { margin-inline: var(--space-md); }
+  .band__item--small { width: calc(62% - var(--space-md)); }
+  .band__item--medium { width: calc(84% - var(--space-md)); }
+
+  /* Alternate which side the samples hold, so three stacked squares read
+     as a composition rather than a left-aligned list. */
+  .band__item--small:last-child { margin-left: auto; margin-right: var(--space-md); }
+
+  /* ---- The vertical band, TRANSLATED for a phone ------------------
+     The desktop composition is a descending diagonal: three tall frames
+     stepping down and across. A phone is already a vertical column, so
+     reproducing the descent literally would be invisible — everything
+     descends on a phone.
+
+     What the gesture actually says is "these three are unequal, and they
+     are read in order." So the stagger is expressed as alternating INDENT
+     and unequal WIDTH, which is legible in a single column, and the step
+     numerals carry the order. The lead keeps a tall portrait crop so it
+     still runs past the fold, which was its desktop job too. */
+  .vband { gap: var(--space-2xl); }
+
+  .vband__item--lead {
+    width: 100%;
+    margin-right: var(--space-lg);
+  }
+  .vband__item--lead .vband__frame img { aspect-ratio: 3 / 4; }
+
+  .vband__item--tall {
+    width: 58%;
+    margin-left: auto;
+  }
+
+  .vband__item--medium {
+    width: 76%;
+    margin-right: auto;
+  }
 
   .notes__item { grid-template-columns: 2.5rem 1fr; gap: var(--space-sm); }
 }

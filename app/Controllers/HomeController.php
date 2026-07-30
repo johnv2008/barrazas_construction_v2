@@ -252,7 +252,10 @@ final class HomeController extends Controller
                         'imageAlt' => 'Remodeled kitchen opening onto a dining area with a sliding door to the patio',
                         'support' => asset('images/projects/transformation-complete.jpg'),
                         'supportAlt' => 'Kitchen counter detail with quartz surface and tile backsplash',
-                        'href' => '#projects',
+                        // Was '#projects' — a fragment on this same page.
+                        // The service pages exist now; this is the only
+                        // route a visitor has to them.
+                        'href' => '/services/kitchen-remodeling',
                         'layout' => 'dominant',
                     ],
                     [
@@ -265,7 +268,7 @@ final class HomeController extends Controller
                             . 'and matte black fixtures',
                         'support' => asset('images/projects/intro-detail.jpg'),
                         'supportAlt' => 'Tub surround in large-format marble-look panels with a black framed shower door',
-                        'href' => '#projects',
+                        'href' => '/services/bathroom-remodeling',
                         'layout' => 'detail',
                     ],
                     [
