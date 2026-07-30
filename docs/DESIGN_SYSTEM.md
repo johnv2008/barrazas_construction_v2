@@ -168,6 +168,50 @@ Barraza's existing brand color was sampled directly from the company logo (`#800
 
 *(Rationale for font choice: all three are free, self-hostable, well-hinted variable fonts that render crisply without a CDN or build step — consistent with the "no npm/node build required in production" hosting constraint already established for this project.)*
 
+#### Installed state (as built)
+
+All three faces are installed and self-hosted under `public/assets/fonts/`.
+The `@font-face` blocks live at the top of **`variables.css`**, not
+`base.css` as §16.3 originally proposed: `variables.css` is the first
+stylesheet in every layout, so declaring the faces there gets them
+discovered one file earlier, and it sits beside the `--font-*` tokens
+that reference them. The two above-the-fold faces are preloaded in
+`layouts/frontend.php`; `font-src` stays `'self'` in the CSP.
+
+Only the weights the CSS actually requests are shipped — ~90 KB total on
+public pages. See the audit note at the top of `variables.css`.
+
+**Display weight is implemented as a hierarchy.** Semibold 600 is the
+default heading weight; Bold 700 is reserved and deliberately scarce.
+Three moments on the homepage carry it, and adding a fourth means removing
+one:
+
+| Role | Face | Weight |
+|---|---|---|
+| Hero H1 (`.arrival__heading`) | General Sans | **700** |
+| Ch 03 statement (`.proof__head h2`) — the signature moment | General Sans | **700** |
+| Ch 05 featured title (`.feature__title`) — cuts the photograph | General Sans | **700** |
+| All other chapter/section headings (h2) | General Sans | 600 |
+| Small display headings (h3–h6) | General Sans | 600 |
+| Mobile nav links | General Sans | 600 |
+| Editorial lines (`.editorial-text`, `.approach__heading`) | Fraunces | 400 italic |
+| Desktop nav, buttons, labels, body | Inter | 400–600 |
+
+**Display scope is deliberately narrower than the prose above.** This
+section assigns General Sans to "all headings, navigation, buttons, and
+labels"; in the code `--font-display` reaches headings, the hero, and the
+mobile nav overlay only. Desktop navigation, buttons, and small labels
+stay in Inter by explicit decision — they are interface, not voice, and
+moving them would spend the display face on chrome. Treat the sentence
+above as describing the heading system, not the UI controls.
+
+`--font-condensed` (19 call sites: eyebrows, plate captions, spec-table
+keys, contact-sheet meta) now resolves to Inter. The kit has no condensed
+face, and the previous stack led with Arial Narrow, which ships on
+Windows but not macOS — small labels rendered condensed for some visitors
+and not others. This aligns with the Eyebrow/Label row in the scale
+below, which already specifies Inter.
+
 ### Type Scale
 
 | Role | Desktop | Tablet | Mobile | Weight | Line-height | Letter-spacing |

@@ -242,7 +242,8 @@
 .arrival__heading {
   font-family: var(--font-display);
   font-size: var(--fs-h1);
-  font-weight: var(--fw-display);
+  /* Bold moment 1 of 3 — see --fw-display-hero in variables.css. */
+  font-weight: var(--fw-display-hero);
   line-height: var(--lh-tight);
   letter-spacing: var(--ls-display);
   margin-block: var(--space-md) 0;
@@ -278,18 +279,46 @@
   height: clamp(320px, 52vh, 480px);
   object-fit: cover;
   object-position: center 62%;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-photo);
 }
 
-/* Burgundy frame rule — the "image frame" role, drawn rather than boxed */
-.arrival__media::after {
+/* The burgundy accent for this chapter is the tick on the caption rule
+   below, not a second floating bar. One accent per composition. */
+
+/* ---- The caption leaves the photograph -----------------------------
+   A translucent panel floating inside the image is a UI badge. The same
+   words set on a hairline underneath it, aligned to the image's own left
+   edge, are an editorial credit line. Same content, same DOM order —
+   only the placement changes.
+
+   Overridden here rather than rewritten in the base .plate rule so the
+   floating treatment stays available as a component. The hero is
+   currently its only caller, so if nothing else adopts .plate the two
+   rules should be collapsed into one. ---------------------------- */
+.arrival__media .plate {
+  position: static;
+  display: grid;
+  grid-auto-flow: row;
+  gap: 1px;
+  margin-top: var(--space-sm);
+  padding: var(--space-2xs) 0 0;
+  background: none;
+  backdrop-filter: none;
+  border-radius: 0;
+  box-shadow: none;
+  border-top: 1px solid var(--line-on-light);
+}
+
+/* A short burgundy tick that starts the caption rule — the accent
+   arrives as a detail, not a field. */
+.arrival__media .plate::before {
   content: "";
-  position: absolute;
-  left: calc(-1 * var(--space-sm));
-  bottom: calc(-1 * var(--space-sm));
-  width: 42%;
+  display: block;
+  width: 28px;
   height: 2px;
+  margin-bottom: var(--space-2xs);
   background: var(--brand-burgundy);
+  margin-top: -1px;
 }
 
 .plate {
@@ -401,7 +430,16 @@
 .ch--proof { background: var(--warm-white); }
 
 .proof__head { margin-bottom: var(--space-xl); }
-.proof__head h2 { margin-top: var(--space-md); max-width: 16ch; }
+
+/* Bold moment 2 of 3. Chapter 03 is the signature moment of the creative
+   direction — the one argument the whole page is built to make — so it is
+   the single section heading that carries the hero's weight. Every other
+   chapter heading stays at --fw-display (600). */
+.proof__head h2 {
+  margin-top: var(--space-md);
+  max-width: 16ch;
+  font-weight: var(--fw-display-hero);
+}
 
 .proof__lead {
   margin-top: var(--space-md);
@@ -625,17 +663,34 @@
 
 .craft-row__media { display: grid; gap: var(--space-sm); }
 
-.craft-row__shot { margin: 0; overflow: hidden; border-radius: var(--radius-md); }
+.craft-row__shot {
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--radius-photo);
+}
 
+/* No shared aspect-ratio. The crop is a property of the ROLE, set per
+   layout below — a single ratio applied to every row is what made these
+   read as five identical cards. */
 .craft-row__shot img {
   width: 100%;
   height: 100%;
-  aspect-ratio: 4 / 3;
   object-fit: cover;
   transition: transform 900ms var(--ease-out);
 }
 
 .craft-row:hover .craft-row__shot img { transform: scale(1.03); }
+
+/* ---- Role crops (mobile-first) -------------------------------------
+   Ratios chosen against what each source can actually carry, and against
+   what the photograph is OF. The detail row is square because a tight
+   square is how a material sample is shown; the plate row is 3:2 because
+   its source is a 600x450 landscape exterior and cropping it vertical
+   would throw the house away. */
+.craft-row--dominant .craft-row__shot img { aspect-ratio: 4 / 3; }
+.craft-row--detail   .craft-row__shot img { aspect-ratio: 1 / 1; }
+.craft-row--stack    .craft-row__shot img { aspect-ratio: 4 / 3; }
+.craft-row--plate    .craft-row__shot img { aspect-ratio: 3 / 2; }
 
 /* The typographic row — no image by design. A burgundy rule carries it
    so it reads as deliberate rather than unfinished. */
@@ -643,8 +698,12 @@
 .craft-row--plain .craft-row__benefit { max-width: 56ch; font-size: var(--fs-body-lg); }
 
 /* =====================================================
-   05 · Selected Work — editorial spread + uneven tiles
-   ===================================================== */
+   05 · Selected Work — the held frame, then the sheet
+   =====================================================
+   Two movements at deliberately unequal weight. The featured spread is
+   the emotional centre of the homepage; the contact sheet underneath is
+   evidence filed beneath it, not a second attraction. The chapter fails
+   the moment those two read as equals. */
 
 .ch--work { background: var(--warm-white); }
 
@@ -652,52 +711,90 @@
 
 .feature__media { position: relative; }
 
-.feature__main { margin: 0; border-radius: var(--radius-md); overflow: hidden; }
+.feature__main {
+  margin: 0;
+  border-radius: var(--radius-photo);
+  overflow: hidden;
+}
 
+/* height:auto is load-bearing, not tidying. responsive_image() emits
+   intrinsic width/height attributes for CLS, Chrome maps them to
+   presentational hints, and aspect-ratio is IGNORED while both the used
+   width and height are definite. Without this the image renders at its
+   natural pixel height (measured: 1600px) and every ratio rule below is
+   inert. Any new aspect-ratio rule on a responsive_image needs it. */
 .feature__main img {
   width: 100%;
+  height: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
 }
 
-/* Overlapping detail image — the layered magazine move */
+/* The detail plate. Small on purpose — this chapter has exactly one
+   large photograph and this is not it. The white mount border is what
+   makes it read as a print laid on top of another, rather than a second
+   panel in a grid. Hung to the LEFT so it sits diagonally opposite the
+   title slab on desktop instead of stacking against it. */
 .feature__detail {
-  margin: -18% 0 0 auto;
-  width: 52%;
+  margin: -16% auto 0 0;
+  width: 44%;
   position: relative;
   z-index: 2;
-  border: 8px solid var(--warm-white);
-  border-radius: var(--radius-md);
+  border: 7px solid var(--warm-white);
+  border-radius: var(--radius-photo);
   overflow: hidden;
 }
 
 .feature__detail img {
   width: 100%;
+  height: auto; /* see .feature__main img */
   aspect-ratio: 1 / 1;
   object-fit: cover;
+  /* The source is a 3:4 portrait and this frame is square, so a centred
+     crop trims equally top and bottom. Held slightly high instead: the
+     window and the view through it are what the title is about ("looks
+     at the view it was built for"), and losing the foreground floor
+     costs nothing. */
+  object-position: center 38%;
 }
 
-.feature__copy h3 {
-  font-size: clamp(1.5rem, 2.6vw, 2rem);
+/* Larger than a normal h3 because it is the chapter's focal type, but
+   held below --fs-h2 so it never competes with the section heading. */
+.feature__title {
+  font-size: clamp(1.625rem, 2.8vw, 2.125rem);
+  /* Bold moment 3 of 3. This title crosses the photograph; at 600 the
+     slab's cut goes soft and the overlap starts to read as an accident
+     rather than a decision. */
+  font-weight: var(--fw-display-hero);
   line-height: var(--lh-heading);
   letter-spacing: var(--ls-tight);
   margin-block: var(--space-md) var(--space-md);
   max-width: 18ch;
 }
 
-.feature__copy p { color: var(--color-text-on-light-muted); max-width: 50ch; }
+.feature__body { color: var(--color-text-on-light-muted); max-width: 48ch; }
 
+/* The spec table — the Datum language applied to content. Hairlines and
+   condensed caps so it reads as a drawing annotation, not a feature
+   list. "Tuolumne County" is worth more to an anxious homeowner than
+   any adjective, so it is set as fact and nothing decorates it. */
 .feature__meta {
   margin: var(--space-lg) 0;
   border-top: 1px solid var(--line-on-light);
 }
 
+/* 7rem of label column left only ~239px for the value in the desktop
+   copy column, which wrapped "Primary suite bathroom, full remodel" and
+   made the fact look like an afterthought. 5.5rem still holds the longest
+   label ("Location") on one line and hands the difference to the value —
+   the value is the part that reassures a homeowner. */
 .feature__meta > div {
   display: grid;
-  grid-template-columns: 8rem 1fr;
+  grid-template-columns: 5.5rem 1fr;
   gap: var(--space-sm);
   padding: var(--space-xs) 0;
   border-bottom: 1px solid var(--line-on-light);
+  align-items: baseline;
 }
 
 .feature__meta dt {
@@ -708,57 +805,100 @@
   color: var(--brand-burgundy);
 }
 
-.feature__meta dd { margin: 0; font-size: 0.9375rem; }
-
-.tiles { display: grid; gap: var(--space-md); }
-
-.tile {
-  position: relative;
+/* The value carries the weight, not the label. Medium rather than regular
+   so the fact reads as the row's subject and the burgundy key recedes to
+   an annotation. */
+.feature__meta dd {
   margin: 0;
-  border-radius: var(--radius-md);
-  overflow: hidden;
+  font-size: 0.9375rem;
+  font-weight: var(--fw-medium);
+  line-height: 1.45;
 }
 
+/* ---- The contact sheet ---------------------------------------------
+   Four identical frames. Uniformity is the point: a sheet is one roll
+   shot at one size, and varying the tiles turned this into a second
+   focal composition arguing with the spread above it. */
+
+/* The sheet opens on a hairline whose first 28px are burgundy — the same
+   tick that starts the hero's caption rule in Chapter 01. Reusing the
+   exact device is what makes two different chapters read as one system;
+   inventing a second accent here would just be decoration. Drawn with a
+   gradient rather than a pseudo-element so the rule stays one object. */
+.sheet {
+  border-top: 0;
+  padding-top: var(--space-md);
+  background-image:
+    linear-gradient(to right, var(--brand-burgundy) 0 28px, transparent 28px),
+    linear-gradient(to right, var(--line-on-light) 0 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 2px, 100% 1px;
+  background-position: left top, left top;
+}
+
+.sheet__label {
+  font-family: var(--font-condensed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-on-light-muted);
+  margin: 0 0 var(--space-md);
+}
+
+.tiles { display: grid; gap: var(--space-md); grid-template-columns: 1fr 1fr; }
+
+.tile { margin: 0; }
+
+.tile__frame {
+  overflow: hidden;
+  border-radius: var(--radius-photo);
+  background: var(--stone);
+}
+
+/* Every source in the library is a 3:4 portrait. The sheet uses that
+   ratio rather than cropping portraits into landscape tiles, which is
+   what the previous 2:1 "wide" tile did to a 1200x1600 original. */
 .tile img {
   width: 100%;
-  height: 100%;
+  height: auto; /* see .feature__main img */
+  aspect-ratio: 3 / 4;
   object-fit: cover;
   transition: transform 900ms var(--ease-out);
 }
 
-.tile--tall img { aspect-ratio: 3 / 4; }
-.tile--square img { aspect-ratio: 1 / 1; }
-.tile--wide img { aspect-ratio: 3 / 2; }
+.tile:hover img { transform: scale(1.03); }
 
+/* Caption beneath the frame, always visible. A gradient overlay revealed
+   on hover is gallery language, and it hides the caption entirely from
+   anyone who never hovers. A contact sheet writes underneath the frame,
+   which is both the more honest device and the more accessible one. */
+/* A flat 2px gap between all three lines gave the index, title and meta
+   equal footing, so the caption read as three unrelated fragments. The
+   index sits tight to the title it numbers; the meta drops away from it.
+   Same information, one clear reading order. */
 .tile figcaption {
-  position: absolute;
-  inset: auto 0 0 0;
   display: grid;
   gap: 1px;
-  padding: var(--space-lg) var(--space-md) var(--space-sm);
-  background: linear-gradient(to top, rgba(17, 18, 20, 0.78), transparent);
-  color: var(--pure-white);
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 420ms var(--ease-out), transform 420ms var(--ease-out);
+  padding-top: var(--space-xs);
 }
 
-.tile:hover img { transform: scale(1.04); }
-.tile:hover figcaption { opacity: 1; transform: none; }
+.tile figcaption .tile__meta { margin-top: 3px; }
 
-.tile__title { font-weight: var(--fw-semibold); font-size: 0.9375rem; }
+.tile__index {
+  font-family: var(--font-condensed);
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  color: var(--brand-burgundy);
+}
+
+.tile__title { font-weight: var(--fw-medium); font-size: 0.875rem; }
 
 .tile__meta {
   font-family: var(--font-condensed);
   font-size: 0.6875rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--stone);
-}
-
-/* Captions must not be hover-only for touch users */
-@media (hover: none) {
-  .tile figcaption { opacity: 1; transform: none; }
+  color: var(--color-text-on-light-muted);
 }
 
 /* =====================================================
@@ -1104,22 +1244,67 @@
   .ch--arrival { padding-top: calc(var(--header-height) + var(--space-md)); }
   .arrival__media img { height: clamp(260px, 38vh, 340px); }
 
+  /* ---- Mobile hero headline ----------------------------------------
+     --fs-h1 bottoms out at 52px, which on a 312px column produced five
+     lines with "always" stranded alone on line three. Overridden here
+     rather than by lowering the clamp floor, so the approved desktop and
+     tablet sizes are untouched — the floor also governs everything up to
+     1040px, and editing it would have quietly shrunk the tablet hero too.
+
+     Fluid rather than fixed: no single size rags cleanly across
+     320-430px, because where the line breaks fall depends on the words,
+     not the size. Measured, 40px is right at 320 and 48px at 430 — so
+     the size tracks the viewport and lands in that band throughout.
+
+     text-wrap: balance does the actual work. It equalises line lengths,
+     which is what removes both failure modes — the stranded short word
+     and the one-word last line — at every width rather than at the one
+     width a hand-picked size happens to suit. Unsupported browsers
+     ignore it and simply get the smaller, better-fitting size. */
+  .arrival__heading {
+    font-size: clamp(2.5rem, 11vw, 3rem);
+    /* The container is the real constraint at these widths; 15ch would
+       start competing with it around 430px and force an extra line. */
+    max-width: none;
+    text-wrap: balance;
+    /* A touch tighter at large-on-small sizes, which buys back roughly a
+       character per line without reading as condensed. */
+    letter-spacing: -0.025em;
+  }
+
   /* The supporting shot is a desktop luxury; the lead image carries the
      service on a phone. */
   .craft-row__shot--support { display: none; }
   .craft-row { padding-block: var(--space-lg); }
+
+  /* Roles flatten to one landscape crop on a phone, with two exceptions
+     kept so the chapter still has hierarchy at 375px: the detail row
+     stays square and half-width — it is the craftsmanship moment and a
+     full-width version of it is just another photo — and the plate row
+     stays small. */
   .craft-row__shot img { aspect-ratio: 3 / 2; }
 
+  .craft-row--detail .craft-row__media { width: 58%; }
+  .craft-row--detail .craft-row__shot img { aspect-ratio: 1 / 1; }
+  .craft-row--plate .craft-row__media { width: 74%; }
+
+  /* A full-width 3:4 portrait eats an entire phone screen before the
+     copy starts, so the featured image squares off here. It is still by
+     far the largest photograph in the chapter — the hierarchy survives
+     the crop. */
   .feature__main img { aspect-ratio: 1 / 1; }
   .feature__detail { width: 46%; margin-top: -14%; }
 
-  .tiles { grid-template-columns: 1fr 1fr; }
-  .tile--wide { grid-column: span 2; }
-  .tile--tall img,
-  .tile--square img { aspect-ratio: 1 / 1; }
-  .tile--wide img { aspect-ratio: 2 / 1; }
-  /* Captions are always visible on touch, so keep them compact. */
-  .tile figcaption { padding: var(--space-md) var(--space-sm) var(--space-2xs); }
+  /* The plate hangs past the bottom of the media box, eating into the
+     row gap and leaving only 24px of air before the copy — measured. The
+     stack needs the plate to read as part of the image group, not as the
+     first item of the text block, so the difference is given back here. */
+  .feature__media { margin-bottom: var(--space-md); }
+
+  /* Two columns of the sheet, still one uniform frame. The captions sit
+     under each frame at every width, so nothing here needs a touch
+     fallback. */
+  .tiles { gap: var(--space-sm) var(--space-md); }
 
   .begin__bg img { object-position: center 40%; }
 }
@@ -1137,9 +1322,17 @@
   .ch--trust { padding-block: calc(var(--space-2xl) * 1.25); }
 
   /* Selected Work is the largest chapter; keep its internal rhythm
-     tight so it does not swamp the page. */
-  .feature { margin-bottom: var(--space-xl); }
+     tight so it does not swamp the page. 48px was measured as the actual
+     gap to the sheet here, against 72px at desktop where the detail plate
+     overhangs and absorbs part of the margin. At this width the copy is
+     the lowest element, so the margin IS the gap — set explicitly to land
+     on the same 72px the desktop composition reads at. */
+  .feature { margin-bottom: calc(var(--space-xl) + var(--space-md)); }
 
+  /* Tablet keeps the hero fully contained. The edge-bleed is a desktop
+     device only (see the 1024px block) — at this width the margins are
+     already narrow enough that a bleed reads as a layout error rather
+     than a decision. */
   .arrival { grid-template-columns: 1fr 1fr; align-items: center; gap: var(--space-2xl); }
   .arrival__media img { height: clamp(420px, 62vh, 620px); }
 
@@ -1149,52 +1342,126 @@
 
   .proof__stage { grid-template-columns: 1.15fr 0.85fr; align-items: center; gap: var(--space-2xl); }
 
-  /* The media spans both rows, so rows must be sized explicitly:
+  /* ---- 04 · Five roles, descending weight -------------------------
+     The media spans both rows, so rows must be sized explicitly:
      min-content holds the title tight, 1fr absorbs the media's extra
      height below the copy instead of wedging it between title and
      body. align-self keeps both copy blocks top-aligned. */
-  .craft-row--wide,
-  .craft-row--standard {
+  .craft-row--dominant,
+  .craft-row--detail,
+  .craft-row--stack,
+  .craft-row--plate {
     grid-template-rows: min-content 1fr;
     align-content: start;
     column-gap: var(--space-2xl);
   }
 
-  .craft-row--wide .craft-row__head,
-  .craft-row--wide .craft-row__body,
-  .craft-row--standard .craft-row__head,
-  .craft-row--standard .craft-row__body { align-self: start; }
+  .craft-row--dominant .craft-row__head,
+  .craft-row--dominant .craft-row__body,
+  .craft-row--detail   .craft-row__head,
+  .craft-row--detail   .craft-row__body,
+  .craft-row--stack    .craft-row__head,
+  .craft-row--stack    .craft-row__body,
+  .craft-row--plate    .craft-row__head,
+  .craft-row--plate    .craft-row__body { align-self: start; }
 
-  .craft-row--wide {
-    grid-template-columns: 0.9fr 1.4fr;
+  /* The media must not stretch either, and this one is load-bearing.
+     A grid item defaults to align-self:stretch, which gave the figure a
+     definite height taken from the COPY column's height. .craft-row__shot
+     img sets height:100%, so it inherited that height and the role's
+     aspect-ratio was silently overridden — measured: the plate row
+     rendered 224x199 (1.06) instead of its intended 3:2. The narrow roles
+     are the ones that break, because only they are shorter than the copy
+     beside them. */
+  .craft-row--dominant .craft-row__media,
+  .craft-row--detail   .craft-row__media,
+  .craft-row--stack    .craft-row__media,
+  .craft-row--plate    .craft-row__media { align-self: start; }
+
+  /* 01 DOMINANT — the anchor. The only large image in the chapter, and
+     the widest media column, so the eye has one unambiguous entry point. */
+  .craft-row--dominant {
+    grid-template-columns: 0.78fr 1.52fr;
     grid-template-areas: "head media" "body media";
   }
-  .craft-row--wide .craft-row__head { grid-area: head; }
-  .craft-row--wide .craft-row__body { grid-area: body; }
-  .craft-row--wide .craft-row__media { grid-area: media; grid-template-columns: 1.6fr 1fr; }
+  .craft-row--dominant .craft-row__head { grid-area: head; }
+  .craft-row--dominant .craft-row__body { grid-area: body; }
+  .craft-row--dominant .craft-row__media { grid-area: media; }
 
-  .craft-row--standard {
-    grid-template-columns: 1.1fr 0.9fr;
+  /* 02 DETAIL — a single tight square, small and pushed to the far
+     right. After a large image, a deliberately small one reads as
+     restraint; the same photo at full width would just be another card.
+     Crop is held high in the frame to favour tile and fixtures over
+     floor. */
+  /* 0.34fr rendered 155px at 768px — small enough to read as a thumbnail
+     rather than a chosen crop. 0.40fr keeps it unmistakably the smallest
+     image in the chapter while giving the tilework something to be seen
+     in. Restraint has to look deliberate, not accidental. */
+  .craft-row--detail {
+    grid-template-columns: 1fr 0.4fr;
+    grid-template-areas: "head media" "body media";
+    align-items: start;
+  }
+  .craft-row--detail .craft-row__head { grid-area: head; }
+  .craft-row--detail .craft-row__body { grid-area: body; }
+  .craft-row--detail .craft-row__media { grid-area: media; }
+  .craft-row--detail .craft-row__shot img { object-position: center 34%; }
+
+  /* 03 STACK — two images at deliberately unequal size on a broken
+     baseline. The support image is indented and dropped so the pair
+     never reads as a two-column grid. */
+  .craft-row--stack {
+    grid-template-columns: 1.25fr 1fr;
     grid-template-areas: "media head" "media body";
   }
-  .craft-row--standard .craft-row__head { grid-area: head; }
-  .craft-row--standard .craft-row__body { grid-area: body; }
-  .craft-row--standard .craft-row__media { grid-area: media; }
-  .craft-row--standard .craft-row__shot img { aspect-ratio: 3 / 2; }
+  .craft-row--stack .craft-row__head { grid-area: head; }
+  .craft-row--stack .craft-row__body { grid-area: body; }
+  .craft-row--stack .craft-row__media {
+    grid-area: media;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .craft-row--stack .craft-row__shot--support {
+    width: 46%;
+    margin-left: auto;
+    margin-top: calc(-1 * var(--space-xl));
+    position: relative;
+    z-index: 2;
+    /* Print-mount border, the same device the featured spread uses. */
+    border: 7px solid var(--warm-white);
+    border-radius: var(--radius-photo);
+  }
+  .craft-row--stack .craft-row__shot--support img { aspect-ratio: 1 / 1; }
+
+  /* 04 PLATE — the quietest image row. Small, held left, generous void
+     to its right. This is the service with the least photographic
+     evidence, and the composition says so honestly rather than
+     inflating it. */
+  /* The plate is 3:2, so its height is set by its width — and at 0.42fr
+     that meant a 120px-tall band at 768px, which is not enough to show an
+     exterior addition at all. 0.55fr gives it presence while keeping it
+     firmly below the stack row. It is still the quietest photograph in
+     the chapter; it is no longer an illegible one. */
+  .craft-row--plate {
+    grid-template-columns: 0.55fr 1fr;
+    grid-template-areas: "media head" "media body";
+  }
+  .craft-row--plate .craft-row__head { grid-area: head; }
+  .craft-row--plate .craft-row__body { grid-area: body; }
+  .craft-row--plate .craft-row__media { grid-area: media; }
 
   .craft-row--plain { grid-template-columns: 0.9fr 1.4fr; column-gap: var(--space-2xl); }
 
-  .feature { grid-template-columns: 1.05fr 0.95fr; gap: var(--space-2xl); align-items: start; }
-  /* Slightly less tall than the 3:4 source so the featured project does
-     not dominate the page's overall length. */
+  /* Columns are unequal by a wide margin. 1.05fr/0.95fr is arithmetically
+     asymmetric but reads as a halved page — the eye cannot tell 5% apart,
+     so it resolves to a template. 1.35/0.85 is visibly a large image with
+     a caption column beside it. */
+  .feature { grid-template-columns: 1.35fr 0.85fr; gap: var(--space-2xl); align-items: start; }
   .feature__main img { aspect-ratio: 4 / 5; }
 
-  .tiles {
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-flow: dense;
-  }
-  .tile--tall { grid-row: span 2; grid-column: span 1; }
-  .tile--wide { grid-column: span 2; }
+  /* The whole roll on one line. Four across is the sheet; two rows of two
+     is a grid again. */
+  .tiles { grid-template-columns: repeat(4, 1fr); }
 
   .trust { grid-template-columns: 0.85fr 1.15fr; gap: var(--space-2xl); align-items: start; }
   .trust__evidence { grid-template-columns: 1.1fr 0.9fr; gap: var(--space-xl); align-items: start; }
@@ -1204,11 +1471,129 @@
   .begin { grid-template-columns: 0.85fr 1.15fr; gap: var(--space-2xl); align-items: start; }
 }
 
+/* ---- 04 · Tablet-only correction ------------------------------------
+   The role ratios above were composed against a desktop container and
+   are approved there. At 768px the same ratios divide a 705px container,
+   and the two image-led rows starve their copy: measured, the dominant
+   row's body ran at 21ch and the stack row's at 27ch. Below roughly 26ch
+   a two-sentence caption stops reading as a caption and starts reading
+   as a broken column.
+
+   Corrected here rather than in the shared 768+ block so the approved
+   desktop composition is untouched. A 96px gutter is also disproportionate
+   at this width — it was costing more than it bought.
+
+   The hierarchy is preserved deliberately: at 768px this yields images of
+   402 / 320 / 217 / 174px, still four clear descending steps with the
+   kitchen unambiguously dominant. The stack row gives up some width so
+   the dominant row does not have to. -------------------------------- */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .craft-row--dominant,
+  .craft-row--detail,
+  .craft-row--stack,
+  .craft-row--plate { column-gap: var(--space-xl); }
+
+  .craft-row--dominant { grid-template-columns: 0.92fr 1.45fr; }
+  .craft-row--stack { grid-template-columns: 0.95fr 1fr; }
+}
+
 @media (min-width: 1024px) {
   /* Clear the Datum rail on every chapter's inner container */
   .container,
   .arrival { padding-left: calc(var(--datum-x) + var(--datum-clear)); }
   .arrival__trust { padding-left: calc(var(--datum-x) + var(--datum-clear)); }
+
+  /* ---- The one edge-bleed on the homepage --------------------------
+     The hero photograph runs off the right edge of the viewport instead
+     of stopping at a container margin. This is the single most direct
+     signal that a person composed the page rather than filling a
+     template, and it is used exactly ONCE — if every chapter bled, the
+     device would stop meaning anything.
+
+     Chapter 05 deliberately does NOT bleed. A left bleed there would
+     collide with the Datum rail, and a second right bleed would spend
+     this device twice; 05 builds its scale from size and layering
+     instead. Below 1024px the hero reverts to the contained layout.
+
+     The copy column keeps its measure; only the media column escapes. */
+  .arrival {
+    grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
+    gap: var(--space-2xl);
+    padding-right: 0;
+  }
+
+  /* The bleed is achieved by removing the container's right padding, not
+     by a negative margin. A negative margin extends the document box and
+     produces a horizontal scrollbar (measured: 1464px document in a
+     1440px viewport); dropping the padding lets the media column end
+     exactly on the viewport edge with nothing to scroll to. */
+  .arrival__media img {
+    height: clamp(460px, 70vh, 680px);
+    /* Rounded only where an edge still exists. The bleeding right side
+       is square, because there is nothing there to round. */
+    border-radius: var(--radius-photo) 0 0 var(--radius-photo);
+  }
+
+  /* Hold the caption to a readable measure instead of letting it run the
+     full bled width. */
+  .arrival__media .plate { max-width: 34ch; }
+
+  /* ---- 05 · THE HELD FRAME — the homepage's signature -------------
+     The emotional centrepiece, built from three moves that appear here
+     and nowhere else on the site:
+
+       1. The largest photograph on the homepage. Sized by height, not
+          ratio, so it dominates regardless of what the column maths
+          resolves to.
+       2. The title on a white slab that CUTS INTO that photograph.
+          Type crossing an image is the single most unmistakably
+          art-directed gesture available, and spending it once is what
+          makes this chapter the one people remember.
+       3. The detail plate hung off the opposite (lower-left) corner, so
+          the two overlaps read as a diagonal rather than a stack.
+
+     No edge-bleed here — that device belongs to Chapter 01. This
+     composition earns its scale from size and layering instead. */
+
+  /* The sheet is far shorter than the old varied-tile grid, so the
+     chapter can afford real separation here. 48px left the detail plate
+     (which hangs below the frame) crowding the sheet's hairline, and a
+     crowded gap makes the two movements read as one composition — which
+     is the exact hierarchy this chapter is built to avoid. */
+  .feature { grid-template-columns: 1.4fr 0.8fr; column-gap: var(--space-2xl); margin-bottom: var(--space-2xl); }
+
+  .feature__main img {
+    height: min(78vh, 720px);
+    aspect-ratio: auto;
+  }
+
+  /* Drops the eyebrow and title roughly a fifth of the way down the
+     photograph. A slab that cuts in at the very top edge reads as a
+     caption bar bolted on; entering below the top edge reads as a
+     deliberate overlay. */
+  .feature__copy { padding-top: var(--space-2xl); }
+
+  /* How far the slab bites into the photograph. Large enough to be
+     unmistakably intentional — a 20px overlap looks like a rounding
+     error — and small enough to leave the image's subject readable. */
+  .feature__title {
+    --feature-cut: 96px;
+    position: relative;
+    z-index: 3;
+    margin-left: calc(-1 * (var(--space-2xl) + var(--feature-cut)));
+    margin-top: 0;
+    padding: var(--space-sm) 0 var(--space-sm) var(--space-md);
+    /* Square edges, deliberately. The slab is a cut through the
+       photograph, not a card resting on it, and a rounded corner would
+       announce the wrong metaphor. */
+    background: var(--warm-white);
+    max-width: none;
+  }
+
+  /* Smaller than the tablet plate. With the photograph this large, the
+     detail's job is to break the frame's bottom edge, not to be a
+     second image worth studying. */
+  .feature__detail { width: 34%; margin-top: -14%; }
 
   /* Track length is the chapter's whole budget. At 130vh the sticky
      stage holds one viewport and scrubs across the remaining 30vh,
@@ -1256,5 +1641,13 @@
 
 @media (min-width: 1280px) {
   .arrival { gap: var(--space-3xl); }
-  .feature__detail { margin-top: -22%; width: 46%; }
+
+  /* At full width the photograph gains height, so the plate can hang a
+     little deeper without losing contact with the frame it overlaps.
+     Its width stays put — this is the chapter's smallest image at every
+     breakpoint by design. */
+  .feature__detail { margin-top: -18%; }
+
+  /* More room, so the cut gets more decisive. */
+  .feature__title { --feature-cut: 128px; }
 }

@@ -4,27 +4,97 @@
   burgundy, ink black, and warm white/stone neutrals. Replaces the
   earlier generic gold/charcoal placeholder palette.
 
-  No external font requests: the stacks below lean on strong system
-  sans fallbacks at heavy weights for the display/architectural feel,
-  with a refined serif reserved for occasional short editorial lines.
-
-  docs/DESIGN_SYSTEM.md §5 specifies General Sans (display), Inter
-  (body), and Fraunces italic (editorial accent) as the target
-  typefaces. None of the three have font files in this repo yet
-  (public/assets/fonts/ does not exist) — per implementation-safety
-  instructions, they have NOT been downloaded or fabricated here.
-  System fallbacks below stay in place until real files are supplied.
-
-  To upgrade later: add self-hosted WOFF2 files under
-  public/assets/fonts/ (General Sans: Regular 400 + Semibold 600 +
-  Bold 700; Inter: Regular 400 + Medium 500; Fraunces: Italic 400
-  only — the doc uses it for short emotive lines exclusively), add
-  @font-face blocks above these variables referencing them with
-  font-display: swap, then update the three --font-* stacks below to
-  list the webfont first with the current stack kept as the fallback.
-  Never point at a third-party font CDN (keeps the CSP simple and
-  avoids leaking visitor requests to a third party).
+  The intended kit from docs/DESIGN_SYSTEM.md §5 is now installed and
+  self-hosted: General Sans (display), Inter (body), Fraunces italic
+  (editorial accent). Self-hosted rather than CDN-loaded so font-src
+  stays 'self' in the CSP (public/index.php) and no visitor request
+  leaks to a third party.
 */
+
+/* =====================================================
+   Typefaces — self-hosted WOFF2
+   =====================================================
+   Only the weights the CSS actually asks for are shipped. An audit of
+   every call site found:
+
+     --font-display  → h1-h6, .arrival__heading, .mobile-nav__list a.
+                       Two weights: Semibold 600 is the default heading
+                       weight and Bold 700 is reserved for three moments
+                       (see --fw-display below). No other weight is
+                       requested, so no other weight ships — adding one
+                       is a single file plus an @font-face block.
+     --font-sans     → body copy at 400/500/600/700. One variable file
+                       covers the whole range in 47 KB.
+     --font-serif    → italic 400 on the public site (.editorial-text and
+                       .approach__heading, its only two call sites there),
+                       and UPRIGHT 400 in admin.css (.admin-sidebar__brand,
+                       .admin-card__value, .auth-card__brand). Both
+                       instances therefore ship. The upright file costs
+                       the public site nothing: a browser only fetches a
+                       @font-face file when a rendered glyph needs it, and
+                       no public page sets an upright serif.
+
+                       Static instances rather than the variable italic,
+                       which is 80 KB alone (opsz 9-144, wght 400-700) and
+                       renders these few phrases identically.
+
+   The public site loads ~113 KB (General Sans 600 + 700, Inter, Fraunces
+   italic); the upright Fraunces adds 18 KB on admin pages only.
+   font-display: swap on all five.
+
+   Only General Sans 700 and Inter are preloaded — they render the first
+   screen. Semibold is not: the first heading that uses it sits below the
+   fold at every tested width, and a third preload would compete with the
+   two on the critical path for no gain. Measured CLS is 0 either way.
+
+   Licences: General Sans — ITF Free Font License. Inter and Fraunces —
+   SIL Open Font License 1.1. All three permit self-hosted commercial
+   use. See fonts/LICENSES.md. */
+
+/* Semibold is the DEFAULT heading weight and therefore the one that
+   renders most often. Bold is reserved for the three moments listed
+   against --fw-display-hero below. */
+@font-face {
+  font-family: "General Sans";
+  src: url("../fonts/general-sans-600.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "General Sans";
+  src: url("../fonts/general-sans-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter-latin-var.woff2") format("woff2");
+  /* Variable: one file answers every weight the system requests. */
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("../fonts/fraunces-italic-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Upright — admin brand marks only. Never fetched by the public site. */
+@font-face {
+  font-family: "Fraunces";
+  src: url("../fonts/fraunces-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   /* ---- Brand color system (source of truth) ----
@@ -111,20 +181,34 @@
   --color-surface-muted: var(--stone);
   --color-border: var(--line-on-light);
 
-  /* ---- Typography ---- */
-  /* Display: bold architectural headings (H1/H2, hero). Weight does
-     most of the work since a true "strong grotesk" isn't guaranteed
-     without a webfont — 800/900 weight + tight tracking on solid
-     system faces already reads as confident and modern. */
-  --font-display: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Arial, sans-serif;
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  /* Refined serif — used sparingly for short editorial statements only,
-     never for primary headings. */
-  --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
-  /* Condensed — optional, for uppercase labels that want to echo the
-     logo's condensed wordmark. Falls back to --font-sans (with tight
-     letter-spacing) wherever a condensed face isn't installed. */
-  --font-condensed: "Arial Narrow", "Roboto Condensed", var(--font-sans);
+  /* ---- Typography ----
+     Each stack keeps its previous system fallback, so a failed or
+     blocked font request degrades to what the site shipped before
+     rather than to Times. */
+
+  /* Display: architectural headings (H1-H6, hero, mobile nav). */
+  --font-display: "General Sans", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Arial, sans-serif;
+
+  /* Body. */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* Refined serif — short editorial statements only, never primary
+     headings, and italic in both of its two call sites. */
+  --font-serif: "Fraunces", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+
+  /* Condensed — the 11-12px uppercase technical labels (eyebrows, plate
+     captions, spec-table keys, contact-sheet meta): 19 call sites.
+
+     The brand kit has no condensed face, and the previous stack led with
+     Arial Narrow, which ships on Windows but not macOS. That made every
+     small label on the site render condensed for some visitors and not
+     for others — a real inconsistency, not a graceful fallback. Now that
+     a deliberate kit is installed, this points at Inter so the register
+     is identical everywhere; the uppercase + letter-spacing already set
+     at each call site is what carries the "technical annotation" read,
+     not the narrow width. Swap in a real condensed face here if one is
+     ever licensed. */
+  --font-condensed: var(--font-sans);
 
   /* Reduced, calmer type scale. Desktop H1 tops out at 64px (was
      72px); section headings top out at 44px (was 48px fixed). Card
@@ -147,7 +231,27 @@
   --ls-tight: -0.01em;
   --ls-display: -0.02em;
 
-  --fw-display: 700;
+  /* ---- Weights ----
+     Display weight is a HIERARCHY, not a constant. Every heading was
+     previously 700, which is why the page read as flat: when everything
+     is bold, nothing is emphasised.
+
+     --fw-display       600. The default heading weight. h2-h6 site-wide.
+     --fw-display-hero  700. Reserved, and deliberately scarce. Three
+                        places on the homepage earn it:
+                          1. the hero h1 (the page's entry point)
+                          2. Chapter 03's statement — the designated
+                             signature moment in the creative direction
+                          3. Chapter 05's featured title, which cuts into
+                             the photograph and needs the weight to hold
+                             that edge
+                        Adding a fourth means removing one. If Bold shows
+                        up on ordinary section headings again, the whole
+                        distinction is gone.
+
+     Both weights are real files — no synthetic bolding. */
+  --fw-display: 600;
+  --fw-display-hero: 700;
   --fw-semibold: 600;
   --fw-medium: 500;
 
@@ -192,6 +296,15 @@
   --radius-md: 3px;
   --radius-lg: 6px;
   --radius-pill: 999px;
+
+  /* Editorial photography sits slightly softer than UI chrome. 3px reads
+     as a rendering artefact — neither square nor round — while 7px reads
+     as a deliberate print corner, the way a mounted plate does. Reserved
+     for photographs; buttons and inputs keep --radius-md.
+
+     Where an image deliberately bleeds off a viewport edge, the radius is
+     applied only to the corners that still have an edge to round. */
+  --radius-photo: 7px;
 
   /* Shadow — used sparingly (modal only) */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.24);

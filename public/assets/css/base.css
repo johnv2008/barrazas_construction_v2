@@ -85,9 +85,13 @@ h6 {
   font-weight: var(--fw-display);
 }
 
+/* h1 is the only heading level that is Bold by default. h2-h6 inherit
+   --fw-display (600) from the rule above; the two other Bold moments opt
+   in explicitly in frontend.css. */
 h1 {
   font-size: var(--fs-h1);
   line-height: var(--lh-tight);
+  font-weight: var(--fw-display-hero);
 }
 
 /* Desktop clamp bottoms out at 52px, which reads too large on small

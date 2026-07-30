@@ -236,7 +236,7 @@ final class HomeController extends Controller
                         'support' => asset('images/projects/transformation-complete.jpg'),
                         'supportAlt' => 'Kitchen counter detail with quartz surface and tile backsplash',
                         'href' => '#projects',
-                        'layout' => 'wide',
+                        'layout' => 'dominant',
                     ],
                     [
                         'n' => '02',
@@ -249,7 +249,7 @@ final class HomeController extends Controller
                         'support' => asset('images/projects/intro-detail.jpg'),
                         'supportAlt' => 'Tub surround in large-format marble-look panels with a black framed shower door',
                         'href' => '#projects',
-                        'layout' => 'standard',
+                        'layout' => 'detail',
                     ],
                     [
                         'n' => '03',
@@ -261,7 +261,7 @@ final class HomeController extends Controller
                         'support' => asset('images/projects/project-supporting-1.jpg'),
                         'supportAlt' => 'Renovated kitchen with white shaker cabinetry and marble tile backsplash',
                         'href' => '#projects',
-                        'layout' => 'wide',
+                        'layout' => 'stack',
                     ],
                     [
                         'n' => '04',
@@ -273,7 +273,7 @@ final class HomeController extends Controller
                         'support' => null,
                         'supportAlt' => '',
                         'href' => '#contact',
-                        'layout' => 'standard',
+                        'layout' => 'plate',
                     ],
                     [
                         // No ADU photography exists in the library yet, so this
@@ -316,36 +316,37 @@ final class HomeController extends Controller
                     ],
                     'href' => '#contact',
                 ],
-                // Deliberately mixed sizes — `tall`, `wide`, `square` drive a
-                // magazine composition rather than an even grid.
+                // Filing label for the contact sheet, not a second heading.
+                'sheetLabel' => 'Also completed — Tuolumne County',
+                // A contact sheet, not a gallery: four frames at one size.
+                // Varied tile sizes here competed with the featured spread
+                // above and turned the chapter into two focal points. Every
+                // source in the library is a 3:4 portrait, so the sheet uses
+                // that ratio rather than cropping portraits into landscape.
                 'tiles' => [
                     [
                         'image' => asset('images/projects/hero-inset.jpg'),
                         'imageAlt' => 'Carrara marble walk-in shower with a built-in niche',
                         'title' => 'Marble Walk-In Shower',
                         'meta' => 'Bathroom',
-                        'size' => 'tall',
                     ],
                     [
                         'image' => asset('images/projects/service-wholehome-detail.jpg'),
                         'imageAlt' => 'Renovated kitchen corner with white cabinetry and a new refrigerator',
                         'title' => 'Kitchen & Hallway',
                         'meta' => 'Whole-home renovation',
-                        'size' => 'square',
                     ],
                     [
                         'image' => asset('images/projects/contact-sheet-bath-vanity.jpg'),
                         'imageAlt' => 'Bathroom vanity with framed mirror and new lighting',
                         'title' => 'Vanity & Lighting',
                         'meta' => 'Bathroom',
-                        'size' => 'square',
                     ],
                     [
                         'image' => asset('images/projects/contact-sheet-bath-tub.jpg'),
                         'imageAlt' => 'Remodeled bathroom with a new tub surround and plank flooring',
                         'title' => 'Family Bathroom',
                         'meta' => 'Whole-home renovation',
-                        'size' => 'wide',
                     ],
                 ],
             ],

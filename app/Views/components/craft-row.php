@@ -2,12 +2,19 @@
 /**
  * A single service in chapter 04.
  *
- * Deliberately NOT a card. Three layouts share this component so the
- * five services never resolve into a matching grid:
+ * Deliberately NOT a card. Five layouts share this component, and each
+ * row gets a different image ROLE rather than a different side of the
+ * page — varying only the side while every photograph stays the same
+ * 4:3 rectangle still reads as a list of cards. Descending weight:
  *
- *   wide     — large lead image plus a supporting image, copy left
- *   standard — single image, copy right, reversed reading direction
+ *   dominant — one large lead image, the anchor of the chapter
+ *   detail   — a single tight square crop. Craftsmanship, not the room
+ *   stack    — two images at deliberately unequal size, offset
+ *   plate    — one small wide plate, the quietest image row
  *   plain    — typographic only, no image
+ *
+ * No two adjacent rows share a role, and only "dominant" carries a large
+ * image, so the chapter always has one clear focal point.
  *
  * "plain" exists because there is no ADU photography in the library
  * yet. Rather than padding the row with an unrelated photo, it becomes
@@ -19,8 +26,14 @@
  * Params: $item — one entry from $craft['items']
  */
 $item = $item ?? [];
-$layout = $item['layout'] ?? 'standard';
+$layout = $item['layout'] ?? 'plate';
 $hasImage = !empty($item['image']);
+
+// Only the stacked role uses a second photograph. The others hold their
+// hierarchy by having exactly one, so the support image is withheld
+// rather than removed from the data — it stays available if a row's
+// role changes later.
+$showSupport = $layout === 'stack' && !empty($item['support']);
 ?>
 <article class="craft-row craft-row--<?= e($layout) ?>" data-reveal>
   <div class="craft-row__head">
@@ -40,12 +53,15 @@ $hasImage = !empty($item['image']);
       <figure class="craft-row__shot">
         <?= responsive_image($item['image'], [
               'alt'   => $item['imageAlt'] ?? '',
-              'sizes' => $layout === 'wide'
-                  ? '(min-width: 1024px) 40vw, 92vw'
-                  : '(min-width: 1024px) 30vw, 88vw',
+              'sizes' => match ($layout) {
+                  'dominant' => '(min-width: 1024px) 46vw, 92vw',
+                  'detail'   => '(min-width: 1024px) 20vw, 60vw',
+                  'stack'    => '(min-width: 1024px) 34vw, 88vw',
+                  default    => '(min-width: 1024px) 26vw, 80vw',
+              },
         ]) ?>
       </figure>
-      <?php if (!empty($item['support'])): ?>
+      <?php if ($showSupport): ?>
         <figure class="craft-row__shot craft-row__shot--support">
           <?= responsive_image($item['support'], [
                 'alt'   => $item['supportAlt'] ?? '',

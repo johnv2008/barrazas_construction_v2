@@ -23,6 +23,25 @@
   ?>
   <script nonce="<?= e(csp_nonce()) ?>">document.documentElement.className += ' js';</script>
 
+  <?php
+    // Fonts are self-hosted (CSP font-src 'self'), so there is no
+    // third-party origin to preconnect to. These two carry the first
+    // screen — General Sans the headline, Inter every word under it —
+    // and without a preload they are not discovered until the CSS has
+    // parsed, which lands them after first paint and shows a visible
+    // swap on the largest text on the page.
+    //
+    // crossorigin is required even though these are same-origin: fonts
+    // are always fetched in CORS mode, and a preload whose mode does not
+    // match the real request is discarded and fetched twice.
+    //
+    // Fraunces is deliberately NOT preloaded. It appears twice, both
+    // below the fold, and preloading it would compete with the two
+    // fonts that are on the critical path.
+  ?>
+  <link rel="preload" href="<?= e(asset('fonts/general-sans-700.woff2')) ?>" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="<?= e(asset('fonts/inter-latin-var.woff2')) ?>" as="font" type="font/woff2" crossorigin>
+
   <link rel="stylesheet" href="<?= e(asset('css/variables.css')) ?>">
   <link rel="stylesheet" href="<?= e(asset('css/base.css')) ?>">
   <link rel="stylesheet" href="<?= e(asset('css/components.css')) ?>">

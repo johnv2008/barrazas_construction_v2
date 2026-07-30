@@ -183,7 +183,23 @@
 
 
 <!-- ============ 05 · Selected Work ======================================
-     Editorial spread plus a deliberately uneven tile composition. -->
+     The homepage's emotional centrepiece, then the contact sheet.
+
+     Two movements, deliberately unequal:
+
+       1. THE HELD FRAME — the largest photograph on the site, with the
+          project title crossing onto it and a small detail plate hung
+          off the opposite corner. Type over photography appears exactly
+          here and nowhere else; that is what makes it the signature.
+
+       2. THE CONTACT SHEET — four identical small frames. Not a gallery
+          of varied tiles competing with the frame above, but evidence
+          filed underneath it. Every source in the library is a 3:4
+          portrait, so the sheet uses that ratio honestly instead of
+          cropping portraits into landscape tiles.
+
+     The hierarchy is the argument: one photograph you are meant to feel,
+     one you are meant to notice, four you are meant to trust. -->
 <section class="ch ch--work" id="projects" data-chapter="05" data-chapter-label="Selected Work">
   <div class="container">
     <div class="section-head">
@@ -197,21 +213,24 @@
         <figure class="feature__main" data-reveal-media>
           <?= responsive_image($f['image'], [
                 'alt'   => $f['imageAlt'],
-                'sizes' => '(min-width: 1024px) 52vw, 100vw',
+                'sizes' => '(min-width: 1024px) 58vw, 100vw',
           ]) ?>
         </figure>
         <figure class="feature__detail" data-reveal-media>
           <?= responsive_image($f['detail'], [
                 'alt'   => $f['detailAlt'],
-                'sizes' => '(min-width: 1024px) 24vw, 46vw',
+                'sizes' => '(min-width: 1024px) 20vw, 42vw',
           ]) ?>
         </figure>
       </div>
 
       <div class="feature__copy">
         <span class="eyebrow eyebrow--accent"><?= e($f['label']) ?></span>
-        <h3 data-reveal><?= e($f['title']) ?></h3>
-        <p data-reveal><?= e($f['body']) ?></p>
+        <!-- The slab that crosses the photograph. It stays here in the
+             copy column so reading order and semantics are untouched —
+             only its painted position changes, at >=1024px only. -->
+        <h3 class="feature__title" data-reveal><?= e($f['title']) ?></h3>
+        <p class="feature__body" data-reveal><?= e($f['body']) ?></p>
         <dl class="feature__meta">
           <?php foreach ($f['meta'] as $row): ?>
             <div>
@@ -224,19 +243,27 @@
       </div>
     </article>
 
-    <div class="tiles">
-      <?php foreach ($work['tiles'] as $tile): ?>
-        <figure class="tile tile--<?= e($tile['size']) ?>" data-reveal-media>
-          <?= responsive_image($tile['image'], [
-                'alt'   => $tile['imageAlt'],
-                'sizes' => '(min-width: 1024px) 32vw, 50vw',
-          ]) ?>
-          <figcaption>
-            <span class="tile__title"><?= e($tile['title']) ?></span>
-            <span class="tile__meta"><?= e($tile['meta']) ?></span>
-          </figcaption>
-        </figure>
-      <?php endforeach; ?>
+    <!-- The contact sheet. The heading is the filing label, not a second
+         section title — hence the condensed caps rather than an h3. -->
+    <div class="sheet">
+      <p class="sheet__label"><?= e($work['sheetLabel']) ?></p>
+      <div class="tiles">
+        <?php foreach ($work['tiles'] as $i => $tile): ?>
+          <figure class="tile" data-reveal-media>
+            <div class="tile__frame">
+              <?= responsive_image($tile['image'], [
+                    'alt'   => $tile['imageAlt'],
+                    'sizes' => '(min-width: 1024px) 20vw, 44vw',
+              ]) ?>
+            </div>
+            <figcaption>
+              <span class="tile__index" aria-hidden="true"><?= sprintf('%02d', $i + 1) ?></span>
+              <span class="tile__title"><?= e($tile['title']) ?></span>
+              <span class="tile__meta"><?= e($tile['meta']) ?></span>
+            </figcaption>
+          </figure>
+        <?php endforeach; ?>
+      </div>
     </div>
   </div>
 </section>
