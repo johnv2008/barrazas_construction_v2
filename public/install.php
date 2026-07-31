@@ -24,7 +24,27 @@ use App\Services\ActivityLogService;
 use App\Services\SessionService;
 use App\Validation\Validator;
 
-$request = require dirname(__DIR__) . '/bootstrap/app.php';
+/**
+ * Locate bootstrap/ — it may sit ABOVE the web root or INSIDE it.
+ *
+ * The preferred layout keeps app/, bootstrap/, database/, routes/ and
+ * storage/ one level above the document root, where the web server cannot
+ * reach them at all. Some shared hosts (one.com among them) do not let you
+ * upload above the web root through their File Manager, so that layout is
+ * simply unavailable to those accounts.
+ *
+ * Rather than make the person deploying fight their control panel, both
+ * layouts are supported: prefer the sibling location, fall back to the
+ * in-root one. APP_ROOT itself needs no special case — bootstrap/ is always
+ * one level beneath it, so dirname(__DIR__) inside bootstrap/app.php
+ * resolves correctly either way.
+ *
+ * The in-root layout is safe because every one of those folders ships a
+ * `Require all denied` .htaccess, and public/.htaccess additionally refuses
+ * to serve dotfiles and .env/.sql/.log/.md by extension.
+ */
+$appRoot = is_file(dirname(__DIR__) . '/bootstrap/app.php') ? dirname(__DIR__) : __DIR__;
+$request = require $appRoot . '/bootstrap/app.php';
 
 $cspNonce = Nonce::get();
 header('X-Content-Type-Options: nosniff');
