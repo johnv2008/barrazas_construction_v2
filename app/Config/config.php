@@ -60,6 +60,22 @@ return [
         'license_authority' => Env::get('BUSINESS_LICENSE_AUTHORITY', 'CSLB'),
     ],
 
+    /**
+     * Google Analytics 4.
+     *
+     * Deliberately config-driven rather than pasted into the layout:
+     *   - it stays out of version control, so a fork or a staging copy does
+     *     not silently report into the live property;
+     *   - it can be turned off by clearing one value, with no code edit;
+     *   - and the tag only renders in production (see components/analytics),
+     *     so local development never pollutes the data.
+     *
+     * Adding it widens the CSP — see the note in public/index.php.
+     */
+    'analytics' => [
+        'ga_measurement_id' => Env::get('GA_MEASUREMENT_ID', ''),
+    ],
+
     'security' => [
         // Failed attempts (per account) before a temporary lockout is applied.
         'max_failed_logins' => 5,

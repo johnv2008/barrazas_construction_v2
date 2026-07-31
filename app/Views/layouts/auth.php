@@ -6,6 +6,8 @@
   <title><?= e($title ?? 'Sign In') ?> · Barraza's Construction Admin</title>
   <meta name="robots" content="noindex, nofollow">
 
+  <?php \App\Core\View::component('head-icons'); ?>
+
   <link rel="stylesheet" href="<?= e(asset('css/variables.css')) ?>">
   <link rel="stylesheet" href="<?= e(asset('css/base.css')) ?>">
   <link rel="stylesheet" href="<?= e(asset('css/components.css')) ?>">

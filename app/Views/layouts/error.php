@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <?php \App\Core\View::component('head-icons'); ?>
   <title><?= e($title ?? 'Error') ?> · Barraza's Construction</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="<?= e(asset('css/variables.css')) ?>">

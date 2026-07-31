@@ -1,0 +1,14 @@
+{
+  "name": "Barraza's Construction",
+  "short_name": "Barraza's",
+  "description": "Residential remodeling and renovation in Tuolumne County, California.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f4ef",
+  "theme_color": "#800020",
+  "icons": [
+    { "src": "/assets/images/brand/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/images/brand/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/images/brand/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

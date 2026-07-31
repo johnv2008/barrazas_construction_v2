@@ -7,6 +7,8 @@
   <meta name="description" content="<?= e($metaDescription ?? '') ?>">
   <link rel="canonical" href="<?= e(base_url(current_path())) ?>">
 
+  <?php \App\Core\View::component('head-icons'); ?>
+
   <meta property="og:type" content="website">
   <meta property="og:title" content="<?= e($title ?? config('app.name')) ?>">
   <meta property="og:description" content="<?= e($metaDescription ?? '') ?>">
@@ -22,7 +24,6 @@
   <?php endif; ?>
 
   <meta name="robots" content="index, follow">
-  <meta name="theme-color" content="#17191d">
 
   <?php
     // Marks that scripting is available BEFORE first paint. The reveal
@@ -131,5 +132,7 @@
   <?php \App\Core\View::component('footer'); ?>
 
   <script src="<?= e(asset('js/app.js')) ?>" defer></script>
+
+  <?php \App\Core\View::component('analytics'); ?>
 </body>
 </html>
