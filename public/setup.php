@@ -105,13 +105,40 @@ function setup_complete(string $lockFile): bool
         return true;
     }
 
-    // Fallback if the lock file was lost: an existing administrator row
-    // is equally conclusive. Wrapped because the database may legitimately
-    // not exist yet, which is not an error at this stage.
+    // Fallback if the lock file was lost: an existing administrator row is
+    // equally conclusive.
+    //
+    // This probe must never block. On a fresh upload there is no .env, so
+    // the config falls back to 127.0.0.1 — and a host that DROPS packets to
+    // that address rather than refusing them leaves PDO waiting for the
+    // system timeout. Observed in production: setup.php hung past twenty
+    // seconds and returned nothing at all, before rendering a single byte.
+    //
+    // Two guards. Skip entirely unless a database is actually configured,
+    // and cap the connect attempt at three seconds if one is.
+    $name = (string) config('database.name', '');
+
+    if ($name === '' || !is_file(APP_ROOT . '/.env')) {
+        return false;
+    }
+
     try {
-        $admins = new \App\Models\AdminUser();
-        return $admins->countAdmins() > 0;
+        $pdo = new PDO(
+            sprintf(
+                'mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4',
+                config('database.host', 'localhost'),
+                config('database.port', '3306'),
+                $name
+            ),
+            (string) config('database.user', ''),
+            (string) config('database.password', ''),
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_TIMEOUT => 3]
+        );
+
+        return (int) $pdo->query('SELECT COUNT(*) FROM admin_users')->fetchColumn() > 0;
     } catch (\Throwable) {
+        // No database, no tables, or unreachable — none of which mean
+        // "already installed".
         return false;
     }
 }
@@ -262,6 +289,8 @@ if ($request->isPost()) {
                 $pdo = new PDO($dsn, $db['user'], $db['pass'], [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_EMULATE_PREPARES => false,
+                    // Fail fast on a wrong host rather than hanging the browser.
+                    PDO::ATTR_TIMEOUT => 5,
                 ]);
 
                 $result = setup_import_schema($pdo, $schemaFile);
