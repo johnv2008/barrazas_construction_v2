@@ -352,3 +352,82 @@
   color: var(--color-gold);
   font-weight: 600;
 }
+
+/* ---------------------------------------------------------------------
+   Setup wizard (public/setup.php)
+   ---------------------------------------------------------------------
+   Seen once, by one person, before the site exists. Styled enough to look
+   like the brand and no further — it is deleted immediately afterwards. */
+
+.setup-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs) var(--space-md);
+  list-style: none;
+  margin: 0 0 var(--space-lg);
+  padding: 0 0 var(--space-md);
+  border-bottom: 1px solid var(--color-border-on-dark);
+  font-family: var(--font-condensed);
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  color: var(--soft-gray);
+}
+
+.setup-steps li { display: flex; align-items: center; gap: var(--space-2xs); }
+
+.setup-steps span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-pill);
+  font-size: 0.625rem;
+}
+
+.setup-steps [aria-current="step"] { color: var(--warm-white); }
+.setup-steps [data-done="true"] { color: var(--brand-burgundy-light); }
+
+.setup-lede {
+  color: var(--soft-gray);
+  margin: 0 0 var(--space-lg);
+  max-width: 46ch;
+}
+
+.setup-checks { list-style: none; margin: 0 0 var(--space-lg); padding: 0; }
+
+.setup-checks li {
+  display: grid;
+  grid-template-columns: 1.5rem 1fr;
+  gap: var(--space-2xs) var(--space-sm);
+  padding: var(--space-xs) 0;
+  border-bottom: 1px solid var(--color-border-on-dark);
+}
+
+.setup-checks__mark {
+  grid-row: span 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.setup-checks [data-ok="true"] .setup-checks__mark { background: rgba(75, 122, 82, 0.2); color: #7fbf88; }
+.setup-checks [data-ok="false"] .setup-checks__mark { background: rgba(161, 51, 42, 0.25); color: #e08b84; }
+
+.setup-checks__label { color: var(--warm-white); align-self: center; }
+
+.setup-checks__detail {
+  grid-column: 2;
+  font-size: 0.8125rem;
+  color: var(--soft-gray);
+}
+
+.setup-checks [data-ok="true"] .setup-checks__detail { color: var(--soft-gray); }
+.setup-checks [data-ok="false"] .setup-checks__detail { color: #e08b84; }
