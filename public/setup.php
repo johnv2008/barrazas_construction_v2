@@ -181,42 +181,187 @@ function setup_requirements_met(array $reqs): bool
 }
 
 /**
- * Split and execute schema.sql.
+ * Split a SQL file into statements, respecting quoting.
  *
- * A naive explode(';') is safe here and deliberately verified: the schema
- * contains no stored procedures, triggers or DELIMITER blocks, so no
- * statement carries an embedded semicolon. If that ever changes this
- * function must change with it.
+ * The first version of this used explode(';') with a comment asserting it
+ * was safe "because the schema contains no stored procedures, triggers or
+ * DELIMITER blocks". That reasoning checked the wrong thing and the
+ * assertion was false: schema.sql line 37 carries
  *
- * @return array{tables:int, errors:array<int,string>}
+ *   COMMENT 'sha256 hex of the raw token; raw token is never stored'
+ *
+ * — a semicolon inside a string literal. explode() cut the CREATE TABLE in
+ * half and MariaDB reported a syntax error near the fragment, which is
+ * exactly what a user hit in production.
+ *
+ * This scans character by character and only treats a semicolon as a
+ * terminator when it is outside single quotes, double quotes, backticks,
+ * a -- line comment and a block comment. Doubled quotes ('') and
+ * backslash escapes are both handled.
+ *
+ * @return array<int, string>
+ */
+function setup_split_sql(string $sql): array
+{
+    $statements = [];
+    $buffer = '';
+    $len = strlen($sql);
+
+    $inSingle = false;
+    $inDouble = false;
+    $inBacktick = false;
+    $inLineComment = false;
+    $inBlockComment = false;
+
+    for ($i = 0; $i < $len; $i++) {
+        $ch = $sql[$i];
+        $next = $i + 1 < $len ? $sql[$i + 1] : '';
+
+        // --- inside a comment: consume until it closes ---
+        if ($inLineComment) {
+            if ($ch === "\n") {
+                $inLineComment = false;
+                $buffer .= $ch;
+            }
+            continue;
+        }
+
+        if ($inBlockComment) {
+            if ($ch === '*' && $next === '/') {
+                $inBlockComment = false;
+                $i++;
+            }
+            continue;
+        }
+
+        // --- inside a string: only the matching quote matters ---
+        if ($inSingle || $inDouble || $inBacktick) {
+            $buffer .= $ch;
+
+            if ($ch === '\\' && ($inSingle || $inDouble)) {
+                // Escaped character - consume the next one verbatim.
+                if ($next !== '') {
+                    $buffer .= $next;
+                    $i++;
+                }
+
+                continue;
+            }
+
+            if ($inSingle && $ch === "'") {
+                // '' is an escaped quote, not a terminator.
+                if ($next === "'") {
+                    $buffer .= $next;
+                    $i++;
+                } else {
+                    $inSingle = false;
+                }
+            } elseif ($inDouble && $ch === '"') {
+                if ($next === '"') {
+                    $buffer .= $next;
+                    $i++;
+                } else {
+                    $inDouble = false;
+                }
+            } elseif ($inBacktick && $ch === '`') {
+                $inBacktick = false;
+            }
+
+            continue;
+        }
+
+        // --- outside any string ---
+        if ($ch === '-' && $next === '-') {
+            $inLineComment = true;
+            $i++;
+            continue;
+        }
+
+        if ($ch === '/' && $next === '*') {
+            $inBlockComment = true;
+            $i++;
+            continue;
+        }
+
+        if ($ch === "'") {
+            $inSingle = true;
+            $buffer .= $ch;
+            continue;
+        }
+
+        if ($ch === '"') {
+            $inDouble = true;
+            $buffer .= $ch;
+            continue;
+        }
+
+        if ($ch === '`') {
+            $inBacktick = true;
+            $buffer .= $ch;
+            continue;
+        }
+
+        if ($ch === ';') {
+            $trimmed = trim($buffer);
+
+            if ($trimmed !== '') {
+                $statements[] = $trimmed;
+            }
+
+            $buffer = '';
+            continue;
+        }
+
+        $buffer .= $ch;
+    }
+
+    $trimmed = trim($buffer);
+
+    if ($trimmed !== '') {
+        $statements[] = $trimmed;
+    }
+
+    return $statements;
+}
+
+/**
+ * Execute schema.sql and report what actually landed.
+ *
+ * Every CREATE is "IF NOT EXISTS", so running this twice is safe - which
+ * matters, because a partially-failed first attempt should be fixable by
+ * simply trying again rather than by dropping the database.
+ *
+ * @return array{tables:int, missing:array<int,string>, errors:array<int,string>}
  */
 function setup_import_schema(PDO $pdo, string $schemaFile): array
 {
     $sql = (string) file_get_contents($schemaFile);
-
-    // Strip line comments so a trailing "-- ...;" cannot split a statement.
-    $sql = preg_replace('/^\s*--.*$/m', '', $sql) ?? $sql;
-
-    $statements = array_filter(
-        array_map('trim', explode(';', $sql)),
-        static fn (string $s): bool => $s !== ''
-    );
-
     $errors = [];
 
-    foreach ($statements as $statement) {
+    foreach (setup_split_sql($sql) as $statement) {
         try {
             $pdo->exec($statement);
         } catch (PDOException $e) {
-            // CREATE TABLE IF NOT EXISTS is idempotent, so a genuine error
-            // here is worth surfacing rather than swallowing.
             $errors[] = $e->getMessage();
         }
     }
 
-    $tables = (int) $pdo->query('SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = DATABASE()')->fetchColumn();
+    // Verify by name, not by count: a table count alone cannot tell you
+    // WHICH one failed, and that is the only useful thing to report.
+    $expected = [];
 
-    return ['tables' => $tables, 'errors' => $errors];
+    if (preg_match_all('/CREATE TABLE IF NOT EXISTS\s+`?([a-z_]+)`?/i', $sql, $m)) {
+        $expected = $m[1];
+    }
+
+    $present = $pdo->query(
+        'SELECT table_name FROM information_schema.tables WHERE table_schema = DATABASE()'
+    )->fetchAll(PDO::FETCH_COLUMN) ?: [];
+
+    $present = array_map('strtolower', $present);
+    $missing = array_values(array_diff(array_map('strtolower', $expected), $present));
+
+    return ['tables' => count($present), 'missing' => $missing, 'errors' => $errors];
 }
 
 /**
@@ -295,15 +440,22 @@ if ($request->isPost()) {
 
                 $result = setup_import_schema($pdo, $schemaFile);
 
-                if ($result['errors'] !== []) {
-                    $errors[] = 'Connected, but the schema import reported errors: ' . implode(' / ', array_slice($result['errors'], 0, 3));
+                if ($result['missing'] !== []) {
+                    $errors[] = 'Connected, but these tables were not created: '
+                        . implode(', ', $result['missing'])
+                        . '. Check that the user has ALL PRIVILEGES on this database, then try again '
+                        . '- the import is safe to re-run.';
+
+                    if ($result['errors'] !== []) {
+                        $errors[] = 'Database said: ' . $result['errors'][0];
+                    }
                 } elseif ($result['tables'] < 1) {
                     $errors[] = 'Connected, but no tables were created. Check that the user has ALL PRIVILEGES on this database.';
                 } else {
                     $state['db'] = $db;
                     $state['tables'] = $result['tables'];
                     $_SESSION['setup'] = $state;
-                    $notice = "Connected and imported {$result['tables']} tables.";
+                    $notice = "Connected. All {$result['tables']} tables are present.";
                     $step = 3;
                 }
             } catch (PDOException $e) {
