@@ -42,6 +42,8 @@ final class HomeController extends Controller
 
         echo '  <url><loc>' . e(base_url('privacy')) . '</loc></url>' . "
 ";
+        echo '  <url><loc>' . e(base_url('terms')) . '</loc></url>' . "
+";
 
         foreach (\App\Content\Catalog::publishedServiceSlugs() as $slug) {
             echo '  <url><loc>' . e(base_url('services/' . $slug)) . '</loc></url>' . "\n";
@@ -132,7 +134,13 @@ final class HomeController extends Controller
             // ---------- 01 ARRIVAL — aspiration first ----------
             'hero' => [
                 'eyebrow' => 'Tuolumne County, California',
-                'heading' => 'Your home, the way you always meant to live in it.',
+                // Replaced at the owner's request: the previous line ("Your home, the
+                // way you always meant to live in it") asked the reader to parse
+                // "the way you meant to live in it", which is a sentence you have to
+                // read twice. This one states the offer in plain terms and is
+                // specific to REMODELING rather than building — the parallel
+                // between the two halves is what makes it land in one pass.
+                'heading' => 'The house you have, made into the house you wanted.',
                 'lead' => 'Kitchen, bathroom, and whole-home remodeling for foothill homeowners '
                     . 'in Jamestown, Sonora, and across Tuolumne County.',
                 'primaryCta' => ['label' => 'Start your project', 'href' => '#contact'],

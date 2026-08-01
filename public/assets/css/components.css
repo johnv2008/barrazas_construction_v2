@@ -1002,27 +1002,37 @@ select.form-control option { color: var(--ink-black); background: var(--pure-whi
 
 /* ---- Image frames — Design System v1.0 ------------------------------
    A photograph that has not arrived yet should read as a held space, not
-   as a hole. Some frames already carried `background: var(--stone)` and
-   were acting as accidental placeholders; the hero frames had none and
-   flashed white before the image painted.
+   as a hole.
 
-   One rule, applied wherever a figure holds a photograph. It costs
-   nothing, needs no markup, and means the layout looks composed at every
-   stage of loading rather than only at the end. */
-.arrival__media,
-.approach__media,
-.trust__media,
-.feature__main,
-.feature__detail,
-.proof__frame,
-.craft-row__shot,
-.svc-arrival__media,
-.prj-arrival__media,
-.svc-featured__media,
-.prj-doc__shot {
+   The placeholder goes on the IMAGE, not on the figure around it. The
+   first version styled the figure, and several of those figures also
+   contain a caption — so the stone ground extended down behind the
+   caption text, which is deliberately flush-left with no side padding
+   because it is a credit line rather than a box. The result was a beige
+   panel wrapped tight around the words. Reported from the live site.
+
+   On the image itself the ground is visible only while the file is in
+   flight, which is the whole point, and it cannot leak into any sibling.
+   Radius and overflow are NOT set here: every one of these already
+   defines its own, and repeating them was what made the figure look like
+   a container in the first place. */
+.arrival__media img,
+.approach__media img,
+.trust__media img,
+.feature__main img,
+.feature__detail img,
+.proof__shot img,
+.craft-row__shot img,
+.svc-arrival__media img,
+.prj-arrival__media img,
+.svc-featured__media img,
+.prj-doc__shot img,
+.band__frame img,
+.vband__frame img,
+.wband__frame img,
+.pcard__frame img,
+.tile__frame img {
   background-color: var(--stone);
-  border-radius: var(--radius-photo);
-  overflow: hidden;
 }
 
 /* ---- Consent notice --------------------------------------------------

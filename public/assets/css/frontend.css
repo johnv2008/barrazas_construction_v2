@@ -22,8 +22,19 @@
   --datum-clear: 5.5rem;
 
   /* Measured height of .site-header at each breakpoint (logo + padding).
-     Consumed by the hero's top offset and the mobile chapter bar. */
-  --header-height: 76px;
+     Consumed by the hero's top offset and the mobile chapter bar.
+
+     These were 5px short at every width — 76/98 against a real 81/103 —
+     which is why the mobile chapter bar sat INSIDE the header and the hero
+     eyebrow ended up clipped underneath it. Re-measured from the rendered
+     header rather than calculated from the logo box.
+
+     --datum-bar-height exists because below 1024px the chapter bar is a
+     SECOND piece of fixed chrome. The hero cleared the header and then ran
+     straight under the bar. Anything positioned below the header on mobile
+     has to clear both. */
+  --header-height: 81px;
+  --datum-bar-height: 26px;
 
   --burgundy-tint: rgba(128, 0, 32, 0.08);
   --burgundy-line: rgba(128, 0, 32, 0.28);
@@ -1238,7 +1249,11 @@
    rather than two, a two-up tile grid rather than a single column, and
    a shorter hero. Same content order, same argument, ~35% less scroll. */
 @media (max-width: 767px) {
-  .ch--arrival { padding-top: calc(var(--header-height) + var(--space-md)); }
+  /* Header AND chapter bar, plus air. Previously cleared only the header,
+     which left the eyebrow tucked under the bar. */
+  .ch--arrival {
+    padding-top: calc(var(--header-height) + var(--datum-bar-height) + var(--space-md));
+  }
   .arrival__media img { height: clamp(260px, 38vh, 340px); }
 
   /* ---- Mobile hero headline ----------------------------------------
@@ -1341,9 +1356,20 @@
 }
 
 @media (min-width: 768px) {
-  :root { --header-height: 98px; }
+  :root { --header-height: 103px; }
 
   .ch { padding-block: var(--space-2xl); }
+
+  /* This MUST come after the .ch rule above. Both are single-class
+     selectors, so source order decides — and the generic section rhythm
+     was silently overriding the hero's computed top offset, leaving it at
+     96px against 129px of fixed chrome (header + chapter bar). The eyebrow
+     was clipped at every width from 768 to 1023. Pre-existing, and only
+     visible once the header was measured accurately. */
+  .ch--arrival {
+    padding-top: calc(var(--header-height) + var(--datum-bar-height) + var(--space-md));
+    padding-bottom: 0;
+  }
 
   /* The two quiet chapters get more air than the rest — enough to read
      as considered, not so much that they become empty bands. 1.25x was
@@ -1529,6 +1555,10 @@
 }
 
 @media (min-width: 1024px) {
+  /* The chapter bar is hidden from here up, so the hero only has the
+     header to clear and can take back that space. */
+  .ch--arrival { padding-top: calc(var(--header-height) + var(--space-lg)); }
+
   /* Clear the Datum rail on every chapter's inner container */
   .container,
   .arrival { padding-left: calc(var(--datum-x) + var(--datum-clear)); }

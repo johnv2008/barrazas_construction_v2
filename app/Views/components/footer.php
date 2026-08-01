@@ -35,7 +35,8 @@ $footerServices = [
 // all — a Privacy Policy link that 404s is worse than no link, both for
 // trust and for the crawler.
 $legalPages = [
-    ['label' => 'Privacy', 'href' => base_url('privacy')],
+    ['label' => 'Privacy Policy', 'href' => base_url('privacy')],
+    ['label' => 'Terms & Conditions', 'href' => base_url('terms')],
 ];
 ?>
 <footer class="site-footer">

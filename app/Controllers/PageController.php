@@ -32,4 +32,23 @@ final class PageController extends Controller
             'updated' => 'July 2026',
         ], 'layouts/frontend');
     }
+
+    /**
+     * Terms of USE — for the website. Deliberately not the construction
+     * contract, and the page says so first, because conflating the two
+     * would invite the argument that a website disclaimer limits liability
+     * for the actual building work.
+     */
+    public function terms(Request $request, array $params): void
+    {
+        $this->view('frontend/terms', [
+            'title' => "Terms of Use · Barraza's Construction",
+            'metaDescription' => "Terms for using the Barraza's Construction website. "
+                . 'Project work is governed by a separate written agreement.',
+            'chapters' => [
+                ['n' => '01', 'id' => 'top', 'label' => 'Terms'],
+            ],
+            'updated' => 'July 2026',
+        ], 'layouts/frontend');
+    }
 }

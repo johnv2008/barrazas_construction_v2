@@ -33,6 +33,7 @@ $router->get('/robots.txt', [HomeController::class, 'robots']);
 // The consent banner links here, so this route must exist before
 // analytics is switched on — consent without disclosure is not consent.
 $router->get('/privacy', [PageController::class, 'privacy']);
+$router->get('/terms', [PageController::class, 'terms']);
 
 $router->get('/services/{slug}', [ServiceController::class, 'show']);
 $router->get('/projects/{slug}', [ProjectController::class, 'show']);
