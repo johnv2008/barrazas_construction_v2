@@ -208,7 +208,14 @@ final class Image
     private static function entry(string $path): ?array
     {
         if (self::$manifest === null) {
-            $file = dirname(__DIR__, 2) . '/public/assets/images/derivatives.json';
+            // public_path() resolves the development layout (public/assets)
+            // and the flattened shared-host layout (assets) alike. Hardcoding
+            // the former here is what broke production, and it broke silently:
+            // a manifest that fails to load raises nothing, it just degrades
+            // every image to a bare <img> with no srcset, no WebP and no
+            // intrinsic width/height. The pages still render correctly — they
+            // simply ship full-size originals and lose their CLS protection.
+            $file = public_path('assets/images/derivatives.json');
 
             self::$manifest = is_file($file)
                 ? (json_decode((string) file_get_contents($file), true)['images'] ?? [])

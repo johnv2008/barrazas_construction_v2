@@ -10,10 +10,34 @@
   var header = document.querySelector('[data-site-header]');
 
   if (header) {
-    var onScroll = function () {
-      header.classList.toggle('is-scrolled', window.scrollY > 12);
+    /*
+     * window.scrollY is a layout-inducing read and classList.toggle
+     * invalidates style, so doing both directly in a scroll handler forces
+     * a synchronous reflow on every event — measured at 34ms of blocking
+     * layout. Batching the read into requestAnimationFrame and writing only
+     * when the state actually changes removes both the thrash and the
+     * redundant class writes, since the value flips twice per page at most.
+     */
+    var isScrolled = null;
+    var pending = false;
+
+    var applyScrollState = function () {
+      pending = false;
+
+      var next = window.scrollY > 12;
+      if (next === isScrolled) return;
+
+      isScrolled = next;
+      header.classList.toggle('is-scrolled', next);
     };
-    onScroll();
+
+    var onScroll = function () {
+      if (pending) return;
+      pending = true;
+      window.requestAnimationFrame(applyScrollState);
+    };
+
+    applyScrollState();
     window.addEventListener('scroll', onScroll, { passive: true });
   }
 

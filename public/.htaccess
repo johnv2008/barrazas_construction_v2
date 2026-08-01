@@ -5,6 +5,30 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # ---- One address only ----
+    # The site answered on all four of http/https x www/apex with 200 and no
+    # redirect, publishing itself at four addresses. Search engines then have
+    # to guess which is authoritative and the ranking signals split between
+    # them. APP_URL in .env must name the SAME host these rules land on, so
+    # the canonical tags agree with the redirect rather than fighting it.
+    #
+    # IF THE SITE EVER RETURNS "too many redirects", the cause is a host that
+    # terminates TLS upstream without setting either signal below. Delete the
+    # scheme rule (the first pair) and the site recovers immediately; the www
+    # rule cannot loop on its own.
+    #
+    # Both signals must say "not https" before redirecting, so a proxy that
+    # sets X-Forwarded-Proto is enough to prevent a loop.
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+    # TO CANONICALISE ON THE APEX DOMAIN instead, swap the two lines below for:
+    #   RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+    #   RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+    RewriteCond %{HTTP_HOST} !^www\. [NC]
+    RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
     # Serve real files/directories (assets, uploads) directly.
     RewriteCond %{REQUEST_FILENAME} -f [OR]
     RewriteCond %{REQUEST_FILENAME} -d
@@ -34,6 +58,90 @@ ServerSignature Off
     Header always set X-Frame-Options "SAMEORIGIN"
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
     Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+
+    # HSTS is deliberately left commented out. It is the one header here that
+    # is effectively irreversible: once a browser has seen it, that browser
+    # refuses to load the site over http for the full max-age no matter what
+    # the server later says. Enable it only after the https redirect above has
+    # been confirmed working for every page for a week or so — at which point
+    # uncommenting this line is the correct final step.
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>
+
+# ---- Static asset caching ----
+# Every asset was being served with no cache lifetime at all, so a returning
+# visitor re-downloaded 561 KiB of fonts, photographs and CSS that had not
+# changed. The lifetimes below are graded by how each file is versioned,
+# because a cache is only as safe as the ability to bust it:
+#
+#   fonts + derived images  immutable. Derived variants carry a content hash
+#                           in the filename and fonts never change, so a new
+#                           file is always a new URL.
+#   css + js                a year, but only because asset() appends a
+#                           ?v=<mtime> fingerprint that changes when the file
+#                           does. Remove that and this becomes a year-long
+#                           stale cache on every design change.
+#   original photographs    30 days. These filenames are NOT versioned, so
+#                           replacing a photograph in place takes up to a
+#                           month to reach a returning visitor. Long enough
+#                           to be worth having, short enough to recover from.
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 1 hour"
+
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType text/javascript "access plus 1 year"
+
+    ExpiresByType image/jpeg "access plus 30 days"
+    ExpiresByType image/png "access plus 30 days"
+    ExpiresByType image/webp "access plus 30 days"
+    ExpiresByType image/svg+xml "access plus 30 days"
+    ExpiresByType image/x-icon "access plus 30 days"
+
+    # HTML must stay uncached: it is generated per request and carries the
+    # CSP nonce, so a cached copy would serve a nonce that no longer matches
+    # the inline scripts and silently break the consent banner.
+    ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Content-hashed filenames can be marked immutable, which stops browsers
+    # revalidating them at all.
+    <FilesMatch "\.(woff2)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "public, max-age=31536000"
+    </FilesMatch>
+
+    <FilesMatch "\.(jpg|jpeg|png|webp|svg|ico)$">
+        Header set Cache-Control "public, max-age=2592000"
+    </FilesMatch>
+
+    # Derived variants are named <source>-<content hash>-<width>w.<ext>, so
+    # the URL changes whenever the pixels do. These are the bulk of the image
+    # bytes and can safely never be revalidated. Deliberately placed after
+    # the general image rule above so it wins for the files it matches.
+    <FilesMatch "-[0-9a-f]{8}-[0-9]+w\.(jpg|jpeg|png|webp)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    <FilesMatch "\.(php)$">
+        Header set Cache-Control "no-store, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+# ---- Compression ----
+# one.com already gzips responses, but this makes it explicit and covers
+# the font and JSON types some default configurations miss.
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml
+    AddOutputFilterByType DEFLATE application/javascript text/javascript
+    AddOutputFilterByType DEFLATE application/json application/xml
+    AddOutputFilterByType DEFLATE image/svg+xml
 </IfModule>
 
 # ---- Default charset ----

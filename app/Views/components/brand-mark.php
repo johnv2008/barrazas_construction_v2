@@ -24,5 +24,11 @@ $large = $large ?? false;
         // drawer. Never near full width, so the 480w WebP is the one
         // that should win at every breakpoint.
         'sizes' => $large ? '220px' : '150px',
+        // Above the fold on every page, so it must not be lazy — a
+        // lazy-loaded logo is discovered only after layout and the brand
+        // mark arrives visibly late. Deliberately NOT fetchpriority high:
+        // that would make it compete with the hero photograph, which is
+        // the LCP element and should win.
+        'loading' => 'eager',
   ]) ?>
 </span>
