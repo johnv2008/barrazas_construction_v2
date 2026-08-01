@@ -174,7 +174,12 @@ final class LeadController extends Controller
 
         $extension = self::ALLOWED_UPLOAD_MIME[$mimeType];
         $filename = bin2hex(random_bytes(16)) . '.' . $extension;
-        $destinationDir = APP_ROOT . '/public/uploads/general/leads';
+        // public_path() rather than APP_ROOT . '/public', which is wrong on
+        // the shared host: it flattens public/ into the web root, so this
+        // wrote photographs into a public/uploads/ directory it created
+        // outside the served tree while the database recorded the path
+        // uploads/general/leads/... — leaving every attachment unreachable.
+        $destinationDir = public_path('uploads/general/leads');
 
         if (!is_dir($destinationDir) && !mkdir($destinationDir, 0755, true) && !is_dir($destinationDir)) {
             return null;
