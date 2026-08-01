@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Core\Controller;
+use App\Core\Logger;
 use App\Core\Request;
 use App\Models\Lead;
+use App\Services\MailService;
 use App\Services\SessionService;
 use App\Validation\Validator;
 
@@ -124,8 +126,66 @@ final class LeadController extends Controller
             );
         }
 
+        // The lead is already stored, so notification is best-effort by
+        // design: a mail failure must never turn a captured lead into an
+        // error page for the homeowner. It is logged instead, and the
+        // record survives in the leads table either way.
+        try {
+            $this->notify($request, $leadId, $message, $attachmentPath);
+        } catch (\Throwable $e) {
+            Logger::exception($e);
+        }
+
         SessionService::flash('lead_success', "Thanks, {$request->string('name')} — we've received your project details and will be in touch soon.");
         $this->redirect(base_url('/#start-your-project'));
+    }
+
+    /**
+     * Emails the office a readable summary of a submission.
+     *
+     * Reply-To is the homeowner, so replying from the inbox reaches them
+     * directly with no copying of addresses. Everything needed to respond
+     * is in the body, because the admin leads page is still a placeholder
+     * and this email is currently the only place a lead is legible.
+     */
+    private function notify(Request $request, int $leadId, string $message, ?string $attachmentPath): void
+    {
+        $to = trim((string) config('mail.lead_to', ''));
+
+        if ($to === '') {
+            return;
+        }
+
+        $name = $request->string('name');
+        $city = $request->string('city');
+        $projectType = self::PROJECT_TYPES[$request->string('project_type')] ?? $request->string('project_type');
+        $phone = $request->string('phone');
+
+        $subject = 'New consultation request — ' . $projectType . ($city !== '' ? ', ' . $city : '');
+
+        $lines = [
+            'A new consultation request came in through barrazasconstruction.com.',
+            '',
+            'Name:     ' . $name,
+            'Email:    ' . $request->string('email'),
+            'Phone:    ' . ($phone !== '' ? $phone : 'Not provided'),
+            'City:     ' . $city,
+            'Project:  ' . $projectType,
+            '',
+            $message,
+        ];
+
+        if ($attachmentPath !== null) {
+            $lines[] = '';
+            $lines[] = 'Photo attached: ' . base_url($attachmentPath);
+        }
+
+        $lines[] = '';
+        $lines[] = '--';
+        $lines[] = 'Reply to this email to answer ' . $name . ' directly.';
+        $lines[] = 'Lead #' . $leadId . ' · received ' . date('j F Y, g:ia');
+
+        MailService::send($to, $subject, implode("\n", $lines), $request->string('email'));
     }
 
     private function composeMessage(Request $request): string

@@ -41,6 +41,22 @@ return [
         'encryption' => Env::get('MAIL_ENCRYPTION', 'tls'),
         'from_address' => Env::get('MAIL_FROM_ADDRESS', 'no-reply@barrazasconstruction.com'),
         'from_name' => Env::get('MAIL_FROM_NAME', "Barraza's Construction"),
+
+        /**
+         * Where consultation requests are emailed. Defaulted rather than
+         * left blank because an unset value means submissions silently
+         * reach nobody, which is the failure this was added to end.
+         *
+         * MAIL_FROM_ADDRESS must stay on barrazasconstruction.com even
+         * though this destination is a Gmail account: mail claiming to be
+         * FROM gmail.com but sent by the web host fails Gmail's own
+         * sender checks and is treated as forgery.
+         */
+        // ?: rather than a default argument, because Env::get returns the
+        // literal '' for a key that is present but blank. A stray
+        // "MAIL_LEAD_TO=" line in .env would otherwise switch notifications
+        // off without any sign that it had.
+        'lead_to' => Env::get('MAIL_LEAD_TO', '') ?: 'barrazasconstructioninc@gmail.com',
     ],
 
     /**
