@@ -34,7 +34,9 @@ $footerServices = [
 // Legal pages do not exist yet. Until they do these are not rendered at
 // all — a Privacy Policy link that 404s is worse than no link, both for
 // trust and for the crawler.
-$legalPages = [];
+$legalPages = [
+    ['label' => 'Privacy', 'href' => base_url('privacy')],
+];
 ?>
 <footer class="site-footer">
   <div class="container">

@@ -1,42 +1,27 @@
 <?php
 /**
- * Google Analytics 4.
+ * Google Analytics 4 — loaded ONLY after the visitor consents.
  *
- * Rendered on PUBLIC pages only. The admin layout deliberately does not
- * include this: there is nothing to learn from tracking the one person who
- * runs the site, and doing so would send admin URLs to a third party.
+ * This component no longer loads anything by itself. It defines a loader
+ * and calls it only if a prior "granted" choice is stored. The consent
+ * banner (components/consent.php) calls the same loader when someone
+ * accepts, so there is exactly one code path that can start GA.
  *
- * TWO CONDITIONS, BOTH REQUIRED
- * -----------------------------
- *   1. A measurement ID is configured.
- *   2. APP_ENV is production.
+ * WHY GATE RATHER THAN USE CONSENT MODE
+ * -------------------------------------
+ * Google's Consent Mode v2 loads gtag.js immediately and sends "cookieless
+ * pings" until consent arrives. That is defensible, and it is also a
+ * third-party request carrying the visitor's IP and page URL before they
+ * have agreed to anything. Not loading the script at all is simpler to
+ * explain, simpler to verify, and leaves nothing to argue about: decline
+ * means no request to Google, ever.
  *
- * The second matters more than it looks. Without it, every local page load
- * and every staging click lands in the same property as real visitors, and
- * the data is quietly wrong from day one in a way nobody notices for months.
+ * The cost is that declined visitors are invisible in analytics. That is
+ * the correct trade for a residential contractor whose traffic is small
+ * enough that the difference is noise.
  *
- * CSP
- * ---
- * This is the only third-party script on the site, and it is the reason
- * script-src is no longer a clean 'self' + nonce. gtag.js cannot be
- * nonce-gated because Google's loader injects further scripts at runtime,
- * so the googletagmanager origin has to be allowed wholesale. The widening
- * is enumerated in public/index.php next to the header itself.
- *
- * PRIVACY
- * -------
- * GA4 sets cookies and is a third-party transfer. Two settings below reduce
- * the exposure without changing what the business actually needs to know:
- *
- *   anonymize_ip      truncates the visitor address before storage
- *   allow_google_signals=false  disables cross-device advertising signals,
- *                     which is the part that makes GA an advertising
- *                     product rather than a measurement one
- *
- * These do not substitute for consent where consent is required. A
- * California business serving California residents has CCPA/CPRA
- * obligations, and there is currently no consent mechanism on this site —
- * flagged rather than silently assumed to be fine.
+ * Rendered on PUBLIC pages only, in production, only when an ID is set.
+ * See the CSP note in public/index.php for what this widens.
  */
 
 $measurementId = trim((string) config('analytics.ga_measurement_id', ''));
@@ -45,13 +30,47 @@ if ($measurementId === '' || config('app.env') !== 'production') {
     return;
 }
 ?>
-<script async src="https://www.googletagmanager.com/gtag/js?id=<?= e(rawurlencode($measurementId)) ?>"></script>
 <script nonce="<?= e(csp_nonce()) ?>">
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', <?= json_encode($measurementId, JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) ?>, {
-    anonymize_ip: true,
-    allow_google_signals: false
-  });
+(function () {
+  var ID = <?= json_encode($measurementId, JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) ?>;
+  var KEY = 'bc-consent';
+  var loaded = false;
+
+  function load() {
+    if (loaded) { return; }
+    loaded = true;
+
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(ID);
+    document.head.appendChild(s);
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', ID, {
+      anonymize_ip: true,
+      allow_google_signals: false
+    });
+  }
+
+  // Exposed so the consent banner can start analytics on acceptance
+  // without duplicating any of the above.
+  window.__consent = {
+    key: KEY,
+    load: load,
+    // localStorage rather than a cookie: the choice is only ever read by
+    // this script, so there is no reason to attach it to every request.
+    // Wrapped because Safari's private mode throws on access.
+    get: function () {
+      try { return localStorage.getItem(KEY); } catch (e) { return null; }
+    },
+    set: function (value) {
+      try { localStorage.setItem(KEY, value); } catch (e) {}
+    }
+  };
+
+  if (window.__consent.get() === 'granted') { load(); }
+})();
 </script>

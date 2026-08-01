@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 use App\Controllers\HomeController;
 use App\Controllers\LeadController;
+use App\Controllers\PageController;
 use App\Controllers\ProjectController;
 use App\Controllers\ServiceController;
 use App\Middleware\CsrfMiddleware;
@@ -29,6 +30,10 @@ $router->get('/robots.txt', [HomeController::class, 'robots']);
  * breadcrumb without a link, so the templates render those crumbs
  * unlinked while the index pages are unbuilt.
  */
+// The consent banner links here, so this route must exist before
+// analytics is switched on — consent without disclosure is not consent.
+$router->get('/privacy', [PageController::class, 'privacy']);
+
 $router->get('/services/{slug}', [ServiceController::class, 'show']);
 $router->get('/projects/{slug}', [ProjectController::class, 'show']);
 

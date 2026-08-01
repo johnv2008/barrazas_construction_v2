@@ -134,5 +134,6 @@
   <script src="<?= e(asset('js/app.js')) ?>" defer></script>
 
   <?php \App\Core\View::component('analytics'); ?>
+  <?php \App\Core\View::component('consent'); ?>
 </body>
 </html>

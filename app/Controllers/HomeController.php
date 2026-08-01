@@ -40,6 +40,9 @@ final class HomeController extends Controller
         echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
         echo '  <url><loc>' . e(base_url('/')) . '</loc></url>' . "\n";
 
+        echo '  <url><loc>' . e(base_url('privacy')) . '</loc></url>' . "
+";
+
         foreach (\App\Content\Catalog::publishedServiceSlugs() as $slug) {
             echo '  <url><loc>' . e(base_url('services/' . $slug)) . '</loc></url>' . "\n";
         }

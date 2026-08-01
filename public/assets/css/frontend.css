@@ -1682,3 +1682,90 @@
   /* More room, so the cut gets more decisive. */
   .feature__title { --feature-cut: 128px; }
 }
+
+/* =====================================================
+   Standing document pages (privacy, and future terms)
+   =====================================================
+   Not a chapter and not a service page: one column, generous measure,
+   nothing decorative. It reuses the type scale and the annotation
+   register so it still belongs to the publication, but it makes no
+   attempt to be a composition — it is something to be read once. */
+
+.ch--doc {
+  background: var(--warm-white);
+  padding-top: calc(var(--header-height) + var(--space-2xl));
+}
+
+.doc { max-width: 46rem; }
+
+.doc__heading {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.4vw, 2.75rem);
+  font-weight: var(--fw-display-hero);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-display);
+  margin-block: var(--space-md) 0;
+  max-width: 20ch;
+  text-wrap: balance;
+}
+
+.doc__lede {
+  font-size: var(--fs-body-lg);
+  color: var(--color-text-on-light-muted);
+  margin-top: var(--space-md);
+  max-width: 54ch;
+}
+
+.doc__stamp {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-2xs);
+  border-top: 1px solid var(--line-on-light);
+  font-family: var(--font-condensed);
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  color: var(--color-text-on-light-muted);
+}
+
+.doc h2 {
+  font-size: var(--fs-h5);
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-sm);
+}
+
+.doc p { color: var(--color-text-on-light-muted); max-width: 62ch; }
+.doc p + p { margin-top: var(--space-sm); }
+.doc strong { color: var(--color-text-on-light); font-weight: var(--fw-medium); }
+
+.doc__list { margin: var(--space-sm) 0 0; padding-left: 0; list-style: none; }
+
+.doc__list li {
+  position: relative;
+  padding-left: var(--space-md);
+  margin-bottom: var(--space-sm);
+  color: var(--color-text-on-light-muted);
+  max-width: 62ch;
+}
+
+/* A burgundy tick per item rather than a bullet glyph — the same accent
+   the rest of the site uses to open a line. */
+.doc__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 8px;
+  height: 1px;
+  background: var(--brand-burgundy);
+}
+
+.doc__contact { font-style: normal; }
+
+.doc__note {
+  margin-top: var(--space-xl);
+  padding-left: var(--space-md);
+  border-left: 2px solid var(--brand-burgundy);
+  font-size: 0.9375rem;
+}
+
+.doc .link-arrow { margin-top: var(--space-xl); }
